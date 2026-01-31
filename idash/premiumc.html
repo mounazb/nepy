@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Premium Payment WebApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      margin-top: 90px;
+      font-family: Arial, sans-serif;
+      background: #0f1723;
+      color: #fff;
+      padding: 20px;
+    }
+
+    h2 { text-align: center; margin-bottom: 15px; }
+
+    .box {
+      background: #121a29;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      animation: fadeSlide 0.4s ease;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .plan-btn {
+      background: #1f2937;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 10px 0;
+      cursor: pointer;
+      text-align: center;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .plan-btn:hover { background: #374151; transform: scale(1.03); }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover { opacity: 0.9; }
+
+    .ngn { background: #16a34a; color: #fff; }
+    .usd { background: #2563eb; color: #fff; }
+    .submit { background: #f59e0b; color: #000; }
+    .back { background: #374151; color: #fff; }
+
+    input {
+  width: 95%;
+  padding: 14px 12px;          /* More comfortable typing space */
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #2f3a4d;   /* Soft visible border */
+  background: #0f1723;        /* Matches dark UI */
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: 0.25s ease;
+  caret-color: #00ff99;       /* Nice cursor color */
+}
+
+/* ✅ When user is typing or clicks input */
+input:focus {
+  border-color: #00ff99;
+  box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.15);
+  background: #121a29;
+}
+
+/* ✅ Placeholder styling */
+input::placeholder {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+    .hidden { display: none; }
+
+    .info {
+      background: #1f2937;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .account-bold {
+      font-size: 18px;
+      font-weight: bold;
+      color: #22c55e;
+      text-align: center;
+    }
+
+    .preview {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    .success {
+      background: #16a34a;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      animation: pop 0.5s ease;
+    }
+.pdols {
+  font-size:13px;
+}
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .hidden-address { display: none; }
+    .el {
+      color:#ddddff;
+      text-align:center;
+      padding:0px;
+    }
+  </style>
+</head>
+
+<body>
+ <script src="https://afkft.github.io/ho/da/premiumlist.js"></script>
+<!-- ✅ ALREADY PREMIUM PAGE -->
+<div class="box hidden" id="alreadyPremiumPage">
+  <div class="success">
+    🎉 <b>You are already a Premium User!</b><br><br>
+    You don’t need to buy premium again.<br><br>
+    <a href="https://wa.me/2349114301708" target="_blank">
+      <button class="back">🗨️ Contact Admin on WhatsApp to change your premium plan ✅ </button>
+    </a>
+    <a href="https://t.me/intelligentverificationlinkbot/intelligent">
+      <button class="back">⬅ Back to Intelligent</button>
+    </a>
+  </div>
+</div>
+<!-- ✅ PLAN PAGE -->
+<div class="box" id="planPage">
+  <b>
+<p style="text-align:center;" class="pdols"> Our premium dollar price is (NGN1000 ≈ $1) Payment method for (USD) is only crypto ( (BNB) Smart chain wallet) this means if you are paying in dollars, your price will go higher more than (NGN) Nigerian Price. </p>
+</b>
+<p style="text-align:center;"> <b> 🌲 NEw YEAR PLAN 🎄 </b></p>
+  <h2>💎 Premium Plan List </h2>
+  <div class="plan-btn" onclick="choosePlan('One week Days Trial — ₦5,000 / $5')"> One week ( Christmas plan) — ₦5,000 ($5)</div>
+  <div class="plan-btn" onclick="choosePlan('Two Weeks Trial — ₦10,000 / $10')">🥈 Two Weeks — ₦10,000 ($10)</div>
+  <div class="plan-btn" onclick="choosePlan('One time payment forever plan — ₦25,000 / $25')">🥇 Forever One time payment — ₦25,000 ($25)</div>
+  <br>
+  <h1 style="font-size:18px; text-align:center; background:#e3e3ff; border-radius:5px; color:#0c0c42; height:20px; padding:5px;">✅What you unlock in our premium links 🔗</h1>
+  <p class="el">Collect Otp code and password for any link you copy, All foreign banks links, Betting website links, VPN ha*c*king link, Google mail and all social account and there otp code
+  <p style="text-align:center;"> There is no ads at the end of all links all ads is replace with otp</p>
+</div>
+
+<!-- ✅ METHOD -->
+<div class="box hidden" id="methodPage">
+  <h2>Select Payment Method</h2>
+  <button class="ngn" onclick="showNGN()">Pay with NGN Nigeria bank transfer 🏦</button>
+  <button class="usd" onclick="showUSD()">Pay with USD 💲 Crypto wallet</button>
+<button onclick="openWhatsApp()" 
+style="background:#25D366;color:#000;font-weight:bold;margin-top:10px;">
+  💬 Live Chat With Admin on WhatsApp
+</button>
+  <button class="back" onclick="goBack('plan')">⬅ Back</button>
+</div>
+<script>
+function openWhatsApp() {
+  const msg = encodeURIComponent(
+    "Hello harmayoh, I got your contact from Intelligent Verification Link Bot. I want to buy premium."
+  );
+
+  window.open("https://wa.me/2349114301708?text=" + msg, "_blank");
+}
+</script>
+<!-- ✅ NGN -->
+<div class="box hidden" id="ngnPage">
+  <h2>NGN Payment</h2>
+  <div class="info">
+    <b>Selected Plan:</b> <span id="ngnPlan"></span><br><br>
+    Name: Olatunji Abdumalik Ayomide<br>
+    Bank: Opay<br>
+    Acc No: <!-- Account Number -->
+<div class="account-bold" id="ngnAccountText">9114301708</div>
+
+<!-- Copy Button -->
+<button onclick="copyNGNAccount()" style="margin-top:10px;background:#22c55e;color:#000;font-weight:bold;border:none;padding:12px;border-radius:8px;width:100%;">
+  📋 Copy Account Number
+</button>
+  </div>
+  <input type="file" id="ngnProof" accept="image/*" onchange="previewImage(this,'ngnPreview')">
+  <div class="preview"><img id="ngnPreview"></div>
+
+  <input type="tel" id="ngnWhatsapp" placeholder="WhatsApp Number or phone number">
+  <button class="submit" onclick="submitPayment('NGN')">Submit</button>
+  <button class="back" onclick="goBack('method')">⬅ Back</button>
+</div>
+
+<!-- ✅ USD -->
+<div class="box hidden" id="usdPage">
+  <h2>USD Crypto Payment</h2>
+  <div class="info">
+    <b>Selected Plan:</b> <span id="usdPlan"></span><br><br>
+  </div>
+
+  <a href="https://link.trustwallet.com/send?coin=20000714&address=0xbBcc409872bC2441400735624638F3D67DAa7C4C"
+     target="_blank"
+     style="display:block;text-align:center;background:#2563eb;color:white;padding:12px;border-radius:8px;text-decoration:none;margin-top:10px;">
+     ✅ Pay with Trust Wallet
+  </a>
+
+  <div id="walletAddress" class="account-bold hidden-address">0xbBcc409872bC2441400735624638F3D67DAa7C4C</div>
+
+  <button onclick="copyWallet()" style="margin-top:10px;background:#22c55e;color:#000;font-weight:bold;">📋 Copy Wallet Address Smart chain (BNB) Bep 20 Address</button>
+
+  <input type="file" id="usdProof" accept="image/*" onchange="previewImage(this,'usdPreview')">
+  <div class="preview"><img id="usdPreview"></div>
+  <input type="tel" maxlength="15" id="usdWhatsapp" placeholder="WhatsApp Number">
+  <button class="submit" onclick="submitPayment('USD')">Submit</button>
+  <button class="back" onclick="goBack('method')">⬅ Back</button>
+</div>
+
+<!-- ✅ SUCCESS -->
+<div class="box hidden" id="successPage">
+  <div class="success">
+    ✅ Payment Submitted Successfully!<br><br>
+    Your payment has been received. Admin will review it within 24 hours, Please check notification from intelligent premium bot for confirmation or declined of payment.🗨️
+    <p>
+      If you submit a fake payment proof, your payment will be declined.
+      <a href="https://wa.me/2349114301708" target="_blank" style="color:#fff;">Admin on WhatsApp</a>
+    </p>
+    <a href="https://t.me//intelligentverificationlinkbot/intelligent">
+    <button class="back">⬅ Back to Intelligent Webapp </button> </a>
+  </div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+const user = tg.initDataUnsafe?.user;
+let selectedPlan = "";
+
+// ✅ PREMIUM CHECK (runs immediately)
+document.addEventListener("DOMContentLoaded", () => {
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+
+  const user = tg.initDataUnsafe?.user;
+
+  if (!user) return;
+
+  // wait until premiumUsers exists
+  const waitForPremium = setInterval(() => {
+    if (Array.isArray(premiumUsers)) {
+      clearInterval(waitForPremium);
+
+      const isPremium = premiumUsers.includes(Number(user.id));
+
+      if (isPremium) {
+        [
+          "planPage",
+          "methodPage",
+          "ngnPage",
+          "usdPage",
+          "successPage"
+        ].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add("hidden");
+        });
+
+        document
+          .getElementById("alreadyPremiumPage")
+          .classList.remove("hidden");
+      }
+    }
+  }, 50);
+});
+
+function choosePlan(plan){
+  selectedPlan = plan;
+  showPage("methodPage");
+  document.getElementById("ngnPlan").innerText = plan;
+  document.getElementById("usdPlan").innerText = plan;
+}
+
+function showNGN(){ showPage("ngnPage"); }
+function showUSD(){ showPage("usdPage"); }
+
+function showPage(page){
+  ["planPage","methodPage","ngnPage","usdPage","successPage"].forEach(id=>{
+    document.getElementById(id).classList.add("hidden");
+  });
+  document.getElementById(page).classList.remove("hidden");
+}
+
+function goBack(where){
+  if(where === "home") showPage("planPage");
+  if(where === "method") showPage("methodPage");
+  if(where === "plan") showPage("planPage");
+}
+
+function previewImage(input, previewId){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => document.getElementById(previewId).src = reader.result;
+  reader.readAsDataURL(file);
+}
+</script>
+<script>
+async function submitPayment(type) {
+
+  let whatsapp = type === "NGN"
+    ? document.getElementById("ngnWhatsapp").value
+    : document.getElementById("usdWhatsapp").value;
+
+  let proof = type === "NGN"
+    ? document.getElementById("ngnProof").files[0]
+    : document.getElementById("usdProof").files[0];
+
+  if (!whatsapp) return alert("Enter WhatsApp number");
+  if (!proof) return alert("Upload payment screenshot");
+
+  showPage("successPage");
+
+  let user = tg.initDataUnsafe?.user || {};
+
+  let caption = `
+🚨 NEW PREMIUM PAYMENT
+
+👤 Username: @${user.username || "N/A"}
+🆔 Telegram ID: ${user.id || "N/A"}
+📛 Full Name: ${user.first_name || "N/A"}
+
+🎁 Plan: ${selectedPlan}
+💳 Method: ${type}
+📱 WhatsApp: ${whatsapp}
+
+⏳ Awaiting approval
+`;
+
+  // -------- ADMIN MESSAGE (PHOTO + CAPTION) --------
+  let formData = new FormData();
+  formData.append("chat_id", "6976365864"); // ADMIN ID
+  formData.append("photo", proof);
+  formData.append("caption", caption);
+
+  try {
+    await fetch("https://premiumback.onrender.com/telegram/send", {
+      method: "POST",
+      headers: {
+        "X-API-KEY": "PREMIUM_KEY"
+      },
+      body: formData
+    });
+
+    // -------- BUYER MESSAGE (TEXT ONLY) --------
+    let buyerForm = new FormData();
+    buyerForm.append("chat_id", user.id);
+    buyerForm.append(
+      "text",
+      "✅ <b>Payment Submitted Successfully</b>\n\n⏳ Your payment is under review.\n\nYou will receive confirmation shortly.\n\nThank you for choosing Premium."
+    );
+
+    await fetch("https://premiumback.onrender.com/telegram/send", {
+      method: "POST",
+      headers: {
+        "X-API-KEY": "PREMIUM_KEY"
+      },
+      body: buyerForm
+    });
+
+  } catch (e) {
+    alert("⚠️ Network error. Please contact admin.");
+  }
+}
+</script>
+<script>
+function copyWallet() {
+  const walletText = document.getElementById("walletAddress").innerText.trim();
+
+  if (!walletText) {
+    alert("❌ Wallet address not found");
+    return;
+  }
+
+  navigator.clipboard.writeText(walletText).then(() => {
+    alert("✅ Wallet address copied successfully!");
+  }).catch(() => {
+    // Fallback for old browsers
+    const tempInput = document.createElement("input");
+    tempInput.value = walletText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    alert("✅ Wallet address copied!");
+  });
+}
+</script>
+<script>
+function copyNGNAccount() {
+  const acc = document.getElementById("ngnAccountText").innerText.trim();
+
+  navigator.clipboard.writeText(acc).then(() => {
+    alert("✅ Account number copied successfully!");
+  }).catch(() => {
+    const temp = document.createElement("input");
+    temp.value = acc;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+    alert("✅ Account number copied!");
+  });
+}
+</script>
+</body>
+</html> 
