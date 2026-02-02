@@ -20,4 +20,5 @@ const premiumUsers = [
   // Add more IDs here
 //one week people
 // one week people 
+8464022284,
 ];
