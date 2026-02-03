@@ -21,5 +21,5 @@ const premiumUsers = [
 //one week people
 // one week people 
 8464022284,
-8222887331,
+8222887331, // march 3 
 ];
