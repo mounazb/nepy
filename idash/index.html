@@ -266,6 +266,35 @@
 
     const freeLinksList = document.getElementById('freeLinksList');
     const premiumContent = document.getElementById('premiumContent');
+
+function addEditCryptoButton() {
+  const btnWrapper = document.createElement("div");
+  btnWrapper.style.maxWidth = "600px";
+  btnWrapper.style.margin = "0 auto 15px auto";
+
+  btnWrapper.innerHTML = `
+    <a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" style="text-decoration:none;">
+      <div style="
+        background:#1f8cff;
+        padding:14px;
+        border-radius:12px;
+        text-align:center;
+        font-weight:700;
+        font-size:1.05rem;
+        color:#fff;
+      ">
+        ✏️ Edit Crypto Link
+      </div>
+    </a>
+  `;
+
+  premiumContent.parentNode.insertBefore(btnWrapper, premiumContent);
+}
+
+// ✅ CALL IT HERE
+if (premiumUsers && premiumUsers.includes(telegramId)) {
+  addEditCryptoButton();
+}
     const donationInfo = document.getElementById('donationInfo');
 
     const navButtons = {
@@ -612,66 +641,6 @@ function renderFreeLinks() {
       alert("Invite link copied ✅\nInvite 10 people to unlock premium for 7 days");
     });
   }
-</script>
-<script>
-/* ===============================
-   PREMIUM CRYPTO EDIT BUTTON
-   Paste before </body>
-================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const tg = window.Telegram.WebApp;
-  const user = tg.initDataUnsafe?.user || null;
-  const telegramId = user?.id || null;
-
-  const premiumContent = document.getElementById("premiumContent");
-
-  // 🔗 PUT YOUR CRYPTO WEBAPP LINK HERE
-  const cryptoEditLink = "https://t.me/intelligentverificationlinkbot/premiumedit";
-
-  // ✅ CHANGE THIS TO YOUR REAL PREMIUM USERS SYSTEM
-  // Example: if you already have premiumUsers array in premium.js
-  const premiumUsers = window.premiumUsers || [];
-
-  const isPremiumUser = premiumUsers.includes(telegramId);
-
-  function createCryptoEditButton() {
-    const btn = document.createElement("button");
-    btn.className = "btn";
-    btn.style.width = "100%";
-    btn.style.marginBottom = "15px";
-    btn.innerText = "💰 Edit Crypto Balance";
-
-    btn.onclick = function () {
-      tg.openLink(cryptoEditLink);
-    };
-
-    return btn;
-  }
-
-  // Wait small delay to allow premium.js to render links first
-  setTimeout(function () {
-
-    if (!premiumContent) return;
-
-    if (isPremiumUser) {
-
-      // Add button only if not already added
-      if (!document.getElementById("cryptoEditBtn")) {
-
-        const button = createCryptoEditButton();
-        button.id = "cryptoEditBtn";
-
-        // Insert button at top
-        premiumContent.prepend(button);
-      }
-
-    }
-
-  }, 500);
-
-});
 </script>
 </body>
 </html> 
