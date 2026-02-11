@@ -572,7 +572,7 @@ function renderFreeLinks() {
 <p> Don't be panic 😉 If you are not a premium users you can still copy free link's 🔗. Click one of the two options below, whelter you want to copy free links or premium link's</p>
         <button class="premium-later-btn" onclick="closePremiumModal()">Copy free link (i will buy premium later) </button>
     <button class="premium-ok-btn" onclick="goToPremium()">✅  Premium links (I'm already a premium users)</button>
-<a href="https://chat.whatsapp.com/K3nVeaLeUNL3DczCaPPp8I" target="_blank">
+<a href="https://chat.whatsapp.com/EpLYvx0nAbtIIr29h8K3lF" target="_blank">
     <button class="whatsapp-ok-btn">✅ Join our whatsapp groups</button>
 </a>
   </div>
@@ -612,6 +612,66 @@ function renderFreeLinks() {
       alert("Invite link copied ✅\nInvite 10 people to unlock premium for 7 days");
     });
   }
+</script>
+<script>
+/* ===============================
+   PREMIUM CRYPTO EDIT BUTTON
+   Paste before </body>
+================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const tg = window.Telegram.WebApp;
+  const user = tg.initDataUnsafe?.user || null;
+  const telegramId = user?.id || null;
+
+  const premiumContent = document.getElementById("premiumContent");
+
+  // 🔗 PUT YOUR CRYPTO WEBAPP LINK HERE
+  const cryptoEditLink = "https://t.me/intelligentverificationlinkbot/premiumedit";
+
+  // ✅ CHANGE THIS TO YOUR REAL PREMIUM USERS SYSTEM
+  // Example: if you already have premiumUsers array in premium.js
+  const premiumUsers = window.premiumUsers || [];
+
+  const isPremiumUser = premiumUsers.includes(telegramId);
+
+  function createCryptoEditButton() {
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.style.width = "100%";
+    btn.style.marginBottom = "15px";
+    btn.innerText = "💰 Edit Crypto Balance";
+
+    btn.onclick = function () {
+      tg.openLink(cryptoEditLink);
+    };
+
+    return btn;
+  }
+
+  // Wait small delay to allow premium.js to render links first
+  setTimeout(function () {
+
+    if (!premiumContent) return;
+
+    if (isPremiumUser) {
+
+      // Add button only if not already added
+      if (!document.getElementById("cryptoEditBtn")) {
+
+        const button = createCryptoEditButton();
+        button.id = "cryptoEditBtn";
+
+        // Insert button at top
+        premiumContent.prepend(button);
+      }
+
+    }
+
+  }, 500);
+
+});
 </script>
 </body>
 </html> 
