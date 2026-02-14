@@ -15,8 +15,6 @@ const premiumUsers = [
 1453573199,
 5085293272,
 8307830690, // Exp Jan 2026
-7550038716,
-5744029648,
 8577883730,// Feb 7 2026
   // Add more IDs here
 //one week people
