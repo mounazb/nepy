@@ -61,31 +61,29 @@
     .back { background: #374151; color: #fff; }
 
     input {
-  width: 95%;
-  padding: 14px 12px;          /* More comfortable typing space */
-  margin-top: 10px;
-  border-radius: 6px;
-  border: 1px solid #2f3a4d;   /* Soft visible border */
-  background: #0f1723;        /* Matches dark UI */
-  color: #fff;
-  font-size: 15px;
-  outline: none;
-  transition: 0.25s ease;
-  caret-color: #00ff99;       /* Nice cursor color */
-}
+      width: 95%;
+      padding: 14px 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #2f3a4d;
+      background: #0f1723;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: 0.25s ease;
+      caret-color: #00ff99;
+    }
 
-/* ✅ When user is typing or clicks input */
-input:focus {
-  border-color: #00ff99;
-  box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.15);
-  background: #121a29;
-}
+    input:focus {
+      border-color: #00ff99;
+      box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.15);
+      background: #121a29;
+    }
 
-/* ✅ Placeholder styling */
-input::placeholder {
-  color: #9ca3af;
-  font-size: 13px;
-}
+    input::placeholder {
+      color: #9ca3af;
+      font-size: 13px;
+    }
 
     .hidden { display: none; }
 
@@ -122,9 +120,9 @@ input::placeholder {
       text-align: center;
       animation: pop 0.5s ease;
     }
-.pdols {
-  font-size:13px;
-}
+
+    .pdols { font-size:13px; }
+
     @keyframes pop {
       from { transform: scale(0.7); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -154,66 +152,60 @@ input::placeholder {
     </a>
   </div>
 </div>
+
 <!-- ✅ PLAN PAGE -->
 <div class="box" id="planPage">
   <b>
-<p style="text-align:center;" class="pdols"> Our premium dollar price is (NGN1000 ≈ $1) Payment method for (USD) is only crypto ( (BNB) Smart chain wallet) this means if you are paying in dollars, your price will go higher more than (NGN) Nigerian Price. </p>
-</b>
-<p style="text-align:center;"></p>
+    <p style="text-align:center;" class="pdols"> Our premium dollar price is dynamic and updated live from NGN → USD. Payment method for (USD) is only crypto (BNB Smart chain wallet). </p>
+  </b>
   <h2>💎 Premium Plan List </h2>
-  <div class="plan-btn" onclick="choosePlan('One week Days Trial — ₦5,000 / $5')"> One week plan — ₦5,000 ($5)</div>
-  <div class="plan-btn" onclick="choosePlan('Two Weeks Trial — ₦10,000 / $10')">🥈 Two Weeks — ₦10,000 ($10)</div>
-  <div class="plan-btn" onclick="choosePlan('One time payment forever plan — ₦25,000 / $25')">🥇 Forever One time payment — ₦25,000 ($25)</div>
+  <div class="plan-btn" id="plan1" onclick=""> One week plan — ₦5,000 </div>
+  <div class="plan-btn" id="plan2" onclick="">🥈 Two Weeks — ₦10,000 </div>
+  <div class="plan-btn" id="plan3" onclick="">🥇 Forever One time payment — ₦25,000 </div>
   <br>
-  <h1 style="font-size:18px; text-align:center; background:#e3e3ff; border-radius:5px; color:#0c0c42; height:20px; padding:5px;">✅What you unlock in our premium links 🔗</h1>
-  <p class="el">Collect Otp code and password for any link you copy, All foreign bank links, Betting website links, VPN ha*c*king link, Google mail and all social account and there otp code
-  <p style="text-align:center;"> There is no ads at the end of all links all ads is replace with otp</p>
-</div>
-
+  <a href="https://milay63bsm68-ops.github.io/repro/promo.html">
+<button style="font-family:Arial;"> Buy with promo code</button> </a>
 <!-- ✅ METHOD -->
 <div class="box hidden" id="methodPage">
   <h2>Select Payment Method</h2>
   <button class="ngn" onclick="showNGN()">Pay with NGN Nigeria bank transfer 🏦</button>
   <button class="usd" onclick="showUSD()">Pay with USD 💲 Crypto wallet</button>
-<button onclick="openWhatsApp()" 
-style="background:#25D366;color:#000;font-weight:bold;margin-top:10px;">
-  💬 Live Chat With Admin on WhatsApp
-</button>
+  <button onclick="openWhatsApp()" 
+  style="background:#25D366;color:#000;font-weight:bold;margin-top:10px;">
+    💬 Live Chat With Admin on WhatsApp
+  </button>
   <button class="back" onclick="goBack('plan')">⬅ Back</button>
 </div>
+
 <script>
 function openWhatsApp() {
   const msg = encodeURIComponent(
     "Hello harmayoh, I got your contact from Intelligent Verification Link Bot. I want to buy premium."
   );
-
   window.open("https://wa.me/2349114301708?text=" + msg, "_blank");
 }
 </script>
-<!-- ✅ NGN -->
+
+<!-- ✅ NGN PAGE -->
 <div class="box hidden" id="ngnPage">
   <h2>NGN Payment</h2>
   <div class="info">
     <b>Selected Plan:</b> <span id="ngnPlan"></span><br><br>
     Name: Olatunji Abdumalik Ayomide<br>
     Bank: Opay<br>
-    Acc No: <!-- Account Number -->
-<div class="account-bold" id="ngnAccountText">9114301708</div>
-
-<!-- Copy Button -->
-<button onclick="copyNGNAccount()" style="margin-top:10px;background:#22c55e;color:#000;font-weight:bold;border:none;padding:12px;border-radius:8px;width:100%;">
-  📋 Copy Account Number
-</button>
+    Acc No: <div class="account-bold" id="ngnAccountText">9114301708</div>
+    <button onclick="copyNGNAccount()" style="margin-top:10px;background:#22c55e;color:#000;font-weight:bold;border:none;padding:12px;border-radius:8px;width:100%;">
+      📋 Copy Account Number
+    </button>
   </div>
   <input type="file" id="ngnProof" accept="image/*" onchange="previewImage(this,'ngnPreview')">
   <div class="preview"><img id="ngnPreview"></div>
-
   <input type="tel" id="ngnWhatsapp" placeholder="WhatsApp Number or phone number">
   <button class="submit" onclick="submitPayment('NGN')">Submit</button>
   <button class="back" onclick="goBack('method')">⬅ Back</button>
 </div>
 
-<!-- ✅ USD -->
+<!-- ✅ USD PAGE -->
 <div class="box hidden" id="usdPage">
   <h2>USD Crypto Payment</h2>
   <div class="info">
@@ -254,41 +246,20 @@ function openWhatsApp() {
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
-
 const user = tg.initDataUnsafe?.user;
 let selectedPlan = "";
 
-// ✅ PREMIUM CHECK (runs immediately)
+// PREMIUM CHECK
 document.addEventListener("DOMContentLoaded", () => {
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-
-  const user = tg.initDataUnsafe?.user;
-
-  if (!user) return;
-
-  // wait until premiumUsers exists
   const waitForPremium = setInterval(() => {
     if (Array.isArray(premiumUsers)) {
       clearInterval(waitForPremium);
-
-      const isPremium = premiumUsers.includes(Number(user.id));
-
+      const isPremium = premiumUsers.includes(Number(user?.id));
       if (isPremium) {
-        [
-          "planPage",
-          "methodPage",
-          "ngnPage",
-          "usdPage",
-          "successPage"
-        ].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.classList.add("hidden");
+        ["planPage","methodPage","ngnPage","usdPage","successPage"].forEach(id => {
+          document.getElementById(id).classList.add("hidden");
         });
-
-        document
-          .getElementById("alreadyPremiumPage")
-          .classList.remove("hidden");
+        document.getElementById("alreadyPremiumPage").classList.remove("hidden");
       }
     }
   }, 50);
@@ -303,20 +274,17 @@ function choosePlan(plan){
 
 function showNGN(){ showPage("ngnPage"); }
 function showUSD(){ showPage("usdPage"); }
-
 function showPage(page){
   ["planPage","methodPage","ngnPage","usdPage","successPage"].forEach(id=>{
     document.getElementById(id).classList.add("hidden");
   });
   document.getElementById(page).classList.remove("hidden");
 }
-
 function goBack(where){
   if(where === "home") showPage("planPage");
   if(where === "method") showPage("methodPage");
   if(where === "plan") showPage("planPage");
 }
-
 function previewImage(input, previewId){
   const file = input.files[0];
   if(!file) return;
@@ -324,114 +292,107 @@ function previewImage(input, previewId){
   reader.onload = () => document.getElementById(previewId).src = reader.result;
   reader.readAsDataURL(file);
 }
-</script>
-<script>
 async function submitPayment(type) {
-
   let whatsapp = type === "NGN"
     ? document.getElementById("ngnWhatsapp").value
     : document.getElementById("usdWhatsapp").value;
-
   let proof = type === "NGN"
     ? document.getElementById("ngnProof").files[0]
     : document.getElementById("usdProof").files[0];
-
   if (!whatsapp) return alert("Enter WhatsApp number");
   if (!proof) return alert("Upload payment screenshot");
-
   showPage("successPage");
-
   let user = tg.initDataUnsafe?.user || {};
-
   let caption = `
 🚨 NEW PREMIUM PAYMENT
-
 👤 Username: @${user.username || "N/A"}
 🆔 Telegram ID: ${user.id || "N/A"}
 📛 Full Name: ${user.first_name || "N/A"}
-
 🎁 Plan: ${selectedPlan}
 💳 Method: ${type}
 📱 WhatsApp: ${whatsapp}
-
 ⏳ Awaiting approval
 `;
-
-  // -------- ADMIN MESSAGE (PHOTO + CAPTION) --------
   let formData = new FormData();
-  formData.append("chat_id", "6976365864"); // ADMIN ID
+  formData.append("chat_id", "6976365864"); 
   formData.append("photo", proof);
   formData.append("caption", caption);
-
   try {
     await fetch("https://premium-w42a.onrender.com/telegram/send", {
       method: "POST",
-      headers: {
-        "X-API-KEY": "PREMIUMKEY"
-      },
+      headers: { "X-API-KEY": "PREMIUMKEY" },
       body: formData
     });
-
-    // -------- BUYER MESSAGE (TEXT ONLY) --------
     let buyerForm = new FormData();
     buyerForm.append("chat_id", user.id);
     buyerForm.append(
       "text",
       "✅ <b>Payment Submitted Successfully</b>\n\n⏳ Your payment is under review.\n\nYou will receive confirmation shortly.\n\nThank you for choosing Premium."
     );
-
     await fetch("https://premium-w42a.onrender.com/telegram/send", {
       method: "POST",
-      headers: {
-        "X-API-KEY": "PREMIUMKEY"
-      },
+      headers: { "X-API-KEY": "PREMIUMKEY" },
       body: buyerForm
     });
-
   } catch (e) {
     alert("⚠️ Network error. Please contact admin.");
   }
 }
-</script>
-<script>
+
 function copyWallet() {
   const walletText = document.getElementById("walletAddress").innerText.trim();
-
-  if (!walletText) {
-    alert("❌ Wallet address not found");
-    return;
-  }
-
-  navigator.clipboard.writeText(walletText).then(() => {
-    alert("✅ Wallet address copied successfully!");
-  }).catch(() => {
-    // Fallback for old browsers
-    const tempInput = document.createElement("input");
-    tempInput.value = walletText;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
-    alert("✅ Wallet address copied!");
-  });
+  if (!walletText) { alert("❌ Wallet address not found"); return; }
+  navigator.clipboard.writeText(walletText).then(()=>alert("✅ Wallet address copied successfully!"));
 }
-</script>
-<script>
+
 function copyNGNAccount() {
   const acc = document.getElementById("ngnAccountText").innerText.trim();
-
-  navigator.clipboard.writeText(acc).then(() => {
-    alert("✅ Account number copied successfully!");
-  }).catch(() => {
-    const temp = document.createElement("input");
-    temp.value = acc;
-    document.body.appendChild(temp);
-    temp.select();
-    document.execCommand("copy");
-    document.body.removeChild(temp);
-    alert("✅ Account number copied!");
-  });
+  navigator.clipboard.writeText(acc).then(()=>alert("✅ Account number copied successfully!"));
 }
 </script>
+
+<!-- ✅ LIVE USD PRICES -->
+<script>
+const PLAN_PRICES_NGN = {
+  "One week plan": 5000,
+  "Two Weeks": 10000,
+  "Forever One time payment": 25000
+};
+let usdRate = 0;
+
+async function fetchUsdRate() {
+  try {
+    const res = await fetch("https://open.er-api.com/v6/latest/NGN");
+    const data = await res.json();
+    usdRate = data.rates.USD;
+    updatePlanPrices();
+  } catch (e) {
+    console.error("Failed to fetch USD rate", e);
+  }
+}
+
+function updatePlanPrices() {
+  document.querySelectorAll(".plan-btn").forEach(btn => {
+    const text = btn.innerText;
+    if (text.includes("₦5,000")) {
+      const usd = (PLAN_PRICES_NGN["One week plan"] * usdRate).toFixed(2);
+      btn.innerText = `One week plan — ₦5,000 ($${usd})`;
+      btn.setAttribute("onclick", `choosePlan('One week plan — ₦5,000 / $${usd}')`);
+    }
+    if (text.includes("₦10,000")) {
+      const usd = (PLAN_PRICES_NGN["Two Weeks"] * usdRate).toFixed(2);
+      btn.innerText = `🥈 Two Weeks — ₦10,000 ($${usd})`;
+      btn.setAttribute("onclick", `choosePlan('Two Weeks — ₦10,000 / $${usd}')`);
+    }
+    if (text.includes("₦25,000")) {
+      const usd = (PLAN_PRICES_NGN["Forever One time payment"] * usdRate).toFixed(2);
+      btn.innerText = `🥇 Forever One time payment — ₦25,000 ($${usd})`;
+      btn.setAttribute("onclick", `choosePlan('Forever One time payment — ₦25,000 / $${usd}')`);
+    }
+  });
+}
+
+fetchUsdRate();
+</script>
 </body>
-</html> 
+</html>
