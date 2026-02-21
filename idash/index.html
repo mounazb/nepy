@@ -5,173 +5,307 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Intelligent Linkbot - WebApp</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+
+    /* ── Reset ───────────────────────────────── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Body ───────────────────────────────── */
     body, html {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #eee;
+      font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+      background: #09111a;
+      background-image:
+        radial-gradient(ellipse at 0% 0%, rgba(0,180,255,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, rgba(0,255,153,0.04) 0%, transparent 50%);
+      color: #d0dde8;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       padding-bottom: 60px;
     }
+
+    /* ── Header ─────────────────────────────── */
     header {
-      background: #111;
-      padding: 10px 15px;
+      background: #0c1520;
+      padding: 12px 16px;
       text-align: center;
+      font-family: 'Share Tech Mono', monospace;
       font-weight: 500;
-      font-size: 1.6rem;
-      letter-spacing: 1.2px;
-      border-bottom: 1px solid #222;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e0eaf5;
+      border-bottom: 1px solid rgba(0,180,255,0.25);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      position: relative;
     }
-    main { flex-grow: 1; overflow-y: auto; padding: 15px 20px; }
+    /* subtle cyan underline glow */
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00b4ff88, transparent);
+    }
+
+    /* ── Main & Pages ───────────────────────── */
+    main { flex-grow: 1; overflow-y: auto; padding: 14px 16px; }
     .page { display: none; max-width: 600px; margin: 0 auto; }
     .page.active { display: block; }
-    h2 { color: #00ff99; margin-bottom: 15px; text-align: center; font-weight: 700; }
-    p { line-height: 1.1; max-width: 600px; margin: 0 auto 15px auto; font-size: 1.05rem; }
 
-    ul.link-list { list-style: none; padding-left: 0; margin: 10px auto; max-width: 600px; }
+    h2 {
+      color: #38c9ff;
+      margin-bottom: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+    }
+
+    p {
+      line-height: 1.55;
+      max-width: 600px;
+      margin: 0 auto 14px auto;
+      font-size: 1rem;
+      color: #9ab4c8;
+    }
+
+    /* ── Link List ──────────────────────────── */
+    ul.link-list { list-style: none; padding-left: 0; margin: 8px auto; max-width: 600px; }
+
     ul.link-list li {
-      background: #222; margin: 12px 0; border-radius: 12px;
-      display: flex; align-items: center; padding: 12px 15px;
-      transition: background 0.3s ease; cursor: pointer;
+      background: #0f1e2e;
+      margin: 10px 0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 11px 14px;
+      cursor: pointer;
+      border: 1px solid rgba(0,180,255,0.15);
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
     }
-    ul.link-list li:hover { background: #00ff99; color: #000; }
-    ul.link-list li img {
-      height: 50px; width: 50px; object-fit: contain;
-      margin-right: 15px; border-radius: 8px; flex-shrink: 0;
-      border: 1.5px solid #00ff99; background: #111;
+    ul.link-list li:hover {
+      background: #132333;
+      border-color: rgba(0,180,255,0.45);
+      box-shadow: 0 0 14px rgba(0,180,255,0.12);
     }
-    ul.link-list li a { color: inherit; text-decoration: none; font-weight: 600; font-size: 1.1rem; flex-grow: 1; }
 
+    ul.link-list li img {
+      height: 44px; width: 44px;
+      object-fit: contain;
+      margin-right: 13px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,180,255,0.3);
+      background: #0a131d;
+    }
+    ul.link-list li a {
+      color: #c8dae8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      flex-grow: 1;
+    }
+
+    /* ── Buttons ────────────────────────────── */
     .btn {
-      background: #00ff99; color: #000;
-      padding: 6px 12px; font-weight: 700;
-      border: none; border-radius: 12px; cursor: pointer;
-      font-size: 0.9rem; transition: background 0.3s ease;
+      background: #0f2236;
+      color: #38c9ff;
+      padding: 5px 13px;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.8px;
+      border: 1px solid rgba(56,201,255,0.5);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      background: #38c9ff;
+      color: #050f18;
+      box-shadow: 0 0 10px rgba(56,201,255,0.45);
     }
     .btn2 {
-      background: #00ff99; color: #000;
-      padding: 5px 10px; font-weight: 500;
-      border: none; border-radius: 12px; cursor: pointer;
-      font-size: 0.9rem; transition: background 0.3s ease;
+      background: #0f2236;
+      color: #38c9ff;
+      padding: 5px 11px;
+      font-weight: 600;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      border: 1px solid rgba(56,201,255,0.4);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
     }
-    .btn:hover { background: #00cc77; }
-    .btn.disabled { background: #666; cursor: not-allowed; color: #ccc; }
+    .btn2:hover { background: #38c9ff; color: #050f18; }
+    .btn.disabled { border-color: #2a3a4a; color: #3a5060; cursor: not-allowed; background: #0a1520; }
 
+    /* ── Donation ───────────────────────────── */
     .donation-info {
-      max-width: 600px; margin: 0 auto; background: #222;
-      padding: 20px; border-radius: 12px; line-height: 1.5;
-      font-size: 1.05rem; text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #0f1e2e;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,180,255,0.2);
+      line-height: 1.6;
+      font-size: 1rem;
+      text-align: center;
     }
-    .donation-info strong { color: #00ff99; }
+    .donation-info strong { color: #38c9ff; }
+
     .crypto-address {
-      font-family: monospace; background: #111; padding: 10px;
-      border-radius: 8px; margin-top: 10px; user-select: all;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      background: #07111c;
+      color: #38c9ff;
+      padding: 11px;
+      border-radius: 6px;
+      border: 1px dashed rgba(56,201,255,0.3);
+      margin-top: 10px;
+      user-select: all;
       word-break: break-all;
+      letter-spacing: 0.5px;
     }
 
+    /* ── Bottom Nav ─────────────────────────── */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
-      background: #111; border-top: 1px solid #222;
-      display: flex; justify-content: space-around; align-items: center;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 58px;
+      background: #07111c;
+      border-top: 1px solid rgba(0,180,255,0.2);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.5);
     }
     .bottom-nav button {
-      background: none; border: none; color: #eee; font-size: 1.35rem;
-      display: flex; flex-direction: column; align-items: center;
-      cursor: pointer; transition: color 0.25s ease; width: 60px;
+      background: none;
+      border: none;
+      color: #3d5a72;
+      font-size: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: color 0.2s;
+      width: 58px;
     }
-    .bottom-nav button span { font-size: 0.75rem; margin-top: 2px; font-weight: 600; }
-    .bottom-nav button.active { color: #00ff99; font-weight: 700; }
+    .bottom-nav button span {
+      font-size: 0.65rem;
+      margin-top: 2px;
+      font-weight: 600;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .bottom-nav button.active { color: #38c9ff; }
+    .bottom-nav a { text-decoration: none; }
+    .bottom-nav a button { color: #3d5a72; }
+    .bottom-nav a button:hover { color: #38c9ff; }
 
+    /* ── Responsive ─────────────────────────── */
     @media (max-width: 400px) {
       ul.link-list li { flex-direction: column; align-items: flex-start; }
       ul.link-list li img { margin-bottom: 8px; margin-right: 0; }
     }
-    /* ===== PREMIUM MODAL ===== */
-.premium-modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
 
-.premium-box{
-  background:#111;
-  border-radius:16px;
-  padding:22px;
-  width:90%;
-  max-width:360px;
-  text-align:center;
-  box-shadow:0 10px 40px rgba(0,0,0,.6);
-  animation:scaleIn .25s ease;
-}
+    /* ═══ PREMIUM MODAL ═════════════════════ */
+    .premium-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(3px);
+    }
 
-.premium-box h3{
-  color:#00ff99;
-  margin-bottom:10px;
-}
+    .premium-box {
+      background: #0c1b2a;
+      border: 1px solid rgba(56,201,255,0.3);
+      border-radius: 12px;
+      padding: 22px 20px;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 30px rgba(56,201,255,0.08);
+      animation: scaleIn .25s ease;
+    }
 
-.premium-box p{
-  font-size:.95rem;
-  color:#ddd;
-  margin-bottom:18px;
-}
+    .premium-box h3 {
+      color: #38c9ff;
+      margin-bottom: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 2px;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
 
-.premium-buy-btn{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:#00ff99;
-  color:#000;
-  font-weight:700;
-  margin-bottom:10px;
-  cursor:pointer;
-}
+    .premium-box p {
+      font-size: .92rem;
+      color: #8aaec5;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
 
-.premium-ok-btn{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:1px;
-  background:#1f8cff;
-  color:#fff;
-  font-weight:700;
-  margin-bottom:10px;
-  cursor:pointer;
-}
-.whatsapp-ok-btn{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:1px;
-  background:green;
-  color:#fff;
-  font-weight:700;
-  margin-bottom:10px;
-  cursor:pointer;
-}
+    /* Shared modal button base */
+    .premium-buy-btn,
+    .premium-ok-btn,
+    .whatsapp-ok-btn,
+    .premium-later-btn {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: filter 0.2s, box-shadow 0.2s;
+    }
 
-.premium-later-btn{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:1px;
-  background:white;
-  color:black;
-  font-weight:700;
-  cursor:pointer;
-  margin-bottom: 4px;
-}
+    .premium-buy-btn {
+      background: linear-gradient(90deg, #00b96a, #00e887);
+      color: #050f18;
+      box-shadow: 0 0 10px rgba(0,232,135,0.25);
+    }
+    .premium-buy-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(0,232,135,0.45); }
 
-@keyframes scaleIn{
-  from{transform:scale(.8);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
+    .premium-ok-btn {
+      background: linear-gradient(90deg, #1263cc, #1f8cff);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(31,140,255,0.2);
+    }
+    .premium-ok-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(31,140,255,0.4); }
+
+    .whatsapp-ok-btn {
+      background: linear-gradient(90deg, #1a6e2e, #25d366);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(37,211,102,0.2);
+    }
+    .whatsapp-ok-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(37,211,102,0.4); }
+
+    .premium-later-btn {
+      background: rgba(255,255,255,0.05);
+      color: #7a9db8;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 4px;
+    }
+    .premium-later-btn:hover { background: rgba(255,255,255,0.1); color: #c0d8ea; }
+
+    @keyframes scaleIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -213,25 +347,30 @@
 <style>
   .custom-link-btn {
     max-width: 600px;
-    margin: 0 auto 15px auto;
-    margin-top: 10px;
+    margin: 10px auto 15px auto;
   }
 
   .custom-link-btn a {
     display: block;
-    background:#6cef8a;
-    padding: 10px;
-    border-radius: 12px;
+    background: #0f2236;
+    padding: 11px;
+    border-radius: 6px;
+    border: 1px solid rgba(56,201,255,0.45);
     text-align: center;
     font-weight: 700;
-    font-size: 1.05rem;
-    color: black;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.92rem;
+    letter-spacing: 1px;
+    color: #38c9ff;
     text-decoration: none;
-    transition: 0.3s ease;
+    text-transform: uppercase;
+    transition: background 0.2s, box-shadow 0.2s;
   }
 
   .custom-link-btn a:hover {
-    background: #1e7e34;
+    background: #38c9ff;
+    color: #050f18;
+    box-shadow: 0 0 12px rgba(56,201,255,0.4);
   }
 </style>
 
