@@ -365,77 +365,7 @@
     }
     #openBotBtnVictim:hover { opacity: 0.85; }
 
-    /* ── PREMIUM MODAL ─────────────────────── */
-    .premium-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.78);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      backdrop-filter: blur(4px);
-      padding: 16px;
-    }
-    .premium-box {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 16px;
-      padding: 24px 20px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      animation: popIn 0.22s ease;
-    }
-    @keyframes popIn {
-      from { transform: scale(0.88); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-    .premium-box h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-    .premium-box p {
-      font-size: 0.88rem;
-      color: var(--text2);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .premium-box p a { color: var(--accent); font-weight: 600; text-decoration: none; }
-    .premium-box p b { color: var(--text); }
-
-    .premium-buy-btn,
-    .premium-ok-btn,
-    .whatsapp-ok-btn,
-    .premium-later-btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      font-weight: 700;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.88rem;
-      letter-spacing: 0.2px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      border-radius: var(--radius-sm);
-      transition: opacity 0.18s, transform 0.15s;
-    }
-    .premium-buy-btn { background: var(--accent2); color: #0a1a14; }
-    .premium-ok-btn { background: var(--accent); color: #fff; }
-    .whatsapp-ok-btn { background: #25d366; color: #fff; }
-    .premium-later-btn {
-      background: var(--surface2);
-      color: var(--text2);
-      border: 1px solid var(--border2);
-      margin-bottom: 0;
-    }
-    .premium-buy-btn:hover,
-    .premium-ok-btn:hover,
-    .whatsapp-ok-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .premium-later-btn:hover { background: #252b3a; color: var(--text); }
+    /* Premium modal removed – replaced by WhatsApp popup */
 
     /* ── Responsive ────────────────────────── */
     @media (max-width: 400px) {
@@ -835,33 +765,7 @@
     });
   </script>
 
-  <!-- ── Premium Popup ── -->
-  <div id="premiumModal" class="premium-modal">
-    <div class="premium-box">
-      <h3>📢 Quick Notice</h3>
-      <p>Copy your link and send it to your client. Make sure you send <b>/start</b> to
-        <a href="https://t.me/intelligentverificationlinkbot" target="_blank" rel="noopener">@intelligentverificationlinkbot</a>
-        — that's where you'll see all your client logins.
-      </p>
-      <p>
-        Some free links have moved to <b>Premium</b>. If you don't see what you need in free links, check Premium — all links are there! 💎
-      </p>
-      <p>Don't worry 😉 — non-premium users can still copy free links 🔗.</p>
-      <button class="premium-ok-btn" onclick="goToPremium()">✅ I'm already a Premium user</button>
-      <button class="premium-later-btn" onclick="closePremiumModal()">Copy free links (buy premium later)</button>
-      <a href="https://whatsapp.com/channel/0029VbBukzMC6ZvbuIyY420O/103" target="_blank" style="display:block;margin-top:8px;">
-        <button class="whatsapp-ok-btn">✅ Join our WhatsApp Group</button>
-      </a>
-    </div>
-  </div>
-
-  <script>
-    function openPremiumModal() { document.getElementById("premiumModal").style.display = "flex"; }
-    function closePremiumModal() { document.getElementById("premiumModal").style.display = "none"; }
-    function goPremium() { window.open("https://t.me/intelpremiumbot?start=ar9252926658", "_blank"); }
-    function goToPremium() { closePremiumModal(); switchPage("premium"); }
-    window.addEventListener("load", () => { setTimeout(openPremiumModal, 1500); });
-  </script>
+  <!-- Premium Popup removed – WhatsApp popup used instead -->
 
   <script>
     function copyInviteLink() {
@@ -1062,9 +966,9 @@
     function openWaModal()  { document.getElementById("waModal").style.display = "flex"; }
     function closeWaModal() { document.getElementById("waModal").style.display = "none"; }
 
-    // Show 5 seconds after page loads (after the premium modal clears)
+    // Show on every page load / reload after 1.5 seconds
     window.addEventListener("load", () => {
-      setTimeout(openWaModal, 5000);
+      setTimeout(openWaModal, 1500);
     });
   </script>
 
