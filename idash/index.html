@@ -788,13 +788,15 @@
       z-index: 99999;
       backdrop-filter: blur(4px);
       padding: 16px;
-      animation: fadeInBg 0.3s ease;
+    }
+    #waModal.show {
+      display: flex;
+      animation: fadeInBg 0.3s ease forwards;
     }
     @keyframes fadeInBg {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
-    #waModal.show { display: flex; }
 
     .wa-sheet {
       background: #1a1f2e;
@@ -963,13 +965,39 @@
   </div>
 
   <script>
-    function openWaModal()  { document.getElementById("waModal").style.display = "flex"; }
-    function closeWaModal() { document.getElementById("waModal").style.display = "none"; }
+    var _waShown = false;
 
-    // Show on every page load / reload after 1.5 seconds
-    window.addEventListener("load", () => {
+    function openWaModal() {
+      var modal = document.getElementById("waModal");
+      if (!modal) return;
+      // Remove and re-add class to replay animation every time
+      modal.classList.remove("show");
+      modal.style.display = "none";
+      // Force reflow so animation restarts
+      void modal.offsetWidth;
+      modal.style.display = "flex";
+      modal.classList.add("show");
+      _waShown = true;
+    }
+
+    function closeWaModal() {
+      var modal = document.getElementById("waModal");
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.style.display = "none";
+    }
+
+    function _scheduleWaModal() {
+      if (_waShown) return;
       setTimeout(openWaModal, 1500);
-    });
+    }
+
+    // Fires on every full page load / reload
+    window.addEventListener("load", _scheduleWaModal);
+    // Fallback: in case 'load' already fired (e.g. inside Telegram WebApp)
+    if (document.readyState === "complete") {
+      _scheduleWaModal();
+    }
   </script>
 
 </body>
