@@ -775,6 +775,185 @@
       });
     }
   </script>
+<!--
+  ══════════════════════════════════════════════════════
+  WhatsApp Group Join Widget
+  Paste this entire block just before </body> on any page
+  ══════════════════════════════════════════════════════
+-->
+
+<!-- ── WhatsApp Join Widget Styles ── -->
+<style>
+  #waGroupModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 99999;
+    backdrop-filter: blur(4px);
+    padding: 16px;
+  }
+  #waGroupModal.show {
+    display: flex;
+    animation: wgFadeIn 0.3s ease forwards;
+  }
+  @keyframes wgFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .wg-sheet {
+    background: #1a1f2e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px 20px 16px 16px;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    animation: wgSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+  @keyframes wgSlideUp {
+    from { transform: translateY(80px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Green banner */
+  .wg-banner {
+    background: linear-gradient(135deg, #075e54, #128c7e, #25d366);
+    padding: 28px 20px 22px;
+    text-align: center;
+    position: relative;
+  }
+  .wg-banner-icon { font-size: 3rem; line-height: 1; margin-bottom: 8px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); }
+  .wg-banner h3 { font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 4px; }
+  .wg-banner p  { font-size: 0.82rem; color: rgba(255,255,255,0.82); margin: 0; }
+
+  /* Close button */
+  .wg-close {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(0,0,0,0.25); border: none; color: #fff;
+    width: 30px; height: 30px; border-radius: 50%;
+    font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s; line-height: 1;
+  }
+  .wg-close:hover { background: rgba(0,0,0,0.5); }
+
+  /* Body */
+  .wg-body { padding: 18px 20px 20px; }
+  .wg-body > p {
+    font-size: 0.9rem; color: #b0b8cc;
+    line-height: 1.65; margin-bottom: 16px; text-align: center;
+  }
+  .wg-body > p strong { color: #f0f2f7; }
+
+  /* Perks */
+  .wg-perks { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .wg-perk {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(37,211,102,0.07);
+    border: 1px solid rgba(37,211,102,0.18);
+    border-radius: 10px; padding: 9px 13px;
+    font-size: 0.88rem; color: #d0f5e4; font-weight: 500;
+  }
+  .wg-perk span:first-child { font-size: 1.1rem; flex-shrink: 0; }
+
+  /* Join button */
+  .wg-btn-join {
+    display: block; width: 100%;
+    background: linear-gradient(135deg, #128c7e, #25d366);
+    color: #fff; font-weight: 700; font-size: 0.95rem;
+    padding: 13px; border: none; border-radius: 12px;
+    cursor: pointer; text-align: center; text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s; margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .wg-btn-join:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* Cancel link */
+  .wg-btn-cancel {
+    display: block; width: 100%; background: transparent;
+    color: #6e7a94; font-size: 0.85rem; font-weight: 500;
+    padding: 9px; border: none; cursor: pointer;
+    text-align: center; transition: color 0.2s;
+  }
+  .wg-btn-cancel:hover { color: #b0b8cc; }
+</style>
+
+<!-- ── WhatsApp Join Widget HTML ── -->
+<div id="waGroupModal">
+  <div class="wg-sheet">
+
+    <div class="wg-banner">
+      <button class="wg-close" onclick="closeWgModal()" title="Close">✕</button>
+      <div class="wg-banner-icon">💬</div>
+      <h3>Join Our WhatsApp Group</h3>
+      <p>Get the latest updates instantly</p>
+    </div>
+
+    <div class="wg-body">
+      <p>Don't miss out! Join our <strong>WhatsApp Group</strong> for the latest updates, tips, and exclusive content.</p>
+
+      <div class="wg-perks">
+        <div class="wg-perk"><span>🔔</span><span>Instant update notifications</span></div>
+        <div class="wg-perk"><span>🎁</span><span>Exclusive offers &amp; freebies</span></div>
+        <div class="wg-perk"><span>💡</span><span>Tips &amp; tricks shared first</span></div>
+        <div class="wg-perk"><span>📣</span><span>Important announcements</span></div>
+      </div>
+
+      <a href="https://chat.whatsapp.com/EOwT9wCjhq86f5jrLRrJs0?mode=gi_t"
+         target="_blank" rel="noopener"
+         class="wg-btn-join"
+         onclick="closeWgModal()">
+        ✅ Join WhatsApp Group
+      </a>
+      <button class="wg-btn-cancel" onclick="closeWgModal()">No thanks, maybe later</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── WhatsApp Join Widget Script ── -->
+<script>
+  (function () {
+    var _wgShown = false;
+
+    function openWgModal() {
+      if (_wgShown) return;
+      var modal = document.getElementById("waGroupModal");
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.style.display = "none";
+      void modal.offsetWidth; // force reflow for animation restart
+      modal.style.display = "flex";
+      modal.classList.add("show");
+      _wgShown = true;
+    }
+
+    window.closeWgModal = function () {
+      var modal = document.getElementById("waGroupModal");
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.style.display = "none";
+    };
+
+    // Show after 5 seconds on page load
+    function scheduleWgModal() {
+      if (_wgShown) return;
+      setTimeout(openWgModal, 5000);
+    }
+
+    if (document.readyState === "complete") {
+      scheduleWgModal();
+    } else {
+      window.addEventListener("load", scheduleWgModal);
+    }
+  })();
+</script>
+<!-- ══ End of WhatsApp Join Widget ══ -->
 
   <!-- WhatsApp popup removed as requested -->
 
