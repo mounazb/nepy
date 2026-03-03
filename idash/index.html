@@ -639,12 +639,12 @@
     <div class="ad-notice-body">
       <div class="ad-notice-icon">🎬</div>
       <h3>An Advertisement Will Show</h3>
-      <p>A short ad from our sponsor will appear in <strong>3 seconds</strong>. This keeps the app <strong>100% free</strong> for everyone.<br/>You can skip waiting and watch it now.</p>
+      <p>A short ad from our sponsor will appear in <strong>4 seconds</strong>. This keeps the app <strong>100% free</strong> for everyone.<br/>You can skip waiting and watch it now.</p>
 
       <!-- Countdown -->
       <div class="ad-countdown-wrap">
         <div class="ad-timer-circle" id="adTimerCircle" style="--p:100%">
-          <span class="ad-timer-num" id="adTimerNum">3</span>
+          <span class="ad-timer-num" id="adTimerNum">4</span>
         </div>
         <div class="ad-countdown-text">
           <strong>Ad opens automatically</strong>
@@ -676,11 +676,11 @@
   // Pending callback: called after ad notice is dismissed
   var _adNoticePending = null;
   var _adNoticeTimer = null;
-  var _adNoticeSeconds = 3;
+  var _adNoticeSeconds = 4;
 
   function showAdNotice(callback) {
     _adNoticePending = callback || null;
-    _adNoticeSeconds = 3;
+    _adNoticeSeconds = 4;
 
     // Reset UI
     var circle = document.getElementById('adTimerCircle');
@@ -701,7 +701,7 @@
     clearInterval(_adNoticeTimer);
     _adNoticeTimer = setInterval(function() {
       _adNoticeSeconds--;
-      var pct = (_adNoticeSeconds / 3 * 100).toFixed(0) + '%';
+      var pct = (_adNoticeSeconds / 4 * 100).toFixed(0) + '%';
       circle.style.setProperty('--p', pct);
       numEl.textContent = _adNoticeSeconds;
 
@@ -856,7 +856,7 @@
   <!-- ── AD Label Bar (above nav) ── -->
   <div id="adNavBar">
     <span class="ad-nav-pill">📢 AD</span>
-    <span class="ad-nav-msg">Tapping <strong>Home</strong> or <strong>Victim</strong> shows a short ad — the ads it is <strong>NOT</strong> part of this app</span>
+    <span class="ad-nav-msg">Tapping <strong>Home</strong> or <strong>Victim</strong> shows a short ad — it is <strong>NOT</strong> part of this app</span>
   </div>
 
   <!-- ── BOTTOM NAV ── -->
