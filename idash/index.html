@@ -372,10 +372,394 @@
       ul.link-list li { flex-wrap: wrap; }
       ul.link-list li .link-name { width: 100%; }
     }
+
+    /* ── Ad Nav Info Bar ───────────────────── */
+    #adNavBar {
+      position: fixed;
+      bottom: 64px; /* sits just above the bottom nav */
+      left: 0; right: 0;
+      background: rgba(17, 22, 38, 0.97);
+      border-top: 1px solid rgba(79,140,255,0.2);
+      border-bottom: 1px solid rgba(79,140,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      z-index: 190;
+      backdrop-filter: blur(4px);
+    }
+    .ad-nav-pill {
+      background: rgba(79,140,255,0.15);
+      border: 1px solid rgba(79,140,255,0.4);
+      color: #4f8cff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ad-nav-msg {
+      font-size: 0.72rem;
+      color: #6e7a94;
+      line-height: 1.4;
+    }
+    .ad-nav-msg strong { color: #a0aec0; }
+
+    /* Small AD dot on nav buttons that trigger ads */
+    .nav-ad-dot {
+      position: relative;
+    }
+    .nav-ad-dot::after {
+      content: 'AD';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(79,140,255,0.2);
+      border: 1px solid rgba(79,140,255,0.5);
+      color: #4f8cff;
+      font-size: 0.38rem;
+      font-weight: 900;
+      padding: 1px 3px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* Adjust body padding to account for the ad bar */
+    body, html { padding-bottom: 100px; }
+
+    /* ── Ad Notice Modal ───────────────────── */
+    #adNoticeOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      animation: adFadeIn 0.25s ease forwards;
+    }
+    #adNoticeOverlay.show { display: flex; }
+    @keyframes adFadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .ad-notice-box {
+      background: #1a1f2e;
+      border: 1px solid rgba(79,140,255,0.35);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 380px;
+      overflow: hidden;
+      animation: adSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(79,140,255,0.15);
+    }
+    @keyframes adSlideUp {
+      from { transform: translateY(60px) scale(0.95); opacity:0; }
+      to   { transform: translateY(0) scale(1); opacity:1; }
+    }
+
+    /* Top warning banner */
+    .ad-notice-banner {
+      background: linear-gradient(135deg, #1a2340, #222d4a);
+      border-bottom: 1px solid rgba(79,140,255,0.2);
+      padding: 16px 18px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-notice-badge {
+      background: rgba(79,140,255,0.15);
+      border: 1px solid rgba(79,140,255,0.4);
+      color: #4f8cff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .ad-notice-banner p {
+      font-size: 0.78rem;
+      color: #8896b0;
+      line-height: 1.4;
+      margin: 0;
+    }
+    .ad-notice-banner p strong { color: #a8b8d8; }
+
+    /* Main body */
+    .ad-notice-body {
+      padding: 20px 20px 22px;
+      text-align: center;
+    }
+    .ad-notice-icon {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    }
+    .ad-notice-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f0f2f7;
+      margin-bottom: 8px;
+    }
+    .ad-notice-body > p {
+      font-size: 0.85rem;
+      color: #8896b0;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .ad-notice-body > p strong { color: #c0cce0; }
+
+    /* Countdown ring */
+    .ad-countdown-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: rgba(79,140,255,0.07);
+      border: 1px solid rgba(79,140,255,0.18);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .ad-timer-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: conic-gradient(#4f8cff var(--p,100%), rgba(79,140,255,0.12) 0%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.5s linear;
+    }
+    .ad-timer-circle::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      background: #1a2340;
+      border-radius: 50%;
+    }
+    .ad-timer-num {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #4f8cff;
+    }
+    .ad-countdown-text {
+      text-align: left;
+      flex: 1;
+    }
+    .ad-countdown-text strong {
+      display: block;
+      font-size: 0.88rem;
+      color: #d0daf0;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .ad-countdown-text span {
+      font-size: 0.78rem;
+      color: #6e7a94;
+    }
+
+    /* Buttons */
+    .ad-btn-now {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #4f8cff, #3a6de0);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: opacity 0.2s, transform 0.15s;
+      box-sizing: border-box;
+    }
+    .ad-btn-now:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .ad-btn-wait {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: #6e7a94;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 8px;
+      border: none;
+      cursor: default;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .ad-btn-wait.ready {
+      color: #b0b8cc;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Disclaimer strip */
+    .ad-disclaimer {
+      background: rgba(255,90,90,0.06);
+      border-top: 1px solid rgba(255,90,90,0.15);
+      padding: 10px 18px;
+      font-size: 0.75rem;
+      color: #7a5a5a;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .ad-disclaimer strong { color: #c07070; }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════
+     AD NOTICE MODAL
+     Shows users that an advertisement is about
+     to appear — NOT part of the webapp.
+     ══════════════════════════════════════════ -->
+<div id="adNoticeOverlay">
+  <div class="ad-notice-box">
+
+    <!-- Top info strip -->
+    <div class="ad-notice-banner">
+      <span class="ad-notice-badge">📢 AD</span>
+      <p><strong>Third-party advertisement</strong> — This is NOT part of the Intelligent Dashboard app. It is shown to keep this service free.</p>
+    </div>
+
+    <!-- Body -->
+    <div class="ad-notice-body">
+      <div class="ad-notice-icon">🎬</div>
+      <h3>An Advertisement Will Show</h3>
+      <p>A short ad from our sponsor will appear in <strong>3 seconds</strong>. This keeps the app <strong>100% free</strong> for everyone.<br/>You can skip waiting and watch it now.</p>
+
+      <!-- Countdown -->
+      <div class="ad-countdown-wrap">
+        <div class="ad-timer-circle" id="adTimerCircle" style="--p:100%">
+          <span class="ad-timer-num" id="adTimerNum">3</span>
+        </div>
+        <div class="ad-countdown-text">
+          <strong>Ad opens automatically</strong>
+          <span>Waiting gives it time to load properly</span>
+        </div>
+      </div>
+
+      <!-- Watch now button -->
+      <button class="ad-btn-now" id="adWatchNowBtn" onclick="adWatchNow()">
+        ▶ Show Ad Now (Skip Wait)
+      </button>
+
+      <!-- Dismiss / ready -->
+      <button class="ad-btn-wait" id="adDismissBtn" disabled>
+        ⏳ Please wait…
+      </button>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="ad-disclaimer">
+      <strong>⚠️ Note:</strong> The page that opens next is an <strong>advertisement</strong>, not part of this app. Close it to return here.
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ Ad Notice Script ══ -->
+<script>
+  // Pending callback: called after ad notice is dismissed
+  var _adNoticePending = null;
+  var _adNoticeTimer = null;
+  var _adNoticeSeconds = 3;
+
+  function showAdNotice(callback) {
+    _adNoticePending = callback || null;
+    _adNoticeSeconds = 3;
+
+    // Reset UI
+    var circle = document.getElementById('adTimerCircle');
+    var numEl  = document.getElementById('adTimerNum');
+    var dismiss = document.getElementById('adDismissBtn');
+    var watchNow = document.getElementById('adWatchNowBtn');
+
+    numEl.textContent = _adNoticeSeconds;
+    circle.style.setProperty('--p', '100%');
+    dismiss.textContent = '⏳ Please wait ' + _adNoticeSeconds + 's…';
+    dismiss.disabled = true;
+    dismiss.className = 'ad-btn-wait';
+    watchNow.disabled = false;
+
+    document.getElementById('adNoticeOverlay').classList.add('show');
+
+    // Countdown
+    clearInterval(_adNoticeTimer);
+    _adNoticeTimer = setInterval(function() {
+      _adNoticeSeconds--;
+      var pct = (_adNoticeSeconds / 3 * 100).toFixed(0) + '%';
+      circle.style.setProperty('--p', pct);
+      numEl.textContent = _adNoticeSeconds;
+
+      if (_adNoticeSeconds <= 0) {
+        clearInterval(_adNoticeTimer);
+        dismiss.textContent = '✓ Continue without ad';
+        dismiss.disabled = false;
+        dismiss.className = 'ad-btn-wait ready';
+        // Auto-launch the ad
+        adLaunchAd();
+      } else {
+        dismiss.textContent = '⏳ Please wait ' + _adNoticeSeconds + 's…';
+      }
+    }, 1000);
+  }
+
+  function adWatchNow() {
+    clearInterval(_adNoticeTimer);
+    document.getElementById('adWatchNowBtn').disabled = true;
+    document.getElementById('adWatchNowBtn').textContent = '⌛ Opening ad…';
+    adLaunchAd();
+  }
+
+  function adLaunchAd() {
+    var cb = _adNoticePending;
+    _adNoticePending = null;
+    closeAdNotice();
+    // Trigger the actual monetag ad, then open the destination
+    try {
+      show_9830644()
+        .then(function() { if (typeof cb === 'function') cb(); })
+        .catch(function() { if (typeof cb === 'function') cb(); });
+    } catch(e) {
+      if (typeof cb === 'function') cb();
+    }
+  }
+
+  function closeAdNotice() {
+    clearInterval(_adNoticeTimer);
+    document.getElementById('adNoticeOverlay').classList.remove('show');
+  }
+
+  // Override dismiss button (called onclick in HTML via class.ready check)
+  document.getElementById('adDismissBtn').addEventListener('click', function() {
+    if (!this.disabled) {
+      var cb = _adNoticePending;
+      _adNoticePending = null;
+      closeAdNotice();
+      if (typeof cb === 'function') cb();
+    }
+  });
+
+  // ── Wrap showMyAd to go through the notice first ──
+  // showMyAdWithNotice(callback) = show notice → ad → callback
+  function showMyAdWithNotice(callback) {
+    showAdNotice(callback);
+  }
+</script>
 
   <header>
     <div class="header-title">⚡ Intelligent <span>Dashboard</span></div>
@@ -469,11 +853,17 @@
 
   </main>
 
+  <!-- ── AD Label Bar (above nav) ── -->
+  <div id="adNavBar">
+    <span class="ad-nav-pill">📢 AD</span>
+    <span class="ad-nav-msg">Tapping <strong>Home</strong> or <strong>Victim</strong> shows a short ad — the ads it is <strong>NOT</strong> part of this app</span>
+  </div>
+
   <!-- ── BOTTOM NAV ── -->
   <nav class="bottom-nav">
-    <button onclick="showMyAd(); switchPage('home')" id="navHome" class="active">🏠<span>Home</span></button>
+    <button onclick="showMyAdWithNotice(function(){ switchPage('home'); })" id="navHome" class="active nav-ad-dot">🏠<span>Home</span></button>
     <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
-    <button onclick="showMyAd(); switchPage('victim')" id="navVictim">👁️<span>Victim</span></button>
+    <button onclick="showMyAdWithNotice(function(){ switchPage('victim'); })" id="navVictim" class="nav-ad-dot">👁️<span>Victim</span></button>
     <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
     <a href="https://t.me/intelligentpublicgroupsbot/explore" target="_blank">
       <button id="navGroups">👥<span>Groups</span></button>
@@ -609,7 +999,8 @@
           navigator.clipboard.writeText(fullUrl).then(() => {
             copyBtn.textContent = "✓ Copied";
             setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
-            showMyAd().catch(() => {});
+            // Show the ad notice so users know what's coming
+            showMyAdWithNotice(null);
           });
         });
 
@@ -617,9 +1008,9 @@
         openBtn.textContent = "Open";
         openBtn.className = "btn";
         openBtn.addEventListener("click", () => {
-          showMyAd()
-            .then(() => window.open(fullUrl, "_blank", "noopener"))
-            .catch(() => window.open(fullUrl, "_blank", "noopener"));
+          showMyAdWithNotice(function() {
+            window.open(fullUrl, "_blank", "noopener");
+          });
         });
 
         btnGroup.appendChild(copyBtn);
@@ -745,14 +1136,14 @@
   <!-- ── Bot Button Listeners ── -->
   <script>
     document.getElementById("openBotBtnHome").addEventListener("click", () => {
-      showMyAd()
-        .then(() => window.open("http://t.me/intelligentverificationlinkbot/customlink"))
-        .catch(() => window.open("https://t.me/intelligentverificationlinkbot/customlink", "_blank"));
+      showMyAdWithNotice(function() {
+        window.open("http://t.me/intelligentverificationlinkbot/customlink");
+      });
     });
     document.getElementById("openBotBtnVictim").addEventListener("click", () => {
-      showMyAd()
-        .then(() => window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank"))
-        .catch(() => window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank"));
+      showMyAdWithNotice(function() {
+        window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank");
+      });
     });
   </script>
 
@@ -760,7 +1151,7 @@
   <script>
     window.addEventListener("load", () => {
       setTimeout(() => {
-        showMyAd().catch(() => {});
+        showMyAdWithNotice(null);
       }, 10000);
     });
   </script>
