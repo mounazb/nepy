@@ -16,7 +16,6 @@ const premiumUsers = [
 1453573199,
 5085293272,
 8553267554,
-8307830690,// Expired 14 mar 2026
   // Add more IDs here
 //one week people
 // one week people 
