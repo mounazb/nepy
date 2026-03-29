@@ -18,5 +18,6 @@ const premiumUsers = [
 8553267554,
   // Add more IDs here
 //one week people
+7762146760, // exp April 5 2026
 // one week people 
 ];
