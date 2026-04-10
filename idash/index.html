@@ -895,7 +895,15 @@
     }
   </script>
 
-  <script src="https://intelseller.com/premiumlist.js"></script>
+  <script>
+    // Cache-bust premiumlist.js on every new app open (no stale cache)
+    (function() {
+      var s = document.createElement('script');
+      s.src = 'https://intelseller.com/premiumlist.js?_=' + Date.now();
+      s.id = 'premiumListScript';
+      document.head.appendChild(s);
+    })();
+  </script>
   <script src="premium.js"></script>
 
   <script>
@@ -910,7 +918,10 @@
 
     // ── Add Edit Crypto Button for premium users ──
     function addEditCryptoButton() {
+      // Don't add twice
+      if (document.getElementById('editCryptoBtnWrapper')) return;
       const btnWrapper = document.createElement("div");
+      btnWrapper.id = "editCryptoBtnWrapper";
       btnWrapper.style.cssText = "max-width:600px;margin:0 auto 14px auto;";
       btnWrapper.innerHTML = `
         <a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" style="text-decoration:none;">
@@ -920,8 +931,36 @@
         </a>`;
       premiumContent.parentNode.insertBefore(btnWrapper, premiumContent);
     }
-    if (typeof premiumUsers !== "undefined" && premiumUsers && premiumUsers.includes(telegramId)) {
-      addEditCryptoButton();
+
+    // ── Run all premium-dependent logic after premiumlist.js is ready ──
+    function initPremiumFeatures() {
+      if (typeof premiumUsers !== "undefined" && Array.isArray(premiumUsers) && premiumUsers.includes(telegramId)) {
+        addEditCryptoButton();
+      }
+      renderPremiumLinks();
+    }
+
+    // Wait for the dynamically injected premiumlist.js script to load
+    function waitForPremiumList() {
+      var script = document.getElementById('premiumListScript');
+      if (!script) {
+        // Script tag not yet injected — retry shortly
+        setTimeout(waitForPremiumList, 50);
+        return;
+      }
+      if (typeof premiumUsers !== "undefined") {
+        // Already loaded
+        initPremiumFeatures();
+      } else {
+        // Wait for the script's load event
+        script.addEventListener('load', function() {
+          initPremiumFeatures();
+        });
+        script.addEventListener('error', function() {
+          // premiumlist.js failed to load — show locked state
+          premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Could not load premium list. Please try again.</p>`;
+        });
+      }
     }
 
     // ── Nav ──
@@ -1129,8 +1168,8 @@
     }
 
     renderFreeLinks();
-    renderPremiumLinks();
     renderDonationInfo();
+    waitForPremiumList(); // waits for premiumlist.js then runs premium checks
   </script>
 
   <!-- ── Bot Button Listeners ── -->
