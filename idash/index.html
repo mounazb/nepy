@@ -373,6 +373,80 @@
       ul.link-list li .link-name { width: 100%; }
     }
 
+    /* ── Profile Card ──────────────────────── */
+    .profile-avatar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .profile-avatar {
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      background: var(--surface2);
+      box-shadow: 0 4px 18px rgba(79,140,255,0.28);
+      margin-bottom: 12px;
+    }
+    .profile-avatar-placeholder {
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; font-weight: 700; color: #fff;
+      border: 3px solid var(--accent);
+      box-shadow: 0 4px 18px rgba(79,140,255,0.28);
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+    .profile-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--text);
+      text-align: center; margin-bottom: 4px;
+    }
+    .profile-username {
+      font-size: 0.88rem; color: var(--accent); font-weight: 600;
+      text-align: center; margin-bottom: 2px;
+    }
+    .profile-premium-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: linear-gradient(135deg, #ffc84a22, #e0a02022);
+      border: 1px solid rgba(255,200,74,0.5);
+      color: var(--gold); font-size: 0.75rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 999px; margin-top: 6px;
+      letter-spacing: 0.4px;
+    }
+    .profile-info-grid {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .profile-info-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .profile-info-icon {
+      font-size: 1.2rem; flex-shrink: 0; width: 28px; text-align: center;
+    }
+    .profile-info-content { flex: 1; min-width: 0; }
+    .profile-info-label {
+      font-size: 0.72rem; color: var(--text3); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
+    }
+    .profile-info-value {
+      font-size: 0.95rem; color: var(--text); font-weight: 600;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .profile-copy-btn {
+      background: var(--surface2); border: 1px solid var(--border2);
+      color: var(--text2); font-size: 0.75rem; font-weight: 600;
+      padding: 5px 10px; border-radius: 6px; cursor: pointer;
+      transition: background 0.15s, color 0.15s; flex-shrink: 0;
+    }
+    .profile-copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
     /* ── Ad Nav Info Bar ───────────────────── */
     #adNavBar {
       position: fixed;
@@ -851,6 +925,17 @@
       <div class="donation-info" id="donationInfo"></div>
     </section>
 
+    <!-- ── PROFILE ── -->
+    <section id="profile" class="page">
+      <div class="section-header">
+        <h2>👤 My Profile</h2>
+        <p>Your Telegram account details</p>
+      </div>
+      <div id="profileContent">
+        <p style="text-align:center;color:var(--text3);font-size:0.9rem;">Loading profile…</p>
+      </div>
+    </section>
+
   </main>
 
   <!-- ── AD Label Bar (above nav) ── -->
@@ -865,15 +950,10 @@
     <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
     <button onclick="showMyAdWithNotice(function(){ switchPage('victim'); })" id="navVictim" class="nav-ad-dot">👁️<span>Victim</span></button>
     <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
-    <a href="https://t.me/intelligentpublicgroupsbot/explore" target="_blank">
-      <button id="navGroups">👥<span>Groups</span></button>
+    <a href="https://intelseller.com" target="_blank" rel="noopener noreferrer">
+      <button id="navMarketplace">🛒<span>Market</span></button>
     </a>
-    <a href="http://t.me/intelpremiumbot/premiumdash" target="_blank">
-      <button id="navEarning">💵<span>Earning</span></button>
-    </a>
-    <a href="https://t.me/intelligentverificationlinkbot/about" target="_blank">
-      <button id="navHelp">❓<span>Help</span></button>
-    </a>
+    <button onclick="switchPage('profile')" id="navProfile">👤<span>Profile</span></button>
   </nav>
 
   <!-- ── AD SDK ── -->
@@ -968,13 +1048,15 @@
       home:    document.getElementById('navHome'),
       premium: document.getElementById('navPremium'),
       victim:  document.getElementById('navVictim'),
-      donate:  document.getElementById('navDonate')
+      donate:  document.getElementById('navDonate'),
+      profile: document.getElementById('navProfile')
     };
     const pages = {
       home:    document.getElementById('home'),
       premium: document.getElementById('premium'),
       victim:  document.getElementById('victim'),
-      donate:  document.getElementById('donate')
+      donate:  document.getElementById('donate'),
+      profile: document.getElementById('profile')
     };
 
     function switchPage(pageKey) {
@@ -982,10 +1064,93 @@
         pages[key].classList.toggle("active", key === pageKey);
         if (navButtons[key]) navButtons[key].classList.toggle("active", key === pageKey);
       });
+      if (pageKey === 'profile') renderProfile();
     }
     Object.entries(navButtons).forEach(([key, btn]) => {
       btn.addEventListener("click", () => switchPage(key));
     });
+
+    // ── Render Profile ──
+    function renderProfile() {
+      const profileContent = document.getElementById('profileContent');
+      if (!user) {
+        profileContent.innerHTML = `<p style="text-align:center;color:#ff6666;font-size:0.9rem;">Open this app inside Telegram to see your profile.</p>`;
+        return;
+      }
+      const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || 'Unknown';
+      const initials = fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+      const avatarHtml = user.photo_url
+        ? `<img class="profile-avatar" src="${user.photo_url}" alt="Avatar" onerror="this.style.display='none';document.getElementById('profileInitials').style.display='flex';">`
+        : '';
+      const placeholderStyle = user.photo_url ? 'display:none;' : '';
+      const isPremiumTg = user.is_premium;
+      const langMap = { en:'🇬🇧 English', ru:'🇷🇺 Russian', ar:'🇸🇦 Arabic', fr:'🇫🇷 French', de:'🇩🇪 German', es:'🇪🇸 Spanish', pt:'🇧🇷 Portuguese', tr:'🇹🇷 Turkish', uk:'🇺🇦 Ukrainian', it:'🇮🇹 Italian', pl:'🇵🇱 Polish' };
+      const langLabel = langMap[user.language_code] || (user.language_code ? `🌐 ${user.language_code.toUpperCase()}` : 'Unknown');
+
+      profileContent.innerHTML = `
+        <div class="profile-avatar-wrap">
+          ${avatarHtml}
+          <div class="profile-avatar-placeholder" id="profileInitials" style="${placeholderStyle}">${initials}</div>
+          <div class="profile-name">${fullName}</div>
+          ${user.username ? `<div class="profile-username">@${user.username}</div>` : ''}
+          ${isPremiumTg ? `<span class="profile-premium-badge">⭐ Telegram Premium</span>` : ''}
+        </div>
+        <div class="profile-info-grid">
+          <div class="profile-info-row">
+            <div class="profile-info-icon">🪪</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Telegram ID</div>
+              <div class="profile-info-value">${user.id}</div>
+            </div>
+            <button class="profile-copy-btn" onclick="copyText('${user.id}', this)">Copy</button>
+          </div>
+          <div class="profile-info-row">
+            <div class="profile-info-icon">👤</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Display Name</div>
+              <div class="profile-info-value">${fullName}</div>
+            </div>
+            <button class="profile-copy-btn" onclick="copyText('${fullName}', this)">Copy</button>
+          </div>
+          ${user.username ? `
+          <div class="profile-info-row">
+            <div class="profile-info-icon">🔗</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Username</div>
+              <div class="profile-info-value">@${user.username}</div>
+            </div>
+            <button class="profile-copy-btn" onclick="copyText('@${user.username}', this)">Copy</button>
+          </div>` : ''}
+          <div class="profile-info-row">
+            <div class="profile-info-icon">🌐</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Language</div>
+              <div class="profile-info-value">${langLabel}</div>
+            </div>
+          </div>
+          <div class="profile-info-row">
+            <div class="profile-info-icon">${isPremiumTg ? '⭐' : '🔓'}</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Telegram Premium</div>
+              <div class="profile-info-value" style="color:${isPremiumTg ? 'var(--gold)' : 'var(--text3)'};">${isPremiumTg ? 'Active ✓' : 'Not subscribed'}</div>
+            </div>
+          </div>
+          <div class="profile-info-row">
+            <div class="profile-info-icon">🤖</div>
+            <div class="profile-info-content">
+              <div class="profile-info-label">Bot Access</div>
+              <div class="profile-info-value" style="color:var(--accent2);">@intelligentverificationlinkbot</div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function copyText(val, btn) {
+      navigator.clipboard.writeText(val).then(() => {
+        btn.textContent = '✓ Copied';
+        setTimeout(() => btn.textContent = 'Copy', 1600);
+      });
+    }
 
     // ── Free Links ──
     const freeLinks = [
@@ -1038,8 +1203,6 @@
           navigator.clipboard.writeText(fullUrl).then(() => {
             copyBtn.textContent = "✓ Copied";
             setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
-            // Show the ad notice so users know what's coming
-            showMyAdWithNotice(null);
           });
         });
 
@@ -1186,14 +1349,7 @@
     });
   </script>
 
-  <!-- ── Auto Ad on Load ── -->
-  <script>
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        showMyAdWithNotice(null);
-      }, 10000);
-    });
-  </script>
+  <!-- Auto ad on load removed to reduce ad frequency -->
 
   <!-- Premium Popup removed – WhatsApp popup used instead -->
 
@@ -1252,13 +1408,13 @@
   /* Red banner */
   .yt-banner {
     background: linear-gradient(135deg, #c00, #ff0000, #ff4444);
-    padding: 18px 16px 14px;
+    padding: 10px 14px 8px;
     text-align: center;
     position: relative;
   }
-  .yt-banner-icon { font-size: 2.2rem; line-height: 1; margin-bottom: 6px; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35)); }
-  .yt-banner h3 { font-size: 1rem; font-weight: 700; color: #fff; margin: 0 0 2px; }
-  .yt-banner p  { font-size: 0.78rem; color: rgba(255,255,255,0.85); margin: 0; }
+  .yt-banner-icon { font-size: 1.5rem; line-height: 1; margin-bottom: 3px; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35)); }
+  .yt-banner h3 { font-size: 0.92rem; font-weight: 700; color: #fff; margin: 0 0 2px; }
+  .yt-banner p  { font-size: 0.73rem; color: rgba(255,255,255,0.85); margin: 0; }
 
   /* Close button */
   .yt-close {
@@ -1272,7 +1428,7 @@
   .yt-close:hover { background: rgba(0,0,0,0.55); }
 
   /* Body */
-  .yt-body { padding: 14px 16px 16px; }
+  .yt-body { padding: 10px 14px 12px; }
   .yt-body > p {
     font-size: 0.83rem; color: #b0b8cc;
     line-height: 1.6; margin-bottom: 12px; text-align: center;
@@ -1371,7 +1527,7 @@
 
     function scheduleYtModal() {
       if (_ytShown) return;
-      setTimeout(openYtModal, 1000);
+      setTimeout(openYtModal, 8000);
     }
 
     if (document.readyState === "complete") {
