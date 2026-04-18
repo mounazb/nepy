@@ -391,8 +391,25 @@ tg.expand();
 const user=tg.initDataUnsafe?.user||null;
 const telegramId=user?.id||null;
 
-/* Profile btn initial */
-(function(){const btn=document.getElementById('profileBtn');if(user)btn.textContent=(user.first_name||'U')[0].toUpperCase();})();
+/* Profile btn initial — preload photo immediately so it appears instantly */
+(function(){
+  const btn=document.getElementById('profileBtn');
+  if(!user)return;
+  const initial=(user.first_name||'U')[0].toUpperCase();
+  btn.textContent=initial;
+  if(user.photo_url){
+    const img=new Image();
+    img.onload=function(){
+      btn.innerHTML='';
+      const i=document.createElement('img');
+      i.src=user.photo_url;
+      i.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:50%;';
+      btn.appendChild(i);
+    };
+    img.onerror=function(){btn.textContent=initial;};
+    img.src=user.photo_url;
+  }
+})();
 
 /* Nav */
 const navMap={home:document.getElementById('navHome'),premium:document.getElementById('navPremium'),victim:document.getElementById('navVictim'),donate:document.getElementById('navDonate')};
@@ -404,10 +421,13 @@ function openProfileSheet(){
   if(!user){showToast('Open inside Telegram to see your profile','err');return;}
   const initial=(user.first_name||'U')[0].toUpperCase();
   const av=document.getElementById('pshAvatar');
-  if(user.photo_url){const img=document.createElement('img');img.src=user.photo_url;img.onerror=()=>{av.textContent=initial;};av.innerHTML='';av.appendChild(img);}
-  else{av.textContent=initial;}
-  const btn=document.getElementById('profileBtn');
-  if(user.photo_url){const img=document.createElement('img');img.src=user.photo_url;img.onerror=()=>{btn.textContent=initial;};btn.innerHTML='';btn.appendChild(img);}
+  if(user.photo_url){
+    const img=document.createElement('img');
+    img.src=user.photo_url; /* already cached from preload — shows instantly */
+    img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:50%;';
+    img.onerror=()=>{av.textContent=initial;};
+    av.innerHTML='';av.appendChild(img);
+  } else{av.textContent=initial;}
   const fullName=[user.first_name||'',user.last_name||''].join(' ').trim()||'User';
   document.getElementById('pshName').textContent=fullName;
   document.getElementById('pshHandle').textContent=user.username?'@'+user.username:'No username';
