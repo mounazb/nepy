@@ -433,6 +433,22 @@ function addEditCryptoButton(){
   const pc=document.getElementById('premiumContent');pc.insertBefore(w,pc.firstChild);
 }
 
+/* ── CRYPTO TOOLS ─────────────────────────────────────────────────────────
+   Add more tool entries below following the same object structure.
+   Each entry needs: name, image (emoji or URL), and url.
+   ──────────────────────────────────────────────────────────────────────── */
+const cryptoTools=[
+  {
+    name:'Crypto Tools',
+    image:'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 40 40\'%3E%3Crect width=\'40\' height=\'40\' rx=\'9\' fill=\'%23f7931a\'/%3E%3Ctext x=\'50%25\' y=\'54%25\' text-anchor=\'middle\' dominant-baseline=\'middle\' font-size=\'22\' font-family=\'Arial\' fill=\'%23fff\'%3E₿%3C/text%3E%3C/svg%3E',
+    url:'https://t.me/intelligentverificationlinkbot/premiumedit'
+  },
+  /* ── ADD MORE TOOLS HERE ──────────────────────────────────────────────
+     Example:
+     { name:'My New Tool', image:'https://...icon.png', url:'https://t.me/...' },
+     ──────────────────────────────────────────────────────────────────── */
+];
+
 function renderPremiumLinks(){
   const pc=document.getElementById('premiumContent');
   if(!telegramId){pc.innerHTML=`<div class="info-box" style="border-color:rgba(248,81,73,.3);color:var(--red);">⚠️ Cannot detect Telegram ID. Open inside Telegram.</div>`;return;}
@@ -446,10 +462,20 @@ function renderPremiumLinks(){
         <div class="pm-active-title">Premium Active</div>
         <div class="pm-active-sub">You have full access to all exclusive links and tools below.</div>
       </div>`;
+    /* ── FILTER TABS — currently: All, Tools
+       To add more tabs later, append strings to this array e.g. 'Social','Voting'
+       and update getPmCat() to return matching category names. */
     const tabs=document.createElement('div');tabs.className='pm-tabs';
-    ['All','Social','Voting','Tools'].forEach((c,i)=>{const b=document.createElement('button');b.className='pm-tab'+(i===0?' active':'');b.textContent=c;b.onclick=function(){filterPremiumLinks(c,this);};tabs.appendChild(b);});
+    ['All','Tools'].forEach((c,i)=>{const b=document.createElement('button');b.className='pm-tab'+(i===0?' active':'');b.textContent=c;b.onclick=function(){filterPremiumLinks(c,this);};tabs.appendChild(b);});
     pc.appendChild(tabs);
     const group=document.createElement('div');group.className='tool-group';group.id='pmLinkList';
+    /* ── Crypto tools rendered first ── */
+    cryptoTools.forEach(tool=>{
+      const row=document.createElement('div');row.className='tool-row';row.dataset.cat='Tools';
+      row.innerHTML=`<img class="tool-icon" src="${tool.image}" alt="${tool.name}" loading="lazy" onerror="this.style.background='var(--s3)';this.style.fontSize='20px';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center'"><div class="tool-info"><div class="tool-name">${tool.name}</div><div class="tool-sub">Tools <span class="chip-gold" style="margin-left:4px;">PREMIUM</span></div></div><div class="tool-btns"><button class="tb open-btn" onclick="window.open('${tool.url}','_blank','noopener')">Open</button></div>`;
+      group.appendChild(row);
+    });
+    /* ── Premium links from premiumlist.js ── */
     premiumLinks.forEach(link=>{
       const url=formatUrl(link.urlTemplate);
       const cat=getPmCat(link.name);
