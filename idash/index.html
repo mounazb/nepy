@@ -292,10 +292,10 @@ function showMyAdWithNotice(cb){showAdNotice(cb);}
     function openWithAd(u){try{if(typeof show_9830644==="function"){show_9830644();setTimeout(function(){window.open(u,"_blank","noopener");},10000);}else{window.open(u,"_blank","noopener");}}catch(e){window.open(u,"_blank","noopener");}}
     </script>
     <button id="openBotBtnHome" class="btn-acc">⚙️Custom Link is now in premium</button>
-    <a href="https://t.me/intmarketbot/premium" target="_blank" class="btn-outline">🔗 Buy premium to generate link</a>
+    <a id="buyPremiumBtn" href="https://t.me/intmarketbot/premium" target="_blank" class="btn-outline">🔗 Buy premium to generate link</a>
     <div class="tool-group" id="freeLinksList"></div>
-    <a href="https://t.me/intmarketbot/premium" style="text-decoration:none;">
-    <button class="btn-acc">More tools & links in premium </button></a>
+    <div id="morePremiumBtnWrap"><a href="https://t.me/intmarketbot/premium" style="text-decoration:none;">
+    <button class="btn-acc">More tools &amp; links in premium</button></a></div>
   </section>
 
   <!-- PREMIUM -->
@@ -462,6 +462,7 @@ function renderPremiumLinks(){
   if(typeof premiumUsers==='undefined'){pc.innerHTML=`<div class="info-box" style="border-color:rgba(248,81,73,.3);color:var(--red);">⚠️ Premium list missing. Check premiumlist.js.</div>`;return;}
 
   if(premiumUsers.includes(telegramId)){
+    updateHomeForPremium(true);
     /* ACTIVE */
     pc.innerHTML=`
       <div class="pm-active-banner">
@@ -492,6 +493,7 @@ function renderPremiumLinks(){
     });
     pc.appendChild(group);
   } else {
+    updateHomeForPremium(false);
     /* LOCKED */
     pc.innerHTML=`
       <div class="pm-hero">
@@ -528,6 +530,30 @@ function renderPremiumLinks(){
 function getPmCat(name){const n=name.toLowerCase();if(n.includes('vote'))return'Voting';if(n.includes('xxx')||n.includes('vid'))return'Tools';return'Social';}
 function filterPremiumLinks(cat,btn){document.querySelectorAll('.pm-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('#pmLinkList .tool-row').forEach(r=>{r.style.display=(cat==='All'||r.dataset.cat===cat)?'flex':'none';});}
 function pmCopy(url,btn){navigator.clipboard.writeText(url).then(()=>{const orig=btn.textContent;btn.textContent='✓ Copied';btn.style.cssText='background:rgba(0,212,170,.15);color:var(--acc);border-color:rgba(0,212,170,.3)';setTimeout(()=>{btn.textContent=orig;btn.style.cssText='';},1600);});}
+
+/* Update home-page buttons based on premium status */
+function updateHomeForPremium(isPremium){
+  // "More tools & links in premium" wrapper — hide for premium users
+  var wrap=document.getElementById('morePremiumBtnWrap');
+  if(wrap)wrap.style.display=isPremium?'none':'';
+
+  // "Buy premium to generate link" button — switch to premium tab for premium users
+  var buyBtn=document.getElementById('buyPremiumBtn');
+  if(buyBtn){
+    if(isPremium){
+      buyBtn.removeAttribute('href');
+      buyBtn.removeAttribute('target');
+      buyBtn.style.cursor='pointer';
+      buyBtn.innerHTML='💎 View Your Premium Tools';
+      buyBtn.onclick=function(e){e.preventDefault();switchPage('premium');};
+    } else {
+      buyBtn.href='https://t.me/intmarketbot/premium';
+      buyBtn.target='_blank';
+      buyBtn.onclick=null;
+      buyBtn.innerHTML='🔗 Buy premium to generate link';
+    }
+  }
+}
 
 /* Premium list loader */
 function initPremiumFeatures(){if(typeof premiumUsers!=='undefined'&&Array.isArray(premiumUsers)&&premiumUsers.includes(telegramId)){addEditCryptoButton();}renderPremiumLinks();}
