@@ -291,9 +291,11 @@ function showMyAdWithNotice(cb){showAdNotice(cb);}
     <script>
     function openWithAd(u){try{if(typeof show_9830644==="function"){show_9830644();setTimeout(function(){window.open(u,"_blank","noopener");},10000);}else{window.open(u,"_blank","noopener");}}catch(e){window.open(u,"_blank","noopener");}}
     </script>
-    <button id="openBotBtnHome" class="btn-acc">⚙️ Generate Custom Link</button>
-    <a href="http://t.me/intelligentverificationlinkbot/customlink" target="_blank" class="btn-outline">🔗 Open Custom Link</a>
+    <button id="openBotBtnHome" class="btn-acc">⚙️Custom Link is now in premium</button>
+    <a href="https://t.me/intmarketbot/premium" target="_blank" class="btn-outline">🔗 Buy premium to generate link</a>
     <div class="tool-group" id="freeLinksList"></div>
+    <a href="https://t.me/intmarketbot/premium" style="text-decoration:none;">
+    <button class="btn-acc">More tools & links in premium </button></a>
   </section>
 
   <!-- PREMIUM -->
@@ -560,7 +562,7 @@ function renderDonationInfo(){
 function copyInviteLink(){const l=`https://t.me/intelligentverificationlinkbot?start=r${telegramId}`;navigator.clipboard.writeText(l).then(()=>showToast('Invite link copied ✅','suc'));}
 
 /* Bot button listeners */
-document.getElementById('openBotBtnHome').addEventListener('click',function(){showMyAdWithNotice(function(){window.open('http://t.me/intelligentverificationlinkbot/customlink','_blank');});});
+document.getElementById('openBotBtnHome').addEventListener('click',function(){showMyAdWithNotice(function(){window.open('https://t.me/intmarketbot/premium','_blank');});});
 document.getElementById('openBotBtnVictim').addEventListener('click',function(){showMyAdWithNotice(function(){window.open('https://t.me/harmayohbot?start=start','_blank');});});
 
 renderFreeLinks();
