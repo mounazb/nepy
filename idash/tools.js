@@ -13,6 +13,11 @@ const cryptoTools = [
     image: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
     url:   'https://t.me/intelligentverificationlinkbot/premiumedit'
   },
+{
+    name:  'Automatic drainage Crypto Tools',
+    image: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
+    url:   'https://t.me/intmarketbot/bnb'
+  },
   {
     name:  'Voice Clone Tools',
     image: 'https://noiz.ai/favicon.ico',
